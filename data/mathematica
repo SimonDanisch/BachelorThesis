@@ -1,0 +1,22 @@
+integer function parse_int(s, base) result(n)
+character(len=*), intent(in) :: s
+integer, intent(in) :: base
+integer :: i, d
+character :: c
+n = 0
+do i = 1, len(s)
+    c = s(i:i)
+    d = 0
+    if (ichar(c) >= ichar('0') .and. ichar(c) <= ichar('9')) then
+        d = ichar(c) - ichar('0')
+    else if (ichar(c) >= ichar('A') .and. ichar(c) <= ichar('Z')) then
+        d = ichar(c) - ichar('A') + 10
+    else if (ichar(c) >= ichar('a') .and. ichar(c) <= ichar('z')) then
+        d = ichar(c) - ichar('a') + 10
+    else
+        call stop_error("parse_int 1")
+    end if
+    if (base <= d) call stop_error("parse_int 2")
+    n = n*base + d
+end do
+end function

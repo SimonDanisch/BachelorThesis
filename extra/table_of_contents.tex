@@ -1,0 +1,23 @@
+% TODO Typ vor Nummer
+\renewcommand{\cfttabpresnum}{Tab. }
+\renewcommand{\cftfigpresnum}{Abb. }
+\settowidth{\cfttabnumwidth}{Abb. 10\quad}
+\settowidth{\cftfignumwidth}{Abb. 10\quad}
+
+\titlespacing{\section}{0pt}{12pt plus 4pt minus 2pt}{2pt plus 2pt minus 2pt}
+\singlespacing
+\rhead{Table of Contents}
+\renewcommand{\contentsname}{II Table of Contents}
+\phantomsection
+\addcontentsline{toc}{section}{\texorpdfstring{II \hspace{0.35em}Table of Contents}{Table of Contents}}
+\addtocounter{section}{1}
+\tableofcontents
+\pagebreak
+\rhead{Listings}
+\listoffigures
+\pagebreak
+\listoftables
+
+\renewcommand{\lstlistlistingname}{Listing-Verzeichnis}
+{\labelsep2cm\lstlistoflistings}
+\pagebreak

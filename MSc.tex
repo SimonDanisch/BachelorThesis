@@ -1,0 +1,159 @@
+\documentclass[12pt,a4paper,bibliography=totocnumbered,listof=totocnumbered]{scrartcl}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage[right]{eurosym}
+\usepackage[printonlyused]{acronym}
+\usepackage{subfig}
+\usepackage{floatflt}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{colortbl}
+\usepackage{paralist}
+\usepackage{array}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage[right]{eurosym}
+
+\usepackage[subfigure,titles]{tocloft}
+\usepackage[pdfpagelabels=true]{hyperref}
+
+\usepackage{listings}
+\lstset{basicstyle=\footnotesize, captionpos=b, breaklines=true, showstringspaces=false, tabsize=2, frame=lines, numbers=left, numberstyle=\tiny, xleftmargin=2em, framexleftmargin=2em}
+\makeatletter
+\def\l@lstlisting#1#2{\@dottedtocline{1}{0em}{1em}{\hspace{1,5em} Lst. #1}{#2}}
+\makeatother
+
+\geometry{a4paper, top=27mm, left=30mm, right=20mm, bottom=35mm, headsep=10mm, footskip=12mm}
+
+\def \VarAuthor {Simon Danisch}
+\def \VarTopic {Romeo: Scripting Environment with interactive Visualizations}
+
+\hypersetup{unicode=false, pdftoolbar=true, pdfmenubar=true, pdffitwindow=false, pdfstartview={FitH},
+	pdfauthor={\VarAuthor},
+	pdfsubject={\VarTopic},
+	pdfcreator={\LaTeX\ with package \flqq hyperref\frqq},
+	pdfproducer={pdfTeX \the\pdftexversion.\pdftexrevision},
+	pdfkeywords={Bachelor Thesis},
+	pdfnewwindow=true,
+	colorlinks=true,linkcolor=black,citecolor=black,filecolor=magenta,urlcolor=black}
+\pdfinfo{/CreationDate (D:20110620133321)}
+
+\begin{document}
+
+\titlespacing{\section}{0pt}{12pt plus 4pt minus 2pt}{-6pt plus 2pt minus 2pt}
+
+% Kopf- und Fusszeile
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+\renewcommand{\leftmark}{\rightmark}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{\thesection\space\contentsname}
+\lfoot{\VarTopic }
+\cfoot{}
+\rfoot{\ \linebreak Seite \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Vorspann
+\renewcommand{\thesection}{\Roman{section}}
+\renewcommand{\theHsection}{\Roman{section}}
+\pagenumbering{Roman}
+
+% ----------------------------------------------------------------------------------------------------------
+% Title Page
+% ----------------------------------------------------------------------------------------------------------
+\input{extra/title_page}
+
+% ----------------------------------------------------------------------------------------------------------
+% Abstract
+% ----------------------------------------------------------------------------------------------------------
+\setcounter{page}{1}
+\onehalfspacing
+\titlespacing{\section}{0pt}{12pt plus 4pt minus 2pt}{2pt plus 2pt minus 2pt}
+\rhead{Abstract}
+\section{Abstract}
+\input{chapters/Abstract}
+\pagebreak
+
+% ----------------------------------------------------------------------------------------------------------
+% Table of contents
+% ----------------------------------------------------------------------------------------------------------
+\input{extra/table_of_contents}
+
+% ----------------------------------------------------------------------------------------------------------
+% Abbreviations
+% ----------------------------------------------------------------------------------------------------------
+\section{List of Abbreviations}
+\input{extra/abreviations}
+
+% ----------------------------------------------------------------------------------------------------------
+% Style
+% ----------------------------------------------------------------------------------------------------------
+\input{extra/content_style}
+
+
+% --------------------------------------------------------------------------
+% Introduction
+% --------------------------------------------------------------------------
+\section{Introduction}
+\input{chapters/Introduction}
+\pagebreak
+
+\section{Background}
+\input{chapters/Background}
+\pagebreak
+
+
+\section{Design}
+\input{chapters/DesignChoices.tex}
+
+\section{Results and Analysis}
+\input{chapters/ResultsandAnalysis.tex}
+
+\section{Conclusion}
+\input{chapters/Conclusion}
+
+
+
+% ----------------------------------------------------------------------------------------------------------
+% Literatur
+% ----------------------------------------------------------------------------------------------------------
+\renewcommand\refname{Quellenverzeichnis}
+\bibliographystyle{myalpha}
+\bibliography{extra/bibo}
+\pagebreak
+
+% ----------------------------------------------------------------------------------------------------------
+% Appendix
+% ----------------------------------------------------------------------------------------------------------
+\input{extra/appendix}
+
+
+
+
+\newpage
+\thispagestyle{empty}
+\begin{center}
+	\vspace*{5em}
+	\huge\textbf{Erklärung}\\
+\end{center}
+\vspace{2em}
+Hiermit versichere ich, dass ich meine Abschlussarbeit selbständig verfasst und keine anderen als die angegebenen Quellen und Hilfsmittel benutzt habe.
+
+\vspace{4em}
+\begin{minipage}{\linewidth}
+	\begin{tabular}{p{15em}p{15em}}
+		Datum: &  .......................................................\\
+		& \centering (Unterschrift)\\
+	\end{tabular}
+\end{minipage}
+
+\end{document}
