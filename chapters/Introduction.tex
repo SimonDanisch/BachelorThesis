@@ -1,4 +1,35 @@
-In this section, I might explain the overall structure of the Bachelor thesis.
+\section{Introduction}
+% Structure:
+
+% Broader Field
+% Problem
+% Derived Sub Problems
+% Measurements of sub problems
+% Structure of the bachelor thesis
+
+This Bachelor Thesis is about writing a scripting environment for scientific computing. 
+It aims are to be intuitive to use, with deeply integrated visualizations and easy creations of \ac{GUI} elements, suitable for large datasets and with a modular, open source core, which is easy to extend.
+The introduction is structured in the following way.
+I will start with describing the field of research with its challenges. 
+From the challenges I will identify the ones, that I want to solve in this Bachelor Thesis.
+Finally I will conclude with how I intend to solve the problems, how to measure the success and give an outlook on the structure of the entire Bachelor Thesis.
+
+\subsection{Field of Research}
+%Scientific computing: visual debugging, interactive programming, high performance
+The research field is developing convenient infrastructure for scientific computing.
+Which basically means writing tools for researchers, who don't have a focus on programming, but rather see programming as a tool to meet their research goals. This sets the focus on usability and convenience.
+In addition, research often includes working with huge datasets, or highly complex structures and algorithms.
+This introduces two demands. Easily accessible visualizations, to help understand the data, and a high performance of the infrastructure, as otherwise working with the datasets becomes infeasible.
+A lot of research is going into making scientific computing as accessible and fast as possible. But so far the field is split in two fractions, on the one side is performance and on the other side is usability. Normally you need to decide for one.
+
+
+\subsection{Problem}
+Having a single platform in which you can do the research.
+\subsection{Problem Solutions and Evaluation}
+Push code everyday!
+\subsection{Outlook}
+Make stuff even more awesome!
+
 
 \subsection{Motivation and Problem Description}
 
@@ -15,7 +46,7 @@ In science, there are many comparable problems, which are unsolvable without the
 For example making sense of one petabyte of data, predicting the folding of a novel protein, simulating black holes and many more.
 This naturally leads to computers being an essential part of state of the art research.
 Researchers have unique demands for their tools, which makes writing software for scientific computing an interesting research field.
-Consider, that researchers mostly don’t have a background in computer science, some problems need a lot of computational power and due to the novelty of some problems hand tailored solutions are needed. In addition, high interactivity is a crucial feature, since a lot of research is a creative process which involves exploring many alternative solutions.
+Consider, that researchers mostly do not have a background in computer science, some problems need a lot of computational power and due to the novelty of some problems hand tailored solutions are needed. In addition, high interactivity is a crucial feature, since a lot of research is a creative process which involves exploring many alternative solutions.
 This bachelor thesis is about writing a scripting environment with advanced visualization capabilities, while keeping the previous mentioned demands of scientific computing in mind.
 The resulting demands for the scripting environment are as follows.
 
@@ -23,7 +54,7 @@ No background in computer science puts a strong constraint on the used programmi
 The entire suite should be open source and written in one language, to allow the researchers to modify every part easily, enabling them to create a solutions which is hand tailored to their particular problem.
 The two constraints of writing even the core libraries in one language and having also research areas with high demand for computational power means, that in addition to being high-level the chosen language must also be fast.
 As an example, the high level language Python can be substantially slower than a high-performance language like Fortran.
-In extreme cases, Python is 1155 times slower than Fortran \cite{benchmark_python}, which means if a computation needs 1 day with Fortran, it could take ~3 years within Python, rendering the problem intractable within Python.
+In extreme cases, Python is up to 1155 times slower than Fortran \cite{benchmark_python}, which means if a computation needs 1 day with Fortran, it could take ~3 years within Python, rendering the problem intractable within Python.
 
 Finally, the scripting environment should offer simple GUI elements like sliders, to enable the researcher a simple way to interact with the parameters in his script.
 
@@ -33,3 +64,17 @@ The feature set consists of parametrized scientific visualizations, simple GUIs 
 
 -This section needs more quotation, to integrate it into an ongoing research problem. Also, some formulations have to be rewritten.
 \pagebreak
+
+\subsection{Used Technologies}
+
+\subsubsection{Julia}
+\subsubsection{OpenGL}
+
+
+\subsection{Similar Work}
+
+\subsubsection{Other Languages}
+\subsubsection{Ipython Notebook}
+\subsubsection{Matlab}
+\subsubsection{Mathematica}
+\subsubsection{Other Graphic acceleration APIs}

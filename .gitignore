@@ -1,2 +1,4 @@
-Output/
-MSc.synctex.gz
+**/Output/
+
+*.synctex.gz
+*.db
