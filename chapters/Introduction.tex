@@ -1,35 +1,41 @@
 \section{Introduction}
-% Structure:
-
-% Broader Field
-% Problem
-% Derived Sub Problems
-% Measurements of sub problems
-% Structure of the bachelor thesis
-
+% Just a first sketch:
 This Bachelor Thesis is about writing a scripting environment for scientific computing. 
-It aims are to be intuitive to use, with deeply integrated visualizations and easy creations of \ac{GUI} elements, suitable for large datasets and with a modular, open source core, which is easy to extend.
+It aims are to be intuitive to use, with deeply integrated visualizations and easy creations of GUI elements, suitable for large datasets and with a modular, open source core, which is easy to extend.
 The introduction is structured in the following way.
 I will start with describing the field of research with its challenges. 
 From the challenges I will identify the ones, that I want to solve in this Bachelor Thesis.
-Finally I will conclude with how I intend to solve the problems, how to measure the success and give an outlook on the structure of the entire Bachelor Thesis.
-
+Finally this chapter will conclude with how a solution to the problem can look like, how to measure the success and give an outlook on the structure of the entire Bachelor Thesis.
+ 
 \subsection{Field of Research}
 %Scientific computing: visual debugging, interactive programming, high performance
-The research field is developing convenient infrastructure for scientific computing.
-Which basically means writing tools for researchers, who don't have a focus on programming, but rather see programming as a tool to meet their research goals. This sets the focus on usability and convenience.
-In addition, research often includes working with huge datasets, or highly complex structures and algorithms.
-This introduces two demands. Easily accessible visualizations, to help understand the data, and a high performance of the infrastructure, as otherwise working with the datasets becomes infeasible.
-A lot of research is going into making scientific computing as accessible and fast as possible. But so far the field is split in two fractions, on the one side is performance and on the other side is usability. Normally you need to decide for one.
+%First rough sketch:
+The research field is developing convenient infrastructure for scientific computing. Offering high level software with nice user interfaces for scientific computing is a very difficult task, as state of the art research is a fast moving target. You cannot offer an easy to use software package, for something that hasn't been invented yet. If your research involves creating new algorithms for solving finite element problems, you cannot use the available packages for finite element solvers. 
+What you can do though, is to reuse parts of the visualization and math infrastructure, to speed up development. 
+So instead of writing monolithic software, the common approach is to offer modular libraries, together with a high-level scripting language and editor, to allow the researcher to quickly prototype software, which solves their unique problem.
+Famous examples are Matlab, Mathematica, R and Python, which have largely different focus areas, but all are commonly used tools by researchers, as they offer the previously mentioned functionality.
 
+All tools have some way to build simple GUIs, visualize data, access a lot of algorithms, and the used languages are high-level, to let the researcher focus mainly on solving the problem.
+
+In addition, research often includes working with huge datasets, or algorithms with a high time complexity.
+So, in addition to offering a lot of libraries and being easy to use, infrastructure for scientific computing must be really fast.
+The mentioned tools all have their own way of dealing with this demand, which I will describe in more detail in the chapter Background.
+As most high-level languages are slow, the common pattern to deal with this is to write performance critical libraries in another, low-level, high performance language. The mentioned tools fall into this class, which means if you want to extend their performance critical core, you will not be able to do so, unless you use a different more complicated language.
+ 
+In summary, there are two main demands. First, high usability and readily available libraries, and a high performance of the infrastructure, as otherwise working with large datasets becomes infeasible.
 
 \subsection{Problem}
-Having a single platform in which you can do the research.
-\subsection{Problem Solutions and Evaluation}
-Push code everyday!
-\subsection{Outlook}
-Make stuff even more awesome!
+% general line of argumentation:
+You never get the previous demands in one package, in one language, open source. Divide Problems into more specific sub-topics.
+ 
+\subsection{Problem Solutions and Measurements of Success}
+* Write it in one, open source, high level, high performance language (Julia)
+* Write it in OpenGL
+* Open Source
+* Easy ways of creating GUIs
 
+\subsection{Outlook}
+%Structure of BA and a few worts on the results 
 
 \subsection{Motivation and Problem Description}
 
