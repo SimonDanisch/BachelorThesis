@@ -1,43 +1,13 @@
 \section{Introduction}
 % Just a first sketch:
-This Bachelor Thesis is about writing a scripting environment for scientific computing. 
-It aims are to be intuitive to use, with deeply integrated visualizations and easy creations of GUI elements, suitable for large datasets and with a modular, open source core, which is easy to extend.
+This Bachelor Thesis is about writing a fast and interactive visualization environment for scientific computing. 
+As GUI elements and editable text fields are supplied, one can also write and execute scripts, and immediately visualize all bound variables of the script and edit them via simple GUI elements like sliders. The focus is on creating a modular library, that is written in a fast high-level language, making the library easy to extend.
 The introduction is structured in the following way.
-I will start with describing the field of research with its challenges. 
-From the challenges I will identify the ones, that I want to solve in this Bachelor Thesis.
-Finally this chapter will conclude with how a solution to the problem can look like, how to measure the success and give an outlook on the structure of the entire Bachelor Thesis.
+First, an introduction to the general field of research and its challenges is given. 
+From these challenges, the problems relevant to this thesis will be extracted.
+Finally this chapter will conclude with a solution to the problem, how to measure the success and give an outlook on the structure of the entire Bachelor Thesis.
  
-\subsection{Field of Research}
-%Scientific computing: visual debugging, interactive programming, high performance
-%First rough sketch:
-The research field is developing convenient infrastructure for scientific computing. Offering high level software with nice user interfaces for scientific computing is a very difficult task, as state of the art research is a fast moving target. You cannot offer an easy to use software package, for something that hasn't been invented yet. If your research involves creating new algorithms for solving finite element problems, you cannot use the available packages for finite element solvers. 
-What you can do though, is to reuse parts of the visualization and math infrastructure, to speed up development. 
-So instead of writing monolithic software, the common approach is to offer modular libraries, together with a high-level scripting language and editor, to allow the researcher to quickly prototype software, which solves their unique problem.
-Famous examples are Matlab, Mathematica, R and Python, which have largely different focus areas, but all are commonly used tools by researchers, as they offer the previously mentioned functionality.
-
-All tools have some way to build simple GUIs, visualize data, access a lot of algorithms, and the used languages are high-level, to let the researcher focus mainly on solving the problem.
-
-In addition, research often includes working with huge datasets, or algorithms with a high time complexity.
-So, in addition to offering a lot of libraries and being easy to use, infrastructure for scientific computing must be really fast.
-The mentioned tools all have their own way of dealing with this demand, which I will describe in more detail in the chapter Background.
-As most high-level languages are slow, the common pattern to deal with this is to write performance critical libraries in another, low-level, high performance language. The mentioned tools fall into this class, which means if you want to extend their performance critical core, you will not be able to do so, unless you use a different more complicated language.
- 
-In summary, there are two main demands. First, high usability and readily available libraries, and a high performance of the infrastructure, as otherwise working with large datasets becomes infeasible.
-
-\subsection{Problem}
-% general line of argumentation:
-You never get the previous demands in one package, in one language, open source. Divide Problems into more specific sub-topics.
- 
-\subsection{Problem Solutions and Measurements of Success}
-* Write it in one, open source, high level, high performance language (Julia)
-* Write it in OpenGL
-* Open Source
-* Easy ways of creating GUIs
-
-\subsection{Outlook}
-%Structure of BA and a few worts on the results 
-
-\subsection{Motivation and Problem Description}
+\subsection{Field of Research and Problem}
 
 \vspace{1em}
 \begin{minipage}{\linewidth}
@@ -47,29 +17,56 @@ You never get the previous demands in one package, in one language, open source.
     \label{fig:volume}
 \end{minipage}
 
-When one tries to visualize a volume described by f(x,y,z)=sin(x/15f0)+sin(y/15f0)+sin(z/15f0), the limitations of the human mind becomes clear. While a computer doesn't have the creativity of humans yet, the task of visualizing this volume is a no-brainer for a computer (see Figure \ref{fig:volume}).
-In science, there are many comparable problems, which are unsolvable without the aid of a computer.
-For example making sense of one petabyte of data, predicting the folding of a novel protein, simulating black holes and many more.
-This naturally leads to computers being an essential part of state of the art research.
-Researchers have unique demands for their tools, which makes writing software for scientific computing an interesting research field.
-Consider, that researchers mostly do not have a background in computer science, some problems need a lot of computational power and due to the novelty of some problems hand tailored solutions are needed. In addition, high interactivity is a crucial feature, since a lot of research is a creative process which involves exploring many alternative solutions.
-This bachelor thesis is about writing a scripting environment with advanced visualization capabilities, while keeping the previous mentioned demands of scientific computing in mind.
-The resulting demands for the scripting environment are as follows.
+%Scientific computing: visual debugging, interactive programming, high performance
+%First rough sketch:
+The general research field is making computer science accessible to users, which don't have a broad computer science background. 
+This Bachelor Thesis focus on scientific computing. It focuses on research, which involves writing short scripts, while visualizing the results. An example would be a material researcher, who is investigating different materials and their reaction to pressure.
+The researcher would need to read in the 3D object he wants to analyze, have an easy way to tweak the material parameters and it would be preferable to get instant feedback of how the pressure waves propagate through the object. 
+Several demands by the researcher makes it challenging, to offer software for this area.
+1. Money and Time is constrained
+This means the research has to conclude quickly and most likely, it is not an option to employ a person to solve sub problems.
+From this we can deduce three preferences: If code needs to be written, it should be in an easy to understand high-level language. Computation times and feedback should be without delay to speed up development. The used libraries should be accessible to the researcher, because when something doesn't fit his demands, he most likely needs to resolve it himself due to the money constraint.
+2. Visualizations
+Visualizations are very important for two reasons:
+First, it is difficult to infer any meaningful results from a 10 megabyte file full of 3D points. In this domain, problems become only managable by visualizing them. \ref{fig:volume}
+Secondly, research is getting published, together with visualizations explaining the results. As they present the research to the public, they should look as good as possible.
 
-No background in computer science puts a strong constraint on the used programming language. It should be high level and easy to learn as researchers should not be forced to waste their time with fixing memory corruptions or obscure language constructs.
-The entire suite should be open source and written in one language, to allow the researchers to modify every part easily, enabling them to create a solutions which is hand tailored to their particular problem.
-The two constraints of writing even the core libraries in one language and having also research areas with high demand for computational power means, that in addition to being high-level the chosen language must also be fast.
-As an example, the high level language Python can be substantially slower than a high-performance language like Fortran.
-In extreme cases, Python is up to 1155 times slower than Fortran \cite{benchmark_python}, which means if a computation needs 1 day with Fortran, it could take ~3 years within Python, rendering the problem intractable within Python.
+To publish good looking visualizations, tweaking the visualization is also of importance. 
+Another thing that can happen is, that the researcher notices that the software he is using is missing functionality, or doesn't solve his problem as expected. This can interfere with his research, if it is difficult or impossible to extend the simulation software. 
+As the researchers often do not have a computer science background, all the coding should be done in an high-level language, which allows the researcher to focus on his research without wasting his time with difficult language constructs.
 
-Finally, the scripting environment should offer simple GUI elements like sliders, to enable the researcher a simple way to interact with the parameters in his script.
+From this example we can deduce different demands which researchers might have for the used software.
 
-These considerations lead to the 3 main design choices:
-Julia, a novel scientific computing language, is chosen as the main language, Modern OpenGL for high performance graphic rendering and writing generic,Reusable open source code for a high amount of customizability.
-The feature set consists of parametrized scientific visualizations, simple GUIs for the parameters and a simple script editor.
+1.) Tweaking of parameters via GUI elements
+2.) Fast feedback, low latencies
+3.) Extensibility
+4.) Visualizations
+5.) High-Level language
 
--This section needs more quotation, to integrate it into an ongoing research problem. Also, some formulations have to be rewritten.
-\pagebreak
+The biggest challenge is to combine these demands. It is not much use, if the visualization software is fast and extensible, if the simulation part is slow and closed source. All the elements must be equally fast, extensible and must work together, so that the researcher does not run into areas, where he gets slowed down in his research.
+To clarify this point, take for example an algorithm to count the occurrence of a character in a string.
+Here are different implementations:
+
+
+The last one actually produces an overflow error, when there are too many occurrences of the character that one searches.
+The author himself has given up on finding the error, simply because the resulting code was too hard to debug.
+This nicely illustrates, how fast and optimized code can pose a development barrier, rendering parts of a library untouchable.
+As this is unacceptable for areas like scientific computing, where the state of the art is advanced on a daily basis, much research is put into generating high performant code from understandable high-level code.
+On of the most famous research projects in this area is the LLVM project.
+
+
+
+\subsection{Problem Solutions and Measurements of Success}
+* Write it in one, open source, high level, high performance language (Julia)
+* Write it in OpenGL
+* Open Source
+* Easy ways of creating GUIs
+* Modularity
+* Offer a broad variety of visulizations
+
+
+\subsection{Outlook}
+%Structure of BA and a few worts on the results 
 
 \subsection{Used Technologies}
 
