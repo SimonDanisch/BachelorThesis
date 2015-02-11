@@ -17,21 +17,48 @@ Finally this chapter will conclude with a solution to the problem, how to measur
     \label{fig:volume}
 \end{minipage}
 
+
+\begin{table}[htb]
+\centering
+\caption{FE Implementation comparison}
+   	\sffamily 
+   	\begin{tabularx}{1.0\textwidth}{l | c | p{5cm}}
+		\hline
+    	implementations			& Language  & Speed in Seconds \\
+    	\hline
+	    JFinEALE                & Julia     & 9.6	\\
+		Comsol 4.4 with PARDISO & Java      & 16	\\
+		Comsol 4.4 with MUMPS   & Java      & 22	\\ 
+		Comsol 4.4 with SPOOLES & Java      & 37	\\ 
+		FinEALE                 & Matlab    & 810 	\\
+		\hline
+    \end{tabularx} 
+    \normalfont
+	\label{table:Emissivity}
+\end{table}
+
+
 %Scientific computing: visual debugging, interactive programming, high performance
 %First rough sketch:
-The general research field is making computer science accessible to users, which don't have a broad computer science background. 
-This Bachelor Thesis focus on scientific computing. It focuses on research, which involves writing short scripts, while visualizing the results. An example would be a material researcher, who is investigating different materials and their reaction to pressure.
-The researcher would need to read in the 3D object he wants to analyze, have an easy way to tweak the material parameters and it would be preferable to get instant feedback of how the pressure waves propagate through the object. 
+The general research field is making computer science more accessible and convenient to use. This is especially relevant for users, that don't have a broad computer science background, or programmers implementing complicated state of the art algorithms.
+These users can be found especially in scientific computing, which makes this field the focus of this bachelor thesis. 
+More precisely, it focuses on research, which involves writing short scripts, while visualizing the results. 
+An example would be a material researcher, who is investigating different shapes and materials and their reaction to pressure.
+The researcher would need to read in the 3D object he wants to analyze, have an easy way to tweak the material parameters and it would be preferable to get instant feedback on how the pressure waves propagate through the object. 
 Several demands by the researcher makes it challenging, to offer software for this area.
 1. Money and Time is constrained
-This means the research has to conclude quickly and most likely, it is not an option to employ a person to solve sub problems.
+This means the research has to conclude quickly and most likely, it is not an option to employ a person or even a company to solve sub problems.
 From this we can deduce three preferences: If code needs to be written, it should be in an easy to understand high-level language. Computation times and feedback should be without delay to speed up development. The used libraries should be accessible to the researcher, because when something doesn't fit his demands, he most likely needs to resolve it himself due to the money constraint.
 2. Visualizations
 Visualizations are very important for two reasons:
 First, it is difficult to infer any meaningful results from a 10 megabyte file full of 3D points. In this domain, problems become only managable by visualizing them. \ref{fig:volume}
-Secondly, research is getting published, together with visualizations explaining the results. As they present the research to the public, they should look as good as possible.
+Secondly, research is getting published, together with visualizations explaining the results. As they present the research to the public, they should be as understandable as possible and preferably look good.
+To publish good looking, understandable visualizations, tweaking and editing the visualization in a creative, interactive process is of great importance.
+3. Speed
+Speed can be both seen as a usability or time/money constraint. While the money/time constraint is obvious, even slightly slower software can reduces usability by a large amount.
+Speed is also important for immidiate feedback. As scientists are used to slow computing times of their complicated algorithms, it still holds that it is far more satisfying and productive to immidiately see the results of your work. If the simulation of pressure takes 30s compared to 1s, this is not only frustrating, but has an immidiate influence on how many material combinations the researcher can try out.
 
-To publish good looking visualizations, tweaking the visualization is also of importance. 
+
 Another thing that can happen is, that the researcher notices that the software he is using is missing functionality, or doesn't solve his problem as expected. This can interfere with his research, if it is difficult or impossible to extend the simulation software. 
 As the researchers often do not have a computer science background, all the coding should be done in an high-level language, which allows the researcher to focus on his research without wasting his time with difficult language constructs.
 
