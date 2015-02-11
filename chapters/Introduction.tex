@@ -42,7 +42,7 @@ Finally this chapter will conclude with a solution to the problem, how to measur
 %First rough sketch:
 The general research field is making computer science more accessible and convenient to use. This is especially relevant for users, that don't have a broad computer science background, or programmers implementing complicated state of the art algorithms.
 These users can be found especially in scientific computing, which makes this field the focus of this bachelor thesis. 
-More precisely, it focuses on research, which involves writing short scripts, while visualizing the results. 
+More precisely, it focuses on research which involves writing short scripts, while visualizing the results. 
 An example would be a material researcher, who is investigating different shapes and materials and their reaction to pressure.
 The researcher would need to read in the 3D object he wants to analyze, have an easy way to tweak the material parameters and it would be preferable to get instant feedback on how the pressure waves propagate through the object. 
 Several demands by the researcher makes it challenging, to offer software for this area.
@@ -51,16 +51,13 @@ This means the research has to conclude quickly and most likely, it is not an op
 From this we can deduce three preferences: If code needs to be written, it should be in an easy to understand high-level language. Computation times and feedback should be without delay to speed up development. The used libraries should be accessible to the researcher, because when something doesn't fit his demands, he most likely needs to resolve it himself due to the money constraint.
 2. Visualizations
 Visualizations are very important for two reasons:
-First, it is difficult to infer any meaningful results from a 10 megabyte file full of 3D points. In this domain, problems become only managable by visualizing them. \ref{fig:volume}
-Secondly, research is getting published, together with visualizations explaining the results. As they present the research to the public, they should be as understandable as possible and preferably look good.
-To publish good looking, understandable visualizations, tweaking and editing the visualization in a creative, interactive process is of great importance.
+In some domains, problems become only managable by visualizing them. One example is a function describing a 3D volume, like f(x,y,z)=sin(x/15)+sin(y/15)+sin(z/15). This is a relatively simple function, which is relatively easy to interpret. But still, beats simply visualizing it \ref{fig:volume}.
+Secondly, research is getting published, together with visualizations explaining the results. As they represent the research to the public, they should be as understandable as possible and preferably look good.
+Offering a creative, interactive work flow can make this challenge considerably easier.
 3. Speed
-Speed can be both seen as a usability or time/money constraint. While the money/time constraint is obvious, even slightly slower software can reduces usability by a large amount.
+Speed can be both seen as a usability or time/money constraint. While the money/time constraint is obvious, even slightly slower software can reduces usability by a large degree.
 Speed is also important for immidiate feedback. As scientists are used to slow computing times of their complicated algorithms, it still holds that it is far more satisfying and productive to immidiately see the results of your work. If the simulation of pressure takes 30s compared to 1s, this is not only frustrating, but has an immidiate influence on how many material combinations the researcher can try out.
 
-
-Another thing that can happen is, that the researcher notices that the software he is using is missing functionality, or doesn't solve his problem as expected. This can interfere with his research, if it is difficult or impossible to extend the simulation software. 
-As the researchers often do not have a computer science background, all the coding should be done in an high-level language, which allows the researcher to focus on his research without wasting his time with difficult language constructs.
 
 From this example we can deduce different demands which researchers might have for the used software.
 
