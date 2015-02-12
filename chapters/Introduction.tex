@@ -59,26 +59,6 @@ Speed can be both seen as a usability or time/money constraint. While the money/
 Speed is also important for immidiate feedback. As scientists are used to slow computing times of their complicated algorithms, it still holds that it is far more satisfying and productive to immidiately see the results of your work. If the simulation of pressure takes 30s compared to 1s, this is not only frustrating, but has an immidiate influence on how many material combinations the researcher can try out.
 
 
-From this example we can deduce different demands which researchers might have for the used software.
-
-1.) Tweaking of parameters via GUI elements
-2.) Fast feedback, low latencies
-3.) Extensibility
-4.) Visualizations
-5.) High-Level language
-
-The biggest challenge is to combine these demands. It is not much use, if the visualization software is fast and extensible, if the simulation part is slow and closed source. All the elements must be equally fast, extensible and must work together, so that the researcher does not run into areas, where he gets slowed down in his research.
-To clarify this point, take for example an algorithm to count the occurrence of a character in a string.
-Here are different implementations:
-
-
-The last one actually produces an overflow error, when there are too many occurrences of the character that one searches.
-The author himself has given up on finding the error, simply because the resulting code was too hard to debug.
-This nicely illustrates, how fast and optimized code can pose a development barrier, rendering parts of a library untouchable.
-As this is unacceptable for areas like scientific computing, where the state of the art is advanced on a daily basis, much research is put into generating high performant code from understandable high-level code.
-On of the most famous research projects in this area is the LLVM project.
-
-
 
 \subsection{Problem Solutions and Measurements of Success}
 * Write it in one, open source, high level, high performance language (Julia)
@@ -86,7 +66,16 @@ On of the most famous research projects in this area is the LLVM project.
 * Open Source
 * Easy ways of creating GUIs
 * Modularity
-* Offer a broad variety of visulizations
+* Offer a broad variety of visulization
+
+\subsubsection{Extensibility}
+As previously deduced, extensibility is an important factor, which can decide, if a library is fit for scientific computing or not. 
+It's not only that, but also a great factor determining growth of a software, as the more accessible software is, the higher the probability that someone else submits improvements.
+In order to write extensible software, we first have to clarify what extensibility is.
+
+\subsubsection{Visualisations and Interaction}
+\subsubsection{Speed}
+
 
 
 \subsection{Outlook}
