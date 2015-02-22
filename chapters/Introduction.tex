@@ -46,18 +46,23 @@ More precisely, it focuses on research which involves writing short scripts, whi
 An example would be a material researcher, who is investigating different shapes and materials and their reaction to pressure.
 The researcher would need to read in the 3D object he wants to analyze, have an easy way to tweak the material parameters and it would be preferable to get instant feedback on how the pressure waves propagate through the object. 
 Several demands by the researcher makes it challenging, to offer software for this area.
-1. Money and Time is constrained
-This means the research has to conclude quickly and most likely, it is not an option to employ a person or even a company to solve sub problems.
-From this we can deduce three preferences: If code needs to be written, it should be in an easy to understand high-level language. Computation times and feedback should be without delay to speed up development. The used libraries should be accessible to the researcher, because when something doesn't fit his demands, he most likely needs to resolve it himself due to the money constraint.
-2. Visualizations
-Visualizations are very important for two reasons:
-In some domains, problems become only managable by visualizing them. One example is a function describing a 3D volume, like f(x,y,z)=sin(x/15)+sin(y/15)+sin(z/15). This is a relatively simple function, which is relatively easy to interpret. But still, beats simply visualizing it \ref{fig:volume}.
-Secondly, research is getting published, together with visualizations explaining the results. As they represent the research to the public, they should be as understandable as possible and preferably look good.
-Offering a creative, interactive work flow can make this challenge considerably easier.
-3. Speed
-Speed can be both seen as a usability or time/money constraint. While the money/time constraint is obvious, even slightly slower software can reduces usability by a large degree.
-Speed is also important for immidiate feedback. As scientists are used to slow computing times of their complicated algorithms, it still holds that it is far more satisfying and productive to immidiately see the results of your work. If the simulation of pressure takes 30s compared to 1s, this is not only frustrating, but has an immidiate influence on how many material combinations the researcher can try out.
 
+\begin{itemize} 
+    \item \textbf{Money and Time is constrained}
+    
+    This means the research has to conclude quickly and most likely, it is not an option to employ a person or even a company to solve sub problems.
+    From this we can deduce three preferences: If code needs to be written, it should be in an easy to understand high-level language. Computation times and feedback should be without delay to speed up development. The used libraries should be accessible to the researcher, because when something doesn't fit his demands, he most likely needs to resolve it himself due to the money constraint.
+    \item  \textbf{Visualizations}
+
+    Visualizations are very important for two reasons:
+    In some domains, problems become only managable by visualizing them. One example is a function describing a 3D volume, like f(x,y,z)=sin(x/15)+sin(y/15)+sin(z/15). This is a relatively simple function, which is relatively easy to interpret. But still, beats simply visualizing it \ref{fig:volume}.
+    Secondly, research is getting published, together with visualizations explaining the results. As they represent the research to the public, they should be as understandable as possible and preferably look good.
+    Offering a creative, interactive work flow can make this challenge considerably easier.
+    \item \textbf{Speed}
+    
+    Speed can be both seen as a usability or a time/money constraint. While the money/time constraint is obvious, even slightly slower software can reduces usability by a large degree.
+    Speed is also important for immidiate feedback. While scientists are used to slow computing times of their complicated algorithms, it still holds that it is far more satisfying and productive to immidiately see the results of your work. If the simulation of pressure takes 30s compared to 1s, this is not only frustrating, but has an immidiate influence on how many material combinations the researcher can try out.
+\end{itemize} 
 
 
 \subsection{Problem Solutions and Measurements of Success}
@@ -66,15 +71,24 @@ Speed is also important for immidiate feedback. As scientists are used to slow c
 * Open Source
 * Easy ways of creating GUIs
 * Modularity
-* Offer a broad variety of visulization
+* Offer a broad variety of visualization
 
 \subsubsection{Extensibility}
 As previously deduced, extensibility is an important factor, which can decide, if a library is fit for scientific computing or not. 
-It's not only that, but also a great factor determining growth of a software, as the more accessible software is, the higher the probability that someone else submits improvements.
+It's not only that, but also a great factor determining growth of a software, as the more extensible the software is, the higher the probability that someone else contributes to it.
 In order to write extensible software, we first have to clarify what extensibility is.
+Extensible needs that the code is accessible. There are different levels of accessibility. The first level is closed source, where people purposely make the code inaccessible. While this is obvious, this is just a special case of not understanding the underlying language. Just shipping binaries without open sourcing the code, means that the source is only accessible in a language which is extremely hard to understand, namely the machine code of the binary. So other examples for inaccessibility are writing in a language that is difficult to understand. Other barriers are obfuscated language constructs, missing documentations and cryptic low level code.
+Further more the design of the library in the whole is an important factor for extensibility. It's not only important, that all parts are understandable, but also, that they can be reused and rebuild. Important factors here are modularity and short concise code.
+Modularity is important to see 
 
-\subsubsection{Visualisations and Interaction}
+Besides hiding the code, there are several other possibilities to make access to code hard. One example would be, that the code is written in a language which is not understood by the programmer. 
+Most obviously, software isn't accessible when it's closed source, so being open source is the most crucial condition.
+But there are other more subtle conditions, which greatly reduce barriers to a software.
+
 \subsubsection{Speed}
+
+\subsubsection{Visualizations and Interaction}
+
 
 
 
