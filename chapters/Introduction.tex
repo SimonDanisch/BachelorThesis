@@ -12,56 +12,47 @@ Finally this chapter will conclude with a solution to the problem, how to measur
 \vspace{1em}
 \begin{minipage}{\linewidth}
     \centering
-    \includegraphics[width=0.7\linewidth]{Bilder/surfaces.png}
+    \includegraphics[width=0.7\linewidth]{graphics/surfaces.png}
     \captionof{figure}[Volume Visualization]{different visualizations of f(x,y,z)=sin(x/15)+sin(y/15)+sin(z/15), visualized with Romeo. From left to right: Isosurface, isovalue=0.76, Isosurface, isovalue=0.37, maximum value projection}
     \label{fig:volume}
 \end{minipage}
 
 
-\begin{table}[htb]
-\centering
-\caption{FE Implementation comparison}
-   	\sffamily 
-   	\begin{tabularx}{1.0\textwidth}{l | c | p{5cm}}
-		\hline
-    	implementations			& Language  & Speed in Seconds \\
-    	\hline
-	    JFinEALE                & Julia     & 9.6	\\
-		Comsol 4.4 with PARDISO & Java      & 16	\\
-		Comsol 4.4 with MUMPS   & Java      & 22	\\ 
-		Comsol 4.4 with SPOOLES & Java      & 37	\\ 
-		FinEALE                 & Matlab    & 810 	\\
-		\hline
-    \end{tabularx} 
-    \normalfont
-	\label{table:Emissivity}
-\end{table}
-
 
 %Scientific computing: visual debugging, interactive programming, high performance
 %First rough sketch:
-The general research field is making computer science more accessible and convenient to use. This is especially relevant for users, that don't have a broad computer science background, or programmers implementing complicated state of the art algorithms.
+The very general research field is making computer science more accessible and understandable. 
+This is especially relevant for users, who don't have a broad background computer science, or programmers implementing complicated state of the art algorithms.
 These users can be found especially in scientific computing, which makes this field the focus of this bachelor thesis. 
 More precisely, it focuses on research which involves writing short scripts, while visualizing the results. 
 An example would be a material researcher, who is investigating different shapes and materials and their reaction to pressure.
-The researcher would need to read in the 3D object he wants to analyze, have an easy way to tweak the material parameters and it would be preferable to get instant feedback on how the pressure waves propagate through the object. 
+The researcher would need to read in the 3D object he wants to analyze, have an easy way to tweak the material parameters and it would be preferable to get instant feedback on how the pressure waves propagate through the object.
+
 Several demands by the researcher makes it challenging, to offer software for this area.
 
 \begin{itemize} 
+
+    \item  \textbf{Visualizations}
+
+    Visualizations are a key element to understanding and access to complicated algorithms.
+    In some domains, problems become only managable by visualizing them. 
+    One example is a function describing a 3D volume, 
+    like f(x,y,z)=sin(x/15)+sin(y/15)+sin(z/15). 
+    This is a simple function, which is already not that easy to interpret. Especially for more complex functions, visualizing might be the only way to get a deeper understanding of the function \ref{fig:volume}.
+    Secondly, research is getting published, together with visualizations explaining the results. As they represent the research to the public, they should be as understandable as possible and preferably look good.
+    Offering a creative, interactive work flow can make this challenge considerably easier.
+
+
     \item \textbf{Money and Time is constrained}
     
     This means the research has to conclude quickly and most likely, it is not an option to employ a person or even a company to solve sub problems.
     From this we can deduce three preferences: If code needs to be written, it should be in an easy to understand high-level language. Computation times and feedback should be without delay to speed up development. The used libraries should be accessible to the researcher, because when something doesn't fit his demands, he most likely needs to resolve it himself due to the money constraint.
-    \item  \textbf{Visualizations}
 
-    Visualizations are very important for two reasons:
-    In some domains, problems become only managable by visualizing them. One example is a function describing a 3D volume, like f(x,y,z)=sin(x/15)+sin(y/15)+sin(z/15). This is a relatively simple function, which is relatively easy to interpret. But still, beats simply visualizing it \ref{fig:volume}.
-    Secondly, research is getting published, together with visualizations explaining the results. As they represent the research to the public, they should be as understandable as possible and preferably look good.
-    Offering a creative, interactive work flow can make this challenge considerably easier.
     \item \textbf{Speed}
     
     Speed can be both seen as a usability or a time/money constraint. While the money/time constraint is obvious, even slightly slower software can reduces usability by a large degree.
-    Speed is also important for immidiate feedback. While scientists are used to slow computing times of their complicated algorithms, it still holds that it is far more satisfying and productive to immidiately see the results of your work. If the simulation of pressure takes 30s compared to 1s, this is not only frustrating, but has an immidiate influence on how many material combinations the researcher can try out.
+    This is, because it hinders immidiate feedback. 
+    While scientists are used to slow computing times of their complicated algorithms, it still holds that it is far more satisfying and productive to immidiately see the results of your work. If the simulation of pressure takes 30 minutes compared to 1 second, this is not only frustrating, but has an immidiate influence on how many material combinations the researcher can try out in one day.
 \end{itemize} 
 
 
@@ -73,24 +64,69 @@ Several demands by the researcher makes it challenging, to offer software for th
 * Modularity
 * Offer a broad variety of visualization
 
+\subsubsection{Visualizations and Interaction}
+
+Having visualizations are the main purpose of the written software in this thesis.
+
+
+\begin{table}[htb]
+\centering
+\caption{FE Implementation comparison}
+    \sffamily 
+    \begin{tabularx}{1.0\textwidth}{l | c | p{5cm}}
+        \hline
+        implementations         & Language  & Speed in Seconds \\
+        \hline
+        JFinEALE                & Julia     & 9.6   \\
+        Comsol 4.4 with PARDISO & Java      & 16    \\
+        Comsol 4.4 with MUMPS   & Java      & 22    \\ 
+        Comsol 4.4 with SPOOLES & Java      & 37    \\ 
+        FinEALE                 & Matlab    & 810   \\
+        \hline
+    \end{tabularx} 
+    \normalfont
+    \label{table:FEComparison}
+\end{table}
+
+% Measurements
+
+
 \subsubsection{Extensibility}
 As previously deduced, extensibility is an important factor, which can decide, if a library is fit for scientific computing or not. 
 It's not only that, but also a great factor determining growth of a software, as the more extensible the software is, the higher the probability that someone else contributes to it.
 In order to write extensible software, we first have to clarify what extensibility is.
-Extensible needs that the code is accessible. There are different levels of accessibility. The first level is closed source, where people purposely make the code inaccessible. While this is obvious, this is just a special case of not understanding the underlying language. Just shipping binaries without open sourcing the code, means that the source is only accessible in a language which is extremely hard to understand, namely the machine code of the binary. So other examples for inaccessibility are writing in a language that is difficult to understand. Other barriers are obfuscated language constructs, missing documentations and cryptic low level code.
-Further more the design of the library in the whole is an important factor for extensibility. It's not only important, that all parts are understandable, but also, that they can be reused and rebuild. Important factors here are modularity and short concise code.
-Modularity is important to see 
+Extensible foremost needs, that the code is accessible. There are different levels of accessibility. The lowest level is closed source, where people purposely make the code inaccessible. While this is obvious, this is just a special case of not understanding the underlying language. Just shipping binaries without open sourcing the code, means that the source is only accessible in a language which is extremely hard to understand, namely the machine code of the binary. So other examples for inaccessibility are writing in a language that is difficult to understand. Other barriers are obfuscated language constructs, missing documentations and cryptic low level code.
+Further more the design of the library in the whole is an important factor for extensibility. It's not only important, that all parts are understandable, but also, that every independant unit in the code solves only one problem. 
+If this is guaranteed, reusability in different contexts becomes much more simple. This allows for a broader user base, which in turn results in higher contributions and bug reports. 
+Short concise code is also important, as it will take considerably less time to rewrite something, as the amount of code that has to be moved is shorter and less time is spend on understanding the code.
 
-Besides hiding the code, there are several other possibilities to make access to code hard. One example would be, that the code is written in a language which is not understood by the programmer. 
-Most obviously, software isn't accessible when it's closed source, so being open source is the most crucial condition.
-But there are other more subtle conditions, which greatly reduce barriers to a software.
+So the code written for this thesis should be open source, modular, written in a high level language and concise.
+
+
+\vspace{1em}
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{graphics/julia_bench.pdf}
+    \captionof{figure}[Volume Visualization]{Languages speed relative to C (averaged benchmark results), plotted against the length of the needed code}
+    \label{fig:juliabench}
+\end{minipage}
 
 \subsubsection{Speed}
 
-\subsubsection{Visualizations and Interaction}
+How to achieve state of the art speed with a high level language is an on going research and basically the holy grail of language design.
+Luckily, there is Julia building uppon \ac{LLVM}, promosing a concise, high-level programming style, while approaching C-performance. This can be seen very well in figure \ref{fig:juliabench}.
+\ac{LLVM} is a nice compiler infrastructure, which has frontents for different languages and different back-ends for different chip architectures. 
+A language designer has the task, to emit \ac{LLVM} \ac{IR}, which than gets just in time compiled and optimized to the architecture by \ac{LLVM}.
+This concept is very nice, as you can accumulate state of the art optimizations in one place, making them accessible to many languages, while being able to compile to different platforms. There are x86, ARM, OpenCL and CUDA backends. While Julia doesn't support them all, it will hopefully be possible in the future. 
+As \ac{LLVM} is also used by Clang, the C/C++ frontend for \ac{LLVM} rivaling gcc and Apple with Swift, \ac{LLVM} is a very solid basis for a language.
+See table \ref{table:FEComparison}, for a little benchmark.
 
-
-
+To get high performant 3D graphics rendering, there are on the first sight a lot of options.
+If you start to take the previously demands into account, the options shrink down.
+It should be implemented in one high level language, which can be used for scientific computing and has state of the art speed. At this point, there are close to zero libraries left. As you can see in figure \ref{fig:juliabench}, Matlab, Python and R disqualify, as they are too slow. Javascript, Java, Go and Lua are missing a scientific background and the others are too low level for the described goals.
+This leaves only Julia, but in Julia there weren't any 3D libraries available, which means that one has to start from scratch.
+There are only a couple of GPU accelerated low-level libraries available, namely OpenGL, DirectX and Mantel. This leaves one library, if you additionally introduce the constraint of cross-platfrom compability.
+So for the purpose of high speed visualizations, OpenGL was wrapped with a high-level interface written in Julia. This leaves us with one binary dependency not written in Julia, namely the video driver, which implements OpenGL.
 
 \subsection{Outlook}
 %Structure of BA and a few worts on the results 
