@@ -12,28 +12,31 @@ Finally this chapter will conclude with a solution to the problem, how to measur
 
 %Scientific computing: visual debugging, interactive programming, high performance
 %First rough sketch:
-The very general research field is making computer science more accessible and understandable. 
+It's not immidiately visible, but the very general research field is making computer science more accessible and understandable. 
+Visualization and interaction do make opaque processes more accessible, by giving the user the ability to look at data and algorithms from different perspectives. 
+One example can be this function f(x,y,z)=sin(x/15)+sin(y/15)+sin(z/15), which describes a 3D volume. 
+This is a simple function, which is already not that easy to interpret. In figure \ref{fig:volume}, you can see different visualizations of f. Especially for more complex functions, visualizing might be the only way to get a deeper understanding of the values that an algorithm produces.
+It is also very helpful to debug the actual math and not just the program. For example by visualizing the rotation from a rotation matrix, immediately makes it visible if the wanted effect was achieved.
 This is especially relevant for users, who don't have a broad background in computer science, or programmers implementing complicated state of the art algorithms.
 These users can be found especially in scientific computing, which is why this thesis focuses on scientific computing. 
-More precisely, it focuses on research which involves writing short scripts, while visualizing the results. 
-An example would be a material researcher, who is investigating different shapes and materials and their reaction to pressure.
+
+More precisely, it focuses on research which involves writing short scripts, while visualizing the results is helpful. 
+An example would be a material researcher, who is investigating different 3D shapes and materials and their reaction to pressure.
 The researcher would need to read in the 3D object he wants to analyze, have an easy way to tweak the material parameters and it would be preferable to get instant feedback on how the pressure waves propagate through the object.
 
 Several demands by the researcher makes it challenging to offer software for this area.
-Lets look at one of the fields at a time:
+Lets look at one of the challenges at a time:
 
 \begin{itemize} 
 
     \item  \textbf{Visualizations}
 
     Visualizations are a key element to the understanding and access of complicated algorithms.
-    In some domains, problems become only managable by visualizing them. 
-    One example can be this function f(x,y,z)=sin(x/15)+sin(y/15)+sin(z/15), which describes a 3D volume. 
-    This is a simple function, which is already not that easy to interpret. Especially for more complex functions, visualizing might be the only way to get a deeper understanding of the values that the function produces. In figure \ref{fig:volume}, you can see different visualizations of f.
-
+    In some domains, problems become only manageable by visualizing them.
+    The problem with that is, that a visualization which successfully captures the gist of the data is pretty hard.
+    To leverage this problem, the visualization API should be intuitive to use and very flexible, to allow the researcher to build highly customized visualizations for his problem.
     Also, research is getting published, together with visualizations explaining the results. As they represent the research to the public, they should be as understandable as possible and preferably look good.
     Offering a creative, interactive work flow can make this challenge considerably easier.
-
 
     \item \textbf{Money and Time is constrained}
     
