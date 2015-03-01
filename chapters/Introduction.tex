@@ -12,7 +12,7 @@ Finally this chapter will conclude with a solution to the problem, how to measur
 
 %Scientific computing: visual debugging, interactive programming, high performance
 %First rough sketch:
-It's not immidiately visible, but the very general research field is making computer science more accessible and understandable. 
+It's not immediately visible, but the very general research field is making computer science more accessible and understandable. 
 Visualization and interaction do make opaque processes more accessible, by giving the user the ability to look at data and algorithms from different perspectives. 
 One example can be this function f(x,y,z)=sin(x/15)+sin(y/15)+sin(z/15), which describes a 3D volume. 
 This is a simple function, which is already not that easy to interpret. In figure \ref{fig:volume}, you can see different visualizations of f. Especially for more complex functions, visualizing might be the only way to get a deeper understanding of the values that an algorithm produces.
@@ -44,14 +44,13 @@ Lets look at one of the challenges at a time:
     From this we can deduce three preferences: 
     The used libraries should be accessible to the researcher, because when something doesn't fit his demands, he most likely needs to resolve it himself due to constrained resources.
     If code needs to be written to solve this, it should be in an easy to understand high-level language, otherwise the sub problem can considerably slow down the research.
-    Finally, computation times and feedback should be without delay to speed up development. 
 
     \item \textbf{Speed}
     
     Speed can be both seen as a usability or a time/money constraint. 
-    Time and money constraints become clear, if the computation times are very big. If one library is 60 times slower than the other, it might not matter if the task only takes 10^-5s. But it does matter if the fast computation takes a day, leaving the slow library with a computation time of 60 days.
-    This would mean for researchers, that they either have to buy more powerfull computers, or deal with the lost time.
-    But also for small numbers in the second range, a difference of 20 times slower can have a big impact on the researchers productivity. If the computation is repetitive, like trying out all the different materials, this has an immidiate influence on how many material combinations the researcher can try out in one day.
+    Time and money constraints become clear, if the computation times are very big. If one library is 60 times slower than the other, it might not matter if the task only takes \SI{d-5}{\second}. But it does matter if the fast computation takes a day, leaving the slow library with a computation time of 60 days.
+    This would mean for researchers, that they either have to buy more powerful computers, or deal with the lost time.
+    But also for small numbers in the second range, a difference of 20 times slower can have a big impact on the researchers productivity. If the computation is repetitive, like trying out all the different materials, this has an immediate influence on how many material combinations the researcher can try out in one day.
     More subtle is the influence of speed on a simple task like changing the color. If the color slider stutters, it is completely possible to change the color, but it will be a frustrating user experience. 
     This is why the whole system should be designed to offer top notch speed, to not run into these kind of issues.
 
@@ -59,19 +58,16 @@ Lets look at one of the challenges at a time:
 
 
 \subsection{Problem Solutions and Measurements of Success}
-* Write it in one, open source, high level, high performance language (Julia)
-* Write it in OpenGL
-* Open Source
-* Easy ways of creating GUIs
-* Modularity
-* Offer a broad variety of visualization
+%* Write it in one, open source, high level, high performance language (Julia)
+%* Write it in OpenGL
+%* Open Source
+%* Easy ways of creating GUIs
+%* Modularity
+%* Offer a broad variety of visualization
 
 \subsubsection{Visualizations and Interaction}
 
 Having visualizations are the main purpose of the written software in this thesis.
-
-
-
 % Measurements
 
 
@@ -79,9 +75,9 @@ Having visualizations are the main purpose of the written software in this thesi
 As previously deduced, extensibility is an important factor, which can decide, if a library is fit for scientific computing or not. 
 It's not only that, but also a great factor determining growth of a software, as the more extensible the software is, the higher the probability that someone else contributes to it.
 In order to write extensible software, we first have to clarify what extensibility is.
-Extensible foremost needs, that the code is accessible. There are different levels of accessibility. The lowest level is closed source, where people purposely make the code inaccessible. While this is obvious, this is just a special case of not understanding the underlying language. Just shipping binaries without open sourcing the code, means that the source is only accessible in a language which is extremely hard to understand, namely the machine code of the binary. So other examples for inaccessibility are writing in a language that is difficult to understand. Other barriers are obfuscated language constructs, missing documentations and cryptic low level code.
-Further more the design of the library in the whole is an important factor for extensibility. It's not only important, that all parts are understandable, but also, that every independant unit in the code solves only one problem. 
-If this is guaranteed, reusability in different contexts becomes much more simple. This allows for a broader user base, which in turn results in higher contributions and bug reports. 
+Extensible foremost needs, that the code is accessible. There are different levels of accessibility. The lowest level is closed source, where people purposely make the code inaccessible. While this is obvious, this is just a special case of not understanding the underlying language. Just shipping binaries without open sourcing the code, means that the source is only accessible in a language which is extremely hard to understand, namely the machine code of the binary. So other examples for inaccessibility are writing in a language that is difficult to understand. Other barriers are obfuscated language constructs, missing documentations and cryptic highly optimized code.
+Further more the design of the library in the whole is an important factor for extensibility. It's not only important, that all parts are understandable, but also, that every independent unit in the code solves only one problem. 
+If this is guaranteed, re-usability in different contexts becomes much more simple. This allows for a broader user base, which in turn results in higher contributions and bug reports. 
 Short concise code is also important, as it will take considerably less time to rewrite something, as the amount of code that has to be moved is shorter and less time is spend on understanding the code.
 
 So the code written for this thesis should be open source, modular, written in a high level language and concise.
@@ -98,19 +94,20 @@ So the code written for this thesis should be open source, modular, written in a
 \subsubsection{Speed}
 
 How to achieve state of the art speed with a high level language is an on going research and basically the holy grail of language design.
-Luckily, there is Julia building uppon \ac{LLVM}, promosing a concise, high-level programming style, while approaching C-performance. 
+Luckily, there is Julia building upon \ac{LLVM}, promising a concise, high-level programming style, while approaching C-performance. 
 This is well illustrated in figure \ref{fig:juliabench}.
-\ac{LLVM} is a nice compiler infrastructure, which has frontents for different languages and different back-ends for different chip architectures. 
+\ac{LLVM} is a nice compiler infrastructure, which has frontents for different languages and back-ends for different chip architectures. 
 A language designer has the task, to emit \ac{LLVM} \ac{IR}, which than gets just in time compiled and optimized to the architecture by \ac{LLVM}.
 This concept is very nice, as you can accumulate state of the art optimizations in one place, making them accessible to many languages, while being able to compile to different platforms. There are x86, ARM, OpenCL and CUDA backends. While Julia doesn't support them all, it will hopefully be possible in the future. 
-As \ac{LLVM} is also used by Clang, the C/C++ frontend for \ac{LLVM} rivaling gcc and Apple with Swift, \ac{LLVM} is a very solid basis for a language.
+\ac{LLVM} is also used by Clang, the C/C++ frontend for \ac{LLVM} rivaling gcc and for Apple's programming language Swift. 
+This makes \ac{LLVM} is a very solid basis for a programming language, as these are highly successful projects giving  \ac{LLVM} a lot of drive(source!?).
 See table \ref{table:FEComparison}, for a little benchmark.
 
 To get high performant 3D graphics rendering, there are on the first sight a lot of options.
 If you start to take the previously demands into account, the options shrink down.
-It should be implemented in one high level language, which can be used for scientific computing and has state of the art speed. At this point, there are close to zero libraries left. As you can see in figure \ref{fig:juliabench}, Matlab, Python and R disqualify, as they are too slow. Javascript, Java, Go and Lua are missing a scientific background and the others are too low level for the described goals.
+It should be implemented in one high level language, which can be used for scientific computing and has state of the art speed. At this point, there are close to zero libraries left. As you can see in figure \ref{fig:juliabench}, Matlab, Python and R disqualify, as they are too slow. JavaScript, Java, Go and Lua are missing a scientific background and the others are too low level for the described goals.
 This leaves only Julia, but in Julia there weren't any 3D libraries available, which means that one has to start from scratch.
-There are only a couple of GPU accelerated low-level libraries available, namely OpenGL, DirectX and Mantel. This leaves one library, if you additionally introduce the constraint of cross-platfrom compability.
+There are only a couple of GPU accelerated low-level libraries available, namely OpenGL, DirectX and Mantel, which are relatively comparable. This leaves one library, if you additionally introduce the constraint of cross-platform compatibility.
 So for the purpose of high speed visualizations, OpenGL was wrapped with a high-level interface written in Julia. This leaves us with one binary dependency not written in Julia, namely the video driver, which implements OpenGL.
 
 \subsection{Outlook}
