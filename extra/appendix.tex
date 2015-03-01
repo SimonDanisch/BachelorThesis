@@ -19,4 +19,27 @@ A nice Appendix.
     \label{app:screenshot}
 \end{minipage}
 
+
+\section{Benchmark}
+
+\begin{table}[htb]
+\centering
+\caption{FE Implementation comparison}
+    \sffamily 
+    \begin{tabularx}{1.0\textwidth}{l | c | p{5cm}}
+        \hline
+        implementations         & Language  & Speed in Seconds \\
+        \hline
+        JFinEALE                & Julia     & 9.6   \\
+        Comsol 4.4 with PARDISO & Java      & 16    \\
+        Comsol 4.4 with MUMPS   & Java      & 22    \\ 
+        Comsol 4.4 with SPOOLES & Java      & 37    \\ 
+        FinEALE                 & Matlab    & 810   \\
+        \hline
+    \end{tabularx} 
+    \normalfont
+    \label{table:FEComparison}
+\end{table}
+
+
 \end{appendix}

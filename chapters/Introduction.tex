@@ -1,6 +1,6 @@
 \section{Introduction}
 % Just a first sketch:
-This Bachelor Thesis is about writing a fast and interactive visualization environment for scientific computing. 
+This Bachelor Thesis is about writing a fast and interactive visualization environment suitable for scientific computing. 
 As GUI elements and editable text fields are supplied, one can also write and execute scripts, and immediately visualize all bound variables of the script and edit them via simple GUI elements like sliders. The focus is on creating a modular library, that is written in a fast high-level language, making the library easy to extend.
 The introduction is structured in the following way.
 First, an introduction to the general field of research and its challenges is given. 
@@ -9,50 +9,49 @@ Finally this chapter will conclude with a solution to the problem, how to measur
  
 \subsection{Field of Research and Problem}
 
-\vspace{1em}
-\begin{minipage}{\linewidth}
-    \centering
-    \includegraphics[width=0.7\linewidth]{graphics/surfaces.png}
-    \captionof{figure}[Volume Visualization]{different visualizations of f(x,y,z)=sin(x/15)+sin(y/15)+sin(z/15), visualized with Romeo. From left to right: Isosurface, isovalue=0.76, Isosurface, isovalue=0.37, maximum value projection}
-    \label{fig:volume}
-\end{minipage}
-
-
 
 %Scientific computing: visual debugging, interactive programming, high performance
 %First rough sketch:
 The very general research field is making computer science more accessible and understandable. 
-This is especially relevant for users, who don't have a broad background computer science, or programmers implementing complicated state of the art algorithms.
-These users can be found especially in scientific computing, which makes this field the focus of this bachelor thesis. 
+This is especially relevant for users, who don't have a broad background in computer science, or programmers implementing complicated state of the art algorithms.
+These users can be found especially in scientific computing, which is why this thesis focuses on scientific computing. 
 More precisely, it focuses on research which involves writing short scripts, while visualizing the results. 
 An example would be a material researcher, who is investigating different shapes and materials and their reaction to pressure.
 The researcher would need to read in the 3D object he wants to analyze, have an easy way to tweak the material parameters and it would be preferable to get instant feedback on how the pressure waves propagate through the object.
 
-Several demands by the researcher makes it challenging, to offer software for this area.
+Several demands by the researcher makes it challenging to offer software for this area.
+Lets look at one of the fields at a time:
 
 \begin{itemize} 
 
     \item  \textbf{Visualizations}
 
-    Visualizations are a key element to understanding and access to complicated algorithms.
+    Visualizations are a key element to the understanding and access of complicated algorithms.
     In some domains, problems become only managable by visualizing them. 
-    One example is a function describing a 3D volume, 
-    like f(x,y,z)=sin(x/15)+sin(y/15)+sin(z/15). 
-    This is a simple function, which is already not that easy to interpret. Especially for more complex functions, visualizing might be the only way to get a deeper understanding of the function \ref{fig:volume}.
-    Secondly, research is getting published, together with visualizations explaining the results. As they represent the research to the public, they should be as understandable as possible and preferably look good.
+    One example can be this function f(x,y,z)=sin(x/15)+sin(y/15)+sin(z/15), which describes a 3D volume. 
+    This is a simple function, which is already not that easy to interpret. Especially for more complex functions, visualizing might be the only way to get a deeper understanding of the values that the function produces. In figure \ref{fig:volume}, you can see different visualizations of f.
+
+    Also, research is getting published, together with visualizations explaining the results. As they represent the research to the public, they should be as understandable as possible and preferably look good.
     Offering a creative, interactive work flow can make this challenge considerably easier.
 
 
     \item \textbf{Money and Time is constrained}
     
     This means the research has to conclude quickly and most likely, it is not an option to employ a person or even a company to solve sub problems.
-    From this we can deduce three preferences: If code needs to be written, it should be in an easy to understand high-level language. Computation times and feedback should be without delay to speed up development. The used libraries should be accessible to the researcher, because when something doesn't fit his demands, he most likely needs to resolve it himself due to the money constraint.
+    From this we can deduce three preferences: 
+    The used libraries should be accessible to the researcher, because when something doesn't fit his demands, he most likely needs to resolve it himself due to constrained resources.
+    If code needs to be written to solve this, it should be in an easy to understand high-level language, otherwise the sub problem can considerably slow down the research.
+    Finally, computation times and feedback should be without delay to speed up development. 
 
     \item \textbf{Speed}
     
-    Speed can be both seen as a usability or a time/money constraint. While the money/time constraint is obvious, even slightly slower software can reduces usability by a large degree.
-    This is, because it hinders immidiate feedback. 
-    While scientists are used to slow computing times of their complicated algorithms, it still holds that it is far more satisfying and productive to immidiately see the results of your work. If the simulation of pressure takes 30 minutes compared to 1 second, this is not only frustrating, but has an immidiate influence on how many material combinations the researcher can try out in one day.
+    Speed can be both seen as a usability or a time/money constraint. 
+    Time and money constraints become clear, if the computation times are very big. If one library is 60 times slower than the other, it might not matter if the task only takes 10^-5s. But it does matter if the fast computation takes a day, leaving the slow library with a computation time of 60 days.
+    This would mean for researchers, that they either have to buy more powerfull computers, or deal with the lost time.
+    But also for small numbers in the second range, a difference of 20 times slower can have a big impact on the researchers productivity. If the computation is repetitive, like trying out all the different materials, this has an immidiate influence on how many material combinations the researcher can try out in one day.
+    More subtle is the influence of speed on a simple task like changing the color. If the color slider stutters, it is completely possible to change the color, but it will be a frustrating user experience. 
+    This is why the whole system should be designed to offer top notch speed, to not run into these kind of issues.
+
 \end{itemize} 
 
 
@@ -69,24 +68,6 @@ Several demands by the researcher makes it challenging, to offer software for th
 Having visualizations are the main purpose of the written software in this thesis.
 
 
-\begin{table}[htb]
-\centering
-\caption{FE Implementation comparison}
-    \sffamily 
-    \begin{tabularx}{1.0\textwidth}{l | c | p{5cm}}
-        \hline
-        implementations         & Language  & Speed in Seconds \\
-        \hline
-        JFinEALE                & Julia     & 9.6   \\
-        Comsol 4.4 with PARDISO & Java      & 16    \\
-        Comsol 4.4 with MUMPS   & Java      & 22    \\ 
-        Comsol 4.4 with SPOOLES & Java      & 37    \\ 
-        FinEALE                 & Matlab    & 810   \\
-        \hline
-    \end{tabularx} 
-    \normalfont
-    \label{table:FEComparison}
-\end{table}
 
 % Measurements
 
@@ -114,7 +95,8 @@ So the code written for this thesis should be open source, modular, written in a
 \subsubsection{Speed}
 
 How to achieve state of the art speed with a high level language is an on going research and basically the holy grail of language design.
-Luckily, there is Julia building uppon \ac{LLVM}, promosing a concise, high-level programming style, while approaching C-performance. This can be seen very well in figure \ref{fig:juliabench}.
+Luckily, there is Julia building uppon \ac{LLVM}, promosing a concise, high-level programming style, while approaching C-performance. 
+This is well illustrated in figure \ref{fig:juliabench}.
 \ac{LLVM} is a nice compiler infrastructure, which has frontents for different languages and different back-ends for different chip architectures. 
 A language designer has the task, to emit \ac{LLVM} \ac{IR}, which than gets just in time compiled and optimized to the architecture by \ac{LLVM}.
 This concept is very nice, as you can accumulate state of the art optimizations in one place, making them accessible to many languages, while being able to compile to different platforms. There are x86, ARM, OpenCL and CUDA backends. While Julia doesn't support them all, it will hopefully be possible in the future. 
