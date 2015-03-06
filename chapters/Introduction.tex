@@ -8,13 +8,18 @@ From these challenges, the problems relevant to this thesis will be extracted.
 Finally this chapter will conclude with a solution to the problem, how to measure the success and give an outlook on the structure of the entire Bachelor Thesis.
  
 \subsection{Field of Research and Problem}
-
-
+\vspace{1em}
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=0.7\linewidth]{graphics/surfaces.png}
+    \captionof{figure}[Volume Visualization]{different visualizations of $f(x,y,z)=\sin(\frac{x}{15})+\sin(\frac{y}{15})+\sin(\frac{z}{15})$, visualized with Romeo. From left to right: Isosurface, isovalue=0.76, Isosurface, isovalue=0.37, maximum value projection}
+    \label{fig:volume}
+\end{minipage}
 %Scientific computing: visual debugging, interactive programming, high performance
 %First rough sketch:
-It's not immediately visible, but the very general research field is making computer science more accessible and understandable. 
+It's not immediately visible, but the general research field is making computer science more accessible and understandable. 
 Visualization and interaction do make opaque processes more accessible, by giving the user the ability to look at data and algorithms from different perspectives. 
-One example can be this function f(x,y,z)=sin(x/15)+sin(y/15)+sin(z/15), which describes a 3D volume. 
+One example can be this function $f(x,y,z)=\sin(\frac{x}{15})+\sin(\frac{y}{15})+\sin(\frac{z}{15})$, which describes a 3D volume. 
 This is a simple function, which is already not that easy to interpret. In figure \ref{fig:volume}, you can see different visualizations of f. Especially for more complex functions, visualizing might be the only way to get a deeper understanding of the values that an algorithm produces.
 It is also very helpful to debug the actual math and not just the program. For example by visualizing the rotation from a rotation matrix, immediately makes it visible if the wanted effect was achieved.
 This is especially relevant for users, who don't have a broad background in computer science, or programmers implementing complicated state of the art algorithms.
