@@ -7,12 +7,14 @@
     \captionof{figure}[Architecture]{Main modules used in Romeo and their relation (simplified)}
     \label{fig:architecture} 
 \end{minipage}
+
+
 This chapter is about the architecture of Romeo.
 Romeo itself just defines the high-level functionality of the editor.
 This includes window layout and connecting all the different event sources to create the wanted behavior.
 To do this, Romeo relies on a multitude of packages, which step for step abstract away the underlying low-level code that is used to do the window creation and rendering.
-GLVisualize is the main package, offering the rendering functionality and the editor widgets, like text fields and sliders.
-For rendering, GLVisualize relies on GLAbstraction, which defines a nice high-level interface to OpenGL.
+GLVisualize is the main package offering the rendering functionality and the editor widgets like text fields and sliders.
+For rendering GLVisualize relies on GLAbstraction, which defines a high-level interface to OpenGL.
 OpenGL function loading is done by ModernGL, which keeps all the function and Enums definitions from OpenGL with version higher than 3.0.
 The event management is handled by Reactive, which is a reactive event system written in Julia.
 

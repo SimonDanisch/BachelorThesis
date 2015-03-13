@@ -1,0 +1,49 @@
+
+One example can be this function $f(x,y,z)=\sin(\frac{x}{15})+\sin(\frac{y}{15})+\sin(\frac{z}{15})$, which describes a 3D volume mathematically. 
+This is a simple function, which is already not that easy to interpret. In figure \ref{fig:volume}, you can see different visualizations of f. Especially for more complex functions, visualizing might be the only way to get a deeper understanding of the values that an algorithm produces.
+Visualizations are also helpful to debug the math itself and not just the program. For example by visualizing the rotation of a point by a rotation matrix, will make this piece of code immediately understandable, while the textual representation of the matrix is not much help:
+\begin{minipage}{\linewidth}
+    \centering
+\begin{lstlisting}
+rotation = rotationmatrix(30)
+point    = rotation * point
+\end{lstlisting}
+\end{minipage}
+This is especially relevant for users, who don't have a broad background in computer science, or programmers implementing complicated state of the art algorithms.
+These users can be found especially in scientific computing, which is why this thesis focuses on scientific computing. 
+
+
+
+
+
+Several demands by the researcher makes it challenging to offer accessible software for this area.
+Lets look at one of the challenges at a time:
+
+\begin{itemize} 
+
+    \item  \textbf{Creating Visualizations}
+
+    Visualizations are a key element to the understanding and access of complicated algorithms.
+    In some domains, problems become only manageable by visualizing them.
+    The problem with that is, that creating a visualization which successfully captures the gist of the data is pretty hard.
+    To leverage this problem, the visualization API should be intuitive to use and very flexible, to allow the researcher to build highly customized visualizations for his problem.
+    Also, research is getting published, together with visualizations explaining the results. As they represent the research to the public, they should be as understandable as possible and preferably look good.
+    Offering a creative, interactive work flow can make this challenge considerably easier.
+
+    \item \textbf{Money and Time is constrained}
+    
+    This means the research has to conclude quickly and most likely, it is not an option to employ a person or even a company to solve sub problems.
+    From this we can deduce three preferences: 
+    The used libraries should be accessible to the researcher, because when something doesn't fit his demands, he most likely needs to resolve it himself due to constrained resources.
+    If code needs to be written to solve this, it should be in an easy to understand high-level language, otherwise the sub problem can considerably slow down the research.
+
+    \item \textbf{Speed}
+    
+    Speed can be both seen as a usability or a time/money constraint. 
+    Time and money constraints become clear, if the computation times are very big. If one library is 60 times slower than the other, it might not matter if the task only takes \SI{d-5}{\second}. But it does matter if the fast computation takes a day, leaving the slow library with a computation time of 60 days.
+    This would mean for researchers, that they either have to buy more powerful computers, or deal with the lost time.
+    But also for small numbers in the second range, a difference of 20 times slower can have a big impact on the researchers productivity. If the computation is repetitive, like trying out all the different materials, this has an immediate influence on how many material combinations the researcher can try out in one day.
+    More subtle is the influence of speed on a simple task like changing the color. If the color slider stutters, it is completely possible to change the color, but it will be a frustrating user experience. 
+    This is why the whole system should be designed to offer top notch speed, to not run into these kind of issues.
+
+\end{itemize} 
