@@ -27,9 +27,9 @@ OpenGL is implemented by the video card vendor and is shipped via the video driv
 The challenge is, to load the function pointer system and vendor independently. Also one further complication is, that depending on the platform, function pointer are only available after an OpenGL context was created and may only be valid for this context. \cite{wgl}
 This problem is solved, by initializing a function pointer cache with null and as soon as the function is called the first time the real pointer gets loaded. This is suboptimal, as the pointer cannot be inlined and has to be checked for null.
 In the newest version of Julia, this can be implemented even more efficiently with staged functions. Staged functions can be thought of as a runtime macro.
-At the first call of the function, code can be generated, which then will get compiled in time and replaces the function definition. 
+At the first call of the function code can be generated, which then will get compiled in time and replaces the function definition. 
 This makes the an OpenGL function call nearly twice as fast.
-Like this, even C can be outperformed in terms of speed, as C doesn't have just in time compilation capabilities, so the function pointers can not be inlined like this.
+Like this, even C can be outperformed in terms of speed, as C doesn't have just in time compilation capabilities, so the function pointers can not be inlined like this. [benchmark pending]
 
 
 \subsubsection{GLAbstraction}

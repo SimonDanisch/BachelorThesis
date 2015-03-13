@@ -3,7 +3,7 @@
 This Bachelor Thesis is about writing a fast and interactive 3D visualization environment for scientific computing. 
 The focus is on usability, applied to all the different interfaces, ranging from abstract API interfaces to graphical user interfaces. 
 The ultimate goal is to make scientific computing more accessible to the user.
-As GUI elements and editable text fields are supplied, one can also write and execute scripts, and immediately visualize all bound variables of the script and edit them via simple GUI elements like sliders. 
+As \ac{GUI} elements and editable text fields are supplied, one can also write and execute scripts, and immediately visualize all bound variables of the script and edit them via simple \ac{GUI} elements like sliders. 
 With this it is possible to implement rudimentary interactive programming or visual debugging, further helping the user to understand his algorithms.
 
 The introduction is structured in the following way.
@@ -32,17 +32,17 @@ All these advances have made computers usable even for people who don't have an 
 In this bachelor thesis the field is scientific computing, which still has quite a lot of barriers for novel users.
 Scientific computing is usually about implementing mathematical equations, complex algorithms and manipulating and analyzing data.
 As it is difficult to offer easy to use graphical interfaces for this kind of work, most research is done in some specialized, high-level scientific computing language. As most high-level languages are relatively slow, but for a lot of algorithms state of the art performance is required, this has led to a dual system. Prototyping in a high-level language, and then redoing the work in a fast low-level language.
-That this is not the perfect work flow is immidiately visible, and a lot of research has been put into making high-level languages faster.
+That this is not the perfect work flow is immediately visible, and a lot of research has been put into making high-level languages faster.
 These efforts slowly pay off, and there is a whole new range of languages, that claim to be easy to work with while being as fast as it can get.
 This is a relatively recent trend and hasn't fully arrived in scientific computing yet, as most languages still have their core implemented in another fast language, which makes it hard to extend them for non professional users.
 This is especially true for high performance visualization libraries, which mostly always use C++ at their performance critical core.
 To leverage the extensibility of these libraries, this bachelor thesis implements a visualization library in a fast high level language.
-Visualizations where choosen as they're a crucial building blocks for many fields in scientific computing.
+Visualizations where chosen as they're a crucial building blocks for many fields in scientific computing.
 Just consider the following function $f(x,y,z)=\sin(\frac{x}{15})+\sin(\frac{y}{15})+\sin(\frac{z}{15})$, which describes a 3D volume mathematically. 
 This is a simple function, which is already not that easy to interpret. In figure \ref{fig:volume}, you can see different visualizations of f. 
 Especially for more complex functions, visualizing might be the only way to get a deeper understanding of the values that a formula or algorithm produces.
 This deeper understanding is crucial for identifying problems in the underlying math, or extending the algorithm.
-Addionally, widgets and simple GUIs are indispensible, giving scientist an easy way to interact with their data and algorithms.
+Additionally, widgets and simple \ac{GUI}s are indispensable, giving scientist an easy way to interact with their data and algorithms.
 This helps to further understand the dynamics of the data and quickly spot mistakes.
 
 In summary, the software in this thesis (Romeo) focuses on research which involves writing short scripts, while playing around with some parameters and visualizing the results. 
@@ -69,12 +69,12 @@ Speed is mainly a usability factor. It's a factor, that can make a software unus
 Historically, these two demands can't be both satisfied.
 How to achieve state of the art speed with a high level language is an on going research and basically the holy grail of language design.
 Luckily, there is a new programming language namely Julia building upon the compiler infrastructure \ac{LLVM}, promising a concise, high-level programming style, while approaching C-performance.
-This is well illustrated in figure \ref{fig:juliabench}. Code length is an ambigous measure for conciseness, but if the code is similarly refractored, it is a good indikator of how many lines of code need to be written to achieve the same goal.
-\ac{LLVM} is an impressive compiler infrastructure, which has frontents for different languages and back-ends for different chip architectures. 
+This is well illustrated in figure \ref{fig:juliabench}. Code length is an ambiguous measure for conciseness, but if the code is similarly refactored it is a good indicator of how many lines of code need to be written to achieve the same goal.
+\ac{LLVM} is an impressive compiler infrastructure, which has front ends for different languages and back-ends for different chip architectures. 
 A language designer has the task, to emit \ac{LLVM} \ac{IR}, which than gets just in time compiled and optimized to the architecture resulting in fast machine code.
-\ac{LLVM}'s concept is effective, as you can accumulate state of the art optimizations in one place, making them accessible to many languages, while being able to compile to different platforms. There are x86, ARM, OpenCL and CUDA backends. While Julia doesn't support them all, it will hopefully be possible in the future. 
-\ac{LLVM} is also used by Clang, the C/C++ frontend for \ac{LLVM} rivaling gcc and it is used by Apple's programming language Swift. 
-This makes \ac{LLVM} a solid basis for a programming language, as these are highly successful projects giving \ac{LLVM} guaranteeing further prospering of the technology.
+\ac{LLVM}'s concept is effective, as you can accumulate state of the art optimizations in one place, making them accessible to many languages, while being able to compile to different platforms. There are x86, ARM, OpenCL and CUDA back ends. While Julia doesn't support them all, it will hopefully be possible in the future. 
+\ac{LLVM} is also used by Clang, the C/C++ front end for \ac{LLVM} rivaling \ac{gcc} and it is used by Apple's programming language Swift. 
+This makes \ac{LLVM} a solid basis for a programming language, as these are highly successful projects guaranteeing \ac{LLVM} further prospering of the technology.
 %See table \ref{table:FEComparison}, for a little benchmark.
 
 To get high performant 3D graphics rendering, there are on the first sight a lot of options.
@@ -89,7 +89,7 @@ It's easy to benchmark the code, but quite difficult to find a baseline, as one 
 I will follow a hybrid strategy, comparing some simple implementations with different technologies and choose some rivaling state of the art libraries as a baseline.
 
 \subsubsection{Extensibility}
-As previously deduced, extensibility is an important factor, which can decide, if a library is fit for scientific computing or not. 
+Extensibility is an important factor, which can decide, if a library is fit for scientific computing or not. 
 It's not only that, but also a great factor determining growth of a software, as the more extensible the software is, the higher the probability that someone else contributes to it.
 In order to write extensible software, we first have to clarify what extensibility is.
 Extensible foremost needs, that the code is accessible. There are different levels of accessibility. The lowest level is closed source, where people purposely make the code inaccessible. While this is obvious, this is just a special case of not understanding the underlying language. Just shipping binaries without open sourcing the code, means that the source is only accessible in a language which is extremely hard to understand, namely the machine code of the binary. So another example for inaccessibility is to write in a language that is difficult to understand. Other barriers are obfuscated language constructs, missing documentations and cryptic highly optimized code.
@@ -103,6 +103,21 @@ This is pretty difficult to measure as these are either binary choices, which ar
 or higher level concepts like writing concise code, which can be a matter of taste.
 
 \subsubsection{Event System}
+For interaction events have to be handled. The chosen event system is named Reactive, which also reflects its design principle.
+Reactive programming is an event driven approach, using signals as the abstraction. 
+Signals are values, which change over time, which can be transformed via functions, yielding a new signal.
+Here is an example to clarify the notion of signals:
+\begin{lstlisting}
+a = Input(40) # an integer signal.
+b = Input(2) # an integer signal.
+c = lift(+, a,b) # creates a new signal with the value 42
+push!(a, 20) # updates a, resulting in c being 22
+\end{lstlisting}
+
+The event system was chosen for two reasons:
+First, because it simply was the only available event system for Julia at that time.
+Secondly, it naturally represents change over time, which is a perfect fit for animations.
+
 
 \subsubsection{Interfaces}
 Working with a computer means working with interfaces to a computer, which in the end simply jiggles around with zeros and ones. There is a huge hierarchy of abstractions involved, to make this process of binary juggling manageable to the human.
@@ -127,10 +142,11 @@ The same principle is used for editing data, so there is also:
 \begin{lstlisting}
 visualization{data}, signal{data} = edit(data, style=default, parameters=default)
 \end{lstlisting}
-Together with the event system which consists of signals (values that change over time), it is possible to edit and visualize rich data over a simple interface, which is perfect for visual debugging, as it is always the same function call applied to the data and no further user interaction is needed.
+Together with the event system which consists of signals, it is possible to edit and visualize rich data over a simple interface, which is perfect for visual debugging, as it is always the same function call applied to the data and no further user interaction is needed.
 It is also easy to extend, as the user just has to overload the function, with a custom style and or parameters.
 Finally, there are also graphical user interfaces developed for this thesis. As also optimizing them is out of the scope of this thesis, they're kept very simple.
 The measurement of success is again relatively difficult to do. (I need to think this over)
+
 \subsection{Outlook}
 %Structure of BA and a few worts on the results 
 
