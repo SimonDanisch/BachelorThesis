@@ -17,7 +17,7 @@ Finally this chapter will conclude with a solution to the problem, how to measur
 \begin{minipage}{\linewidth}
     \centering
     \includegraphics[width=0.7\linewidth]{graphics/surfaces.png}
-    \captionof{figure}[Volume Visualization]{different visualizations of $f(x,y,z)=\sin(\frac{x}{15})+\sin(\frac{y}{15})+\sin(\frac{z}{15})$, visualized with Romeo. From left to right: Isosurface, isovalue=0.76, Isosurface, isovalue=0.37, maximum value projection}
+    \captionof{figure}[Volume Visualization]{different visualizations of $f(x,y,z)=\sin(\frac{x}{15})+\sin(\frac{y}{15})+\sin(\frac{z}{15})$, visualized with Romeo. From left to right: Isosurface with isovalue=0.76, Isosurface with isovalue=0.37, maximum value projection}
     \label{fig:volume}
 \end{minipage}
 \vspace{1em}
@@ -33,12 +33,13 @@ In this bachelor thesis the field is scientific computing, which still has quite
 Scientific computing is usually about implementing mathematical equations, complex algorithms and manipulating and analyzing data.
 As it is difficult to offer easy to use graphical interfaces for this kind of work, most research is done in some specialized, high-level scientific computing language. As most high-level languages are relatively slow, but for a lot of algorithms state of the art performance is required, this has led to a dual system. Prototyping in a high-level language, and then redoing the work in a fast low-level language.
 That this is not the perfect work flow is immediately visible, and a lot of research has been put into making high-level languages faster.
-These efforts slowly pay off, and there is a whole new range of languages, that claim to be easy to work with while being as fast as it can get.
+These efforts slowly pay off and there is a whole new range of languages, that claim to be easy to work with while being as fast as it can get.
 This is a relatively recent trend and hasn't fully arrived in scientific computing yet, as most languages still have their core implemented in another fast language, which makes it hard to extend them for non professional users.
-This is especially true for high performance visualization libraries, which mostly always use C++ at their performance critical core.
+This is especially true for high performance visualization libraries, which mostly use C++ at their performance critical core.
 To leverage the extensibility of these libraries, this bachelor thesis implements a visualization library in a fast high level language.
 Visualizations where chosen as they're a crucial building blocks for many fields in scientific computing.
-Just consider the following function $f(x,y,z)=\sin(\frac{x}{15})+\sin(\frac{y}{15})+\sin(\frac{z}{15})$, which describes a 3D volume mathematically. 
+
+Consider the following function $f(x,y,z)=\sin(\frac{x}{15})+\sin(\frac{y}{15})+\sin(\frac{z}{15})$, which describes a 3D volume mathematically. 
 This is a simple function, which is already not that easy to interpret. In figure \ref{fig:volume}, you can see different visualizations of f. 
 Especially for more complex functions, visualizing might be the only way to get a deeper understanding of the values that a formula or algorithm produces.
 This deeper understanding is crucial for identifying problems in the underlying math, or extending the algorithm.
@@ -60,14 +61,14 @@ Certain design choices had to be made to guarantee this. As speed is the most co
 \begin{minipage}{\linewidth}
     \centering
     \includegraphics[width=0.9\linewidth]{graphics/julia_bench.pdf}
-    \captionof{figure}[Volume Visualization]{Languages speed relative to C (averaged benchmark results), plotted against the length of the needed code}
+    \captionof{figure}[Volume Visualization]{Languages speed relative to C (averaged benchmark results), plotted against the length of the needed code (Source in Appendix)}
     \label{fig:juliabench}
 \end{minipage}
 
 \subsubsection{Speed}
 Speed is mainly a usability factor. It's a factor, that can make a software unusable, or render it unproductive. Because of this, speed has taken a high priority in this thesis. As general coding productivity is also a concern, this thesis is set on using a high level language.
 Historically, these two demands can't be both satisfied.
-How to achieve state of the art speed with a high level language is an on going research and basically the holy grail of language design.
+How to achieve state of the art speed with a high level language is an ongoing research and basically the holy grail of language design.
 Luckily, there is a new programming language namely Julia building upon the compiler infrastructure \ac{LLVM}, promising a concise, high-level programming style, while approaching C-performance.
 This is well illustrated in figure \ref{fig:juliabench}. Code length is an ambiguous measure for conciseness, but if the code is similarly refactored it is a good indicator of how many lines of code need to be written to achieve the same goal.
 \ac{LLVM} is an impressive compiler infrastructure, which has front ends for different languages and back-ends for different chip architectures. 
@@ -78,13 +79,13 @@ This makes \ac{LLVM} a solid basis for a programming language, as these are high
 %See table \ref{table:FEComparison}, for a little benchmark.
 
 To get high performant 3D graphics rendering, there are on the first sight a lot of options.
-If you start to take the previously demands into account, the options shrink down considerably, though.
+If you start to take the previous demands into account, the options shrink down considerably, though.
 It should be implemented in one high level language, which can be used for scientific computing and has state of the art speed. At this point, there are close to zero libraries left. As you can see in figure \ref{fig:juliabench}, Matlab, Python and R disqualify, as they are too slow. JavaScript, Java, Go and Lua are missing a scientific background and the others are too low level for the described goals.
 This leaves only Julia, but in Julia there weren't any 3D libraries available, which means that one has to start from scratch.
 There are only a couple of GPU accelerated low-level libraries available, namely Khrono's OpenGL, Microsoft's DirectX, Apple's Metal and AMD's Mantel, which are offering basically the same functionality. As only OpenGL is truly cross-platform, this leaves only OpenGL as an option.
 So for the purpose of high speed visualizations, OpenGL was wrapped with a high-level interface written in Julia. This leaves us with one binary dependency not written in Julia, namely the video driver, which implements OpenGL.
 
-Measurement of success is pretty straight forward, but hosts some complications in the detail.
+Measurement of success is pretty straight forward, but the devil is in the detail.
 It's easy to benchmark the code, but quite difficult to find a baseline, as one either has to implement the whole software with the alternative technologies, or one has to find similar software.
 I will follow a hybrid strategy, comparing some simple implementations with different technologies and choose some rivaling state of the art libraries as a baseline.
 
@@ -92,7 +93,7 @@ I will follow a hybrid strategy, comparing some simple implementations with diff
 Extensibility is an important factor, which can decide, if a library is fit for scientific computing or not. 
 It's not only that, but also a great factor determining growth of a software, as the more extensible the software is, the higher the probability that someone else contributes to it.
 In order to write extensible software, we first have to clarify what extensibility is.
-Extensible foremost needs, that the code is accessible. There are different levels of accessibility. The lowest level is closed source, where people purposely make the code inaccessible. While this is obvious, this is just a special case of not understanding the underlying language. Just shipping binaries without open sourcing the code, means that the source is only accessible in a language which is extremely hard to understand, namely the machine code of the binary. So another example for inaccessibility is to write in a language that is difficult to understand. Other barriers are obfuscated language constructs, missing documentations and cryptic highly optimized code.
+Extensible foremost needs, that the code is accessible. There are different levels of accessibility. The lowest level is closed source, where people purposely make the code inaccessible. While this is obvious, it is just a special case of not understanding the underlying language. Just shipping binaries without open sourcing the code, means that the source is only accessible in a language which is extremely hard to understand, namely the machine code of the binary. So another example for inaccessibility is to write in a language that is difficult to understand. Other barriers are obfuscated language constructs, missing documentations and cryptic highly optimized code.
 Further more the design of the library in the whole is an important factor for extensibility. It's not only important, that all parts are understandable, but also, that every independent unit in the code solves only one problem.
 If this is guaranteed, re-usability in different contexts becomes much simpler. This allows for a broader user base, which in turn results in higher contributions and bug reports.
 Short concise code is also important, as it will take considerably less time to rewrite something, as the amount of code that has to be touched is shorter and less time is spend on understanding and rewriting the code.
@@ -124,7 +125,7 @@ Working with a computer means working with interfaces to a computer, which in th
 We already dealt with the lowest relevant abstraction: the choice of programming language, which forms our first interface to the computer.
 The next level of abstraction is the general architecture of the modules, which has been discussed previously. 
 This chapter is about the API design choices that have been made.
-The first API is the OpenGL layer. The philosophy is, to make the wrapper for native libraries as thin and reusable as possible and a one to one mapping of the library itself.
+The first API is the OpenGL layer. The philosophy is to make the wrapper for native libraries as thin and reusable as possible and an one to one mapping of the library itself.
 This guarantees re-usability for others, as they might be used to work only with the low-level library and they might disagree with any higher-level abstraction.
 Over this sits an abstraction layer needed to simplify the work with OpenGL.
 With this abstraction, the actual visualization library is implemented.
