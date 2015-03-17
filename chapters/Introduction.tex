@@ -37,7 +37,7 @@ These efforts slowly pay off and there is a whole new range of languages, that c
 This is a relatively recent trend and hasn't fully arrived in scientific computing yet, as most languages still have their core implemented in another fast language, which makes it hard to extend them for non professional users.
 This is especially true for high performance visualization libraries, which mostly use C++ at their performance critical core.
 To leverage the extensibility of these libraries, this bachelor thesis implements a visualization library in a fast high level language.
-Visualizations where chosen as they're a crucial building blocks for many fields in scientific computing.
+Visualizations where chosen as they are a crucial building blocks for many fields in scientific computing.
 
 Consider the following function $f(x,y,z)=\sin(\frac{x}{15})+\sin(\frac{y}{15})+\sin(\frac{z}{15})$, which describes a 3D volume mathematically. 
 This is a simple function, which is already not that easy to interpret. In figure \ref{fig:volume}, you can see different visualizations of f. 
@@ -55,7 +55,7 @@ The researcher would need to read in the 3D object he wants to analyze, have an 
 
 All building blocks in this thesis are developed with the purpose in mind to give the user the possibility to visualize and interact with complex 2D and 3D data, while being able to easily extend the library.
 To enable this kind of functionality, a lot of parts of the infrastructure need to work seamlessly together.
-Certain design choices had to be made to guarantee this. As speed is the most constraining factor, I will start by introducing the design choices that had to be made in order to achieve state of the art speed.
+Certain design choices had to be made to guarantee this. As speed is the most constraining factor, this chapter will start by introducing the design choices that had to be made in order to achieve state of the art speed.
 
 \vspace{1em}
 \begin{minipage}{\linewidth}
@@ -80,14 +80,14 @@ This makes \ac{LLVM} a solid basis for a programming language, as these are high
 
 To get high performant 3D graphics rendering, there are on the first sight a lot of options.
 If you start to take the previous demands into account, the options shrink down considerably, though.
-It should be implemented in one high level language, which can be used for scientific computing and has state of the art speed. At this point, there are close to zero libraries left. As you can see in figure \ref{fig:juliabench}, Matlab, Python and R disqualify, as they are too slow. JavaScript, Java, Go and Lua are missing a scientific background and the others are too low level for the described goals.
+The visualization library should be implemented in one high level language, which can be used for scientific computing and has state of the art speed. At this point, there are close to zero libraries left. As you can see in figure \ref{fig:juliabench}, Matlab, Python and R disqualify, as they are too slow. JavaScript, Java, Go and Lua are missing a scientific background and the others are too low level for the described goals.
 This leaves only Julia, but in Julia there weren't any 3D libraries available, which means that one has to start from scratch.
 There are only a couple of GPU accelerated low-level libraries available, namely Khrono's OpenGL, Microsoft's DirectX, Apple's Metal and AMD's Mantel, which are offering basically the same functionality. As only OpenGL is truly cross-platform, this leaves only OpenGL as an option.
 So for the purpose of high speed visualizations, OpenGL was wrapped with a high-level interface written in Julia. This leaves us with one binary dependency not written in Julia, namely the video driver, which implements OpenGL.
 
 Measurement of success is pretty straight forward, but the devil is in the detail.
 It's easy to benchmark the code, but quite difficult to find a baseline, as one either has to implement the whole software with the alternative technologies, or one has to find similar software.
-I will follow a hybrid strategy, comparing some simple implementations with different technologies and choose some rivaling state of the art libraries as a baseline.
+This thesis will follow a hybrid strategy, comparing some simple implementations with different technologies and choose some rivaling state of the art libraries as a baseline.
 
 \subsubsection{Extensibility}
 Extensibility is an important factor, which can decide, if a library is fit for scientific computing or not. 
@@ -145,7 +145,7 @@ visualization{data}, signal{data} = edit(data, style=default, parameters=default
 \end{lstlisting}
 Together with the event system which consists of signals, it is possible to edit and visualize rich data over a simple interface, which is perfect for visual debugging, as it is always the same function call applied to the data and no further user interaction is needed.
 It is also easy to extend, as the user just has to overload the function, with a custom style and or parameters.
-Finally, there are also graphical user interfaces developed for this thesis. As also optimizing them is out of the scope of this thesis, they're kept very simple.
+Finally, there are also graphical user interfaces developed for this thesis. As also optimizing them is out of the scope of this thesis, they are kept very simple.
 The measurement of success is again relatively difficult to do. (I need to think this over)
 
 \subsection{Outlook}
