@@ -18,13 +18,24 @@ For rendering GLVisualize relies on GLAbstraction, which defines a high-level in
 OpenGL function loading is done by ModernGL, which keeps all the function and Enums definitions from OpenGL with version higher than 3.0.
 The event management is handled by Reactive, which is a reactive event system written in Julia.
 
-\subsection{Event System}
-Holding everything together, since 1890.
+\subsection{Reactive}
+
+Reactive is an reactive event system, designed for event driven programming.
+Its building blocks are signals, which are values that change over time.
+These signals can be transformed via arbitrary functions which creates a new signal. 
+\begin{lstlisting}
+a = Input(40) # an integer signal.
+b = Input(2) # an integer signal.
+c = lift(+, a,b) # creates a new signal with the value 42
+lift(println, c) 
+push!(a, 20) # updates a, resulting in c being 22
+#output -> 22
+push!(a, 20) # updates a, resulting in c being 22
+#output -> 22
+\end{lstlisting}
 
 
-\subsection{Low Level}
-
-\subsubsection{ModernGL}
+\subsection{ModernGL}
 OpenGL is implemented by the video card vendor and is shipped via the video driver, which comes in the form of a C-Library.
 The challenge is, to load the function pointer system and vendor independently. Also one further complication is, that depending on the platform, function pointer are only available after an OpenGL context was created and may only be valid for this context. \cite{wgl}
 This problem is solved, by initializing a function pointer cache with null and as soon as the function is called the first time the real pointer gets loaded. This is suboptimal, as the pointer cannot be inlined and has to be checked for null.
@@ -34,15 +45,19 @@ This makes the an OpenGL function call nearly twice as fast.
 Like this, even C can be outperformed in terms of speed, as C doesn't have just in time compilation capabilities, so the function pointers can not be inlined like this. [benchmark pending]
 
 
-\subsubsection{GLAbstraction}
+\subsection{GLAbstraction}
 
 
-\subsubsection{GLFW}
-\subsubsection{GLWindow}
+\subsection{GLWindow}
+GLWindow is a lightweight wrapper around GLFW. GLFW is a C-Library, that offers cross-platform OpenGL window and context creation and event handling.
+GLWindows is the abstraction layer, that builds upon a Julia wrapper of GLFW.
+It mainly offers a screen type, which contains signals for all the different GLFW events (Mouse, Keyboard, etc...). 
+It also offers a hierarchical structure for nesting screens in each other. 
+All the screen areas are signals, which resize the screen area when they change. Like this, you can dynamically have the screen sizes depend on each other and react to resizing the window.
 
-\subsection{High Level}
 
-\subsubsection{GLVisualize}
+
+\subsection{GLVisualize}
 GLVisualize implements the main functionality of this library.
 It offers rendering of different primitives. GLVisiualize is designed with two intentions in mind: supplying a very simple interface consisting of just two functions and transport the data with as little conversions and copies to the GPU.
 This allows to manipulate the data directly on the GPU, which is the fastest way to update dynamic data.
@@ -55,7 +70,7 @@ visualization, signal = edit(     data::T, style=Style{:default}; parameters...)
 With this, the following data can be visualized:
 \begin{itemize}
 	\item Text (Vector of Glyphs)
-	\item Surfaces (Matrix of height values)
+	\item Height fields with different primitives (Matrix of height values)
 	\item 3D bar plots (Matrix of height values)
 	\item Images (Matrix of color values)
 	\item Videos (Vector of Images)
@@ -65,8 +80,12 @@ With this, the following data can be visualized:
 	\item Colors (Single Color values)
 \end{itemize}
 These can be integrated into the same scene. For all of these, it is possible to change their values interactively.
-Though, there is only an edit function available for text fields, colors, numbers, vectors and matrices.
-The edit functions calls the visualize function to render the data type and then registers events to update the data.
+The edit function is making it easier to edit the values of the data.
+It calls the visualize function to render the data type and then registers appropriate events to update the data.
+Take a look at the text edit function. 
+It first uploads the text to video memory and sets up the functionality to visualize it, and than updates the text data on the GPU according to the cursor position and keyboard input.
+
+Up to now, there is only an edit function available for text fields, colors, numbers, vectors and matrices.
 
 
 
