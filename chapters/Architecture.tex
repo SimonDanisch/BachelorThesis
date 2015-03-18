@@ -20,6 +20,8 @@ The event management is handled by Reactive, which is a reactive event system wr
 
 \subsection{Event System}
 Holding everything together, since 1890.
+
+
 \subsection{Low Level}
 
 \subsubsection{ModernGL}
@@ -41,6 +43,32 @@ Like this, even C can be outperformed in terms of speed, as C doesn't have just 
 \subsection{High Level}
 
 \subsubsection{GLVisualize}
-GLVisualize implements the main functionality.
+GLVisualize implements the main functionality of this library.
+It offers rendering of different primitives. GLVisiualize is designed with two intentions in mind: supplying a very simple interface consisting of just two functions and transport the data with as little conversions and copies to the GPU.
+This allows to manipulate the data directly on the GPU, which is the fastest way to update dynamic data.
+The interface to create visualizations is very simple and only consists of two functions:
+\begin{lstlisting}
+visualization 		  = visualize(data::T, style=Style{:default}; parameters...)
+visualization, signal = edit(     data::T, style=Style{:default}; parameters...)
+\end{lstlisting}
+
+With this, the following data can be visualized:
+\begin{itemize}
+	\item Text (Vector of Glyphs)
+	\item Surfaces (Matrix of height values)
+	\item 3D bar plots (Matrix of height values)
+	\item Images (Matrix of color values)
+	\item Videos (Vector of Images)
+	\item Volumes (3D Array of intensities)
+	\item Particles (Vector of Points)
+	\item Vector Fields (3D array of directional Vectors)
+	\item Colors (Single Color values)
+\end{itemize}
+These can be integrated into the same scene. For all of these, it is possible to change their values interactively.
+Though, there is only an edit function available for text fields, colors, numbers, vectors and matrices.
+The edit functions calls the visualize function to render the data type and then registers events to update the data.
+
+
+
 
 \subsubsection{Romeo}
