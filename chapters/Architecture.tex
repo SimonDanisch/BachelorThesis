@@ -46,6 +46,11 @@ Like this, even C can be outperformed in terms of speed, as C doesn't have just 
 
 
 \subsection{GLAbstraction}
+GLAbstraction is the abstraction layer over ModernGL.
+It wraps OpenGL primitives like Buffers and Textures in Julia objects and hooks them up to Julia's garbage collector.
+Additionally, it implements convenient functions to load shader code and it makes it easy to feed the shader with the correct data types.
+Besides wrapping OpenGL, it also offers the linear algebra needed for the various 3D transformation and camera code.
+On top of that, it defines a perspective and orthographic camera type which can be used with signals to manipulate the parameters of the camera.
 
 
 \subsection{GLWindow}
