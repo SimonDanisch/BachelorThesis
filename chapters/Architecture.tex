@@ -1,4 +1,10 @@
-\section{Architecture}
+\section{Design}
+The problems that this bachelor thesis wants to address:
+An extendable, easy to use visualization library for dynamic data, usable for visual debugging.
+
+
+
+\section{Implementation}
 
 \vspace{1em}
 \begin{minipage}{\linewidth}
@@ -9,31 +15,36 @@
 \end{minipage}
 
 
-This chapter is about the architecture of Romeo.
-Romeo itself just defines the high-level functionality of the editor.
+This chapter is about the implementation of Romeo.
+The Romeo package itself is small and just defines the high-level functionality of the editor.
 This includes window layout and connecting all the different event sources to create the wanted behavior.
 To do this, Romeo relies on a multitude of packages, which step for step abstract away the underlying low-level code that is used to do the window creation and rendering.
 GLVisualize is the main package offering the rendering functionality and the editor widgets like text fields and sliders.
 For rendering GLVisualize relies on GLAbstraction, which defines a high-level interface to OpenGL.
 OpenGL function loading is done by ModernGL, which keeps all the function and Enums definitions from OpenGL with version higher than 3.0.
-The event management is handled by Reactive, which is a reactive event system written in Julia.
+The event management is handled by Reactive.
 
 \subsection{Reactive}
 
-Reactive is an reactive event system, designed for event driven programming.
-Its building blocks are signals, which are values that change over time.
+Reactive is an event system designed for functional event driven programming.
+It reimplements Elm's signal based event system in Julia.
+Signals are values that change over time.
 These signals can be transformed via arbitrary functions which creates a new signal. 
+This simple principle leads too a surprisingly simple yet effective way of programming event based applications.
 \begin{lstlisting}
 a = Input(40) # an integer signal.
 b = Input(2) # an integer signal.
 c = lift(+, a,b) # creates a new signal with the value 42
 lift(println, c) 
 push!(a, 20) # updates a, resulting in c being 22
-#output -> 22
-push!(a, 20) # updates a, resulting in c being 22
-#output -> 22
+#prints: 22
+push!(b, 5) # updates a, resulting in c being 22
+#prints: 25
 \end{lstlisting}
 
+The event system was difficult to integrate for several reasons.
+First of all Reactive is a functional event system, while OpenGL relies heavily on a global state, which are two concepts which are perpendicular.
+Also, 
 
 \subsection{ModernGL}
 OpenGL is implemented by the video card vendor and is shipped via the video driver, which comes in the form of a C-Library.
@@ -42,7 +53,7 @@ This problem is solved, by initializing a function pointer cache with null and a
 In the newest version of Julia, this can be implemented even more efficiently with staged functions. Staged functions can be thought of as a runtime macro.
 At the first call of the function code can be generated, which then will get compiled in time and replaces the function definition. 
 This makes the an OpenGL function call nearly twice as fast.
-Like this, even C can be outperformed in terms of speed, as C doesn't have just in time compilation capabilities, so the function pointers can not be inlined like this. [benchmark pending]
+Like this, even C can be outperformed in terms of speed, as C doesn't have just in time compilation capabilities, so the function pointers can not be inlined like this. [benchmark pending, probably better in discussion though?]
 
 
 \subsection{GLAbstraction}
@@ -91,8 +102,6 @@ Take a look at the text edit function.
 It first uploads the text to video memory and sets up the functionality to visualize it, and than updates the text data on the GPU according to the cursor position and keyboard input.
 
 Up to now, there is only an edit function available for text fields, colors, numbers, vectors and matrices.
-
-
 
 
 \subsubsection{Romeo}
