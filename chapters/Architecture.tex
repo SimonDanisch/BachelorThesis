@@ -27,7 +27,7 @@ The event management is handled by Reactive.
 \subsection{Reactive}
 
 Reactive is an event system designed for functional event driven programming.
-It reimplements Elm's signal based event system in Julia.
+It implements Elm's signal based event system in Julia.
 Signals are values that change over time.
 These signals can be transformed via arbitrary functions which creates a new signal. 
 This simple principle leads too a surprisingly simple yet effective way of programming event based applications.
@@ -43,8 +43,11 @@ push!(b, 5) # updates a, resulting in c being 22
 \end{lstlisting}
 
 The event system was difficult to integrate for several reasons.
-First of all Reactive is a functional event system, while OpenGL relies heavily on a global state, which are two concepts which are perpendicular.
-Also, 
+First of all Reactive is a functional event system, while OpenGL relies heavily on global states, which are two perpendicular concepts.
+Also, it doesn't allow to rearrange the event tree. In other words if you have to signal branches, there is no way to fuse them together.
+Finally, it doesn't reuse memory for the variables. This means, that if you have a signal with a large array, for every lift it will allocate new memory for the array.
+So for the event system there had to be a lot of compromises to be made.
+
 
 \subsection{ModernGL}
 OpenGL is implemented by the video card vendor and is shipped via the video driver, which comes in the form of a C-Library.
