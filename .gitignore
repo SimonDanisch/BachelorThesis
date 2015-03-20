@@ -2,3 +2,14 @@
 
 *.synctex.gz
 *.db
+*.aux
+*.bbl
+*.blg
+*.fls
+*.lof
+*.log
+*.lol
+*.lot
+*.out
+*.toc
+*.fdb_latexmk
