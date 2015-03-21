@@ -26,7 +26,7 @@ The event management is handled by Reactive.
 
 \subsection{Reactive}
 
-Reactive is an event system designed for functional event driven programming.
+Reactive is a functional event system designed for event driven programming.
 It implements Elm's signal based event system in Julia.
 Signals are values that change over time.
 These signals can be transformed via arbitrary functions which creates a new signal. 
@@ -34,20 +34,45 @@ This simple principle leads too a surprisingly simple yet effective way of progr
 \begin{lstlisting}
 a = Input(40) # an integer signal.
 b = Input(2) # an integer signal.
-c = lift(+, a,b) # creates a new signal with the value 42
-lift(println, c) 
+c = lift(+, a,b) # creates a new signal with the callback plus. Equal to c = a+b
+lift(println, c) # executes println, every time that c is updated. 
 push!(a, 20) # updates a, resulting in c being 22
 #prints: 22
 push!(b, 5) # updates a, resulting in c being 22
 #prints: 25
 \end{lstlisting}
-
-The event system was difficult to integrate for several reasons.
+Visualizing dynamic data makes the event system a crucial component of the library.
+The event system was challenging to integrate for several reasons.
 First of all Reactive is a functional event system, while OpenGL relies heavily on global states, which are two perpendicular concepts.
-Also, it doesn't allow to rearrange the event tree. In other words if you have to signal branches, there is no way to fuse them together.
-Finally, it doesn't reuse memory for the variables. This means, that if you have a signal with a large array, for every lift it will allocate new memory for the array.
-So for the event system there had to be a lot of compromises to be made.
-
+Also, it doesn't allow to rearrange the event tree. In other words if you have two signal branches, there is no way to fuse them together.
+Finally, it doesn't reuse memory for signals. This means, if you have a signal for a large array every lift operation will allocate new memory for the array.
+Working around these shortcomings reduced the ease of use of the overall API.
+It has lead to two design choices which are sub optimal.
+First, the event system is decoupled from the render loop, to set the global OpenGL states appropriately.
+This means, that the structure is as follows:
+\begin{lstlisting}
+#instead of:
+a = Input(data)
+b = lift(visualize, a)
+c = lift(render_opengl, b)
+# it is now:
+while window.open
+	render(b.value)
+end
+\end{lstlisting}
+The sub optimal performance of Reactive for large data has let to the following design:
+\begin{lstlisting}
+# instead of
+a = Input(large_array)
+b = lift(some_computation, a, some_timed_signal)
+c = lift(visualize, b)
+# it is now:
+a = visualize(large_array)
+lift(some_timed_signal) do time
+	b = some_computation(large_array, time)
+	update!(a, b) # write directly to the gpu object
+end
+\end{lstlisting}
 
 \subsection{ModernGL}
 OpenGL is implemented by the video card vendor and is shipped via the video driver, which comes in the form of a C-Library.
