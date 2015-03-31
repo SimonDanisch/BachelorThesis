@@ -6,6 +6,22 @@ An extendable, easy to use visualization library for dynamic data, usable for vi
 
 \section{Implementation}
 
+
+
+\subsubsection{The Julia Programming Language}
+Bringing Julia's ease of use and speed to a dynamic visualization library is the declared goal, which makes Julia a crucial building block for this thesis.
+Julia is a multi paradigma language for scientific computing.
+The focus on scientific computing means, that Julia's standard library is equipped with a lot of functions, data structures and specialized syntax for implementing complex math.
+
+
+\subsubsection{OpenGL}
+OpenGL is a low-level graphics API. As such it doesn't offer much abstraction over the Video hardware, but instead offers high flexibility and performance.
+
+
+\subsubsection{Reactive}
+\subsubsection{GLFW}
+
+
 \vspace{1em}
 \begin{minipage}{\linewidth}
     \centering
@@ -123,6 +139,7 @@ With this, the following data can be visualized:
 	\item Vector Fields (3D array of directional Vectors)
 	\item Colors (Single Color values)
 \end{itemize}
+
 These can be integrated into the same scene. For all of these, it is possible to change their values interactively.
 The edit function is making it easier to edit the values of the data.
 It calls the visualize function to render the data type and then registers appropriate events to update the data.
