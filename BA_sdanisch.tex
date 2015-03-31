@@ -21,6 +21,8 @@
 \usepackage{parskip}
 \usepackage[right]{eurosym}
 \usepackage{siunitx}
+\usepackage{eurosym}
+\usepackage{longtable}
 
 \usepackage[subfigure,titles]{tocloft}
 \usepackage[pdfpagelabels=true]{hyperref}
@@ -107,19 +109,18 @@
 \input{chapters/Introduction}
 \pagebreak
 
-\section{Background}
 \input{chapters/Background}
 \pagebreak
 
 \input{chapters/Architecture.tex}
+\pagebreak
 
-\section{Results and Analysis}
 \input{chapters/ResultsandAnalysis.tex}
+\pagebreak
 
-\section{Conclusion}
 \input{chapters/Conclusion}
+\pagebreak
 
-\nocite{*}
 
 % ----------------------------------------------------------------------------------------------------------
 % Literatur
@@ -127,7 +128,6 @@
 %\renewcommand\refname{Bibliography}
 \bibliography{bibo}{}
 \bibliographystyle{plain}
-
 \pagebreak
 
 % ----------------------------------------------------------------------------------------------------------

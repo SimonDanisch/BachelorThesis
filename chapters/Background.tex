@@ -1,22 +1,52 @@
+\section{Background}
+
+
 \subsection{Related Work}
-
-\subsubsection{Matlab}
-
-\subsubsection{IJulia}
-
-\subsection{Technologies Used}
 
 
 \subsubsection{The Julia Programming Language}
 Bringing Julia's ease of use and speed to a dynamic visualization library is the declared goal, which makes Julia a crucial building block for this thesis.
+This makes Julia one of the most important previous work
 Julia is a multi paradigma language for scientific computing.
 The focus on scientific computing means, that Julia's standard library is equipped with a lot of functions, data structures and specialized syntax for implementing complex math.
- Julia 62.6	 C 19.5	 C++ 7.6	Scheme 4.0	 Emacs Lisp 2.2	 NewLisp 1.1
 
 
- Python 
-  Python 63.2	 C 36.1	 Other 0.7
+\subsubsection{IJulia}
+IJulia is the Julia language backend for IPython.
+IPython is a software stack, which was created to allow for interactive computing in Python.
+It offers an interactive shell to execute python scripts, \ac{GUI} toolkits, tab completion and rich media visualizations.
+It comes with a web based notebook, which enables you to write formated documentations together with data, inlined plots and executable program sniplets. You can also formulate mathematical formulas in latex, which will get rendered and inlined nicely into an IJulia Notebook.
+See figure \ref{fig:ijulianotebook} for an example.
 
-\subsubsection{OpenGL}
-OpenGL is a low-level graphics API. As such it doesn't offer much abstraction over the Video hardware, but instead offers high flexibility and performance.
+IJulia offers a very similar feature set compared to Romeo, but it has a different focus.
+The notebook is completely web based, concentrates on 2D visualizations and interactivity is mostly limited to the programming and not the graphics.
+3D graphics are possible via Three.js, which is a powerfull 3D visualization library based on WebGL.
+The integration is just prototypical and limited to simple 3D meshes up to date.
 
+
+\subsubsection{Matlab}
+
+\ac{Matlab} is a numerical computing environment that comes with its own programming language.
+It was created in 1984 by Cleve Moler. He designed it to leverage the effort of accessing LINPACK and EISPACK for his students.
+Since then it grew to be a widely used tool for scientific computing, in all areas ranging from teaching to actual engineering uses in companies.
+It offers a broad range of functionality, including matrix manipulation, plotting of functions and data, creation of user interfaces and interfacing with a range of languages like C/C++, Javam Fortran and Python.
+
+\ac{Matlab} itself is written in C, C++, Java and MATLAB.
+It's proprietary software ranging around \EUR{2000} \cite{MatlabPricing}, which can be extended via free, open source and proprietary modules like Simulink.
+
+Romeo intends to lay out the ground work to provide something remotely similar together with Julia. It is quite far away in terms of functionality, but it builds upon a more modern architecture, which intends to solve some problems that have accumulated for Matlab.
+While Julia 
+
+\subsubsection{Paraview and VTK}
+
+
+Paraview is one of the largest and well established scientific visualization libraries for 3D.
+It is very fast and has a huge amount of visualization capabilities. It shares many of its goals with Romeo, namely \cite{Paraview}
+\begin{itemize}
+	\item Develop an open-source, multi-platform visualization application.
+	\item Support distributed computation models to process large data sets.
+	\item Create an open, flexible, and intuitive user interface.
+	\item Develop an extensible architecture based on open standards.
+\end{itemize}
+It is a very big project.
+This amounts to a total of 3.642.105 lines of code written in 29 languages. The statistics can be found in table \ref{table:ParaviewStatistic} and \ref{table:VTKStatistic}.
