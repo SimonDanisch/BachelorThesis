@@ -101,18 +101,46 @@ The measurement of success is again relatively difficult to do. (I need to think
 \section{Technologies Used}
 
 \subsection{The Julia Programming Language}
-Bringing Julia's ease of use and speed to a dynamic visualization library is the declared goal, which makes Julia a crucial building block for this thesis.
-Julia is a multi paradigm language for scientific computing.
-The focus on scientific computing means, that Julia's standard library is equipped with a lot of functions, data structures and specialized syntax for implementing complex math.
- Julia 62.6	 C 19.5	 C++ 7.6	Scheme 4.0	 Emacs Lisp 2.2	 NewLisp 1.1
+The basic introduction of Julia has already been given in the Background chapter.
+This chapter is focused on how to write programs with Julia.
+Most influential language construct are it's hierarchical type system and multiple dispatch.
+Multiple dispatch is basically runtime function overloading. To better understand multiple dispatch, one has to be familiar with Julia's type system.
+The type system builds uppon four basic components. Composite types, which are comparable to C structs, parametric composite types, bitstypes, abstract and parametric abstract types.
+While the first three are all concrete types, abstract types can be used to build a type hierarchy. Every concrete type can inherit from one abstract type, while abstract types can also inherit from abstract types.
+So you can build type hierarchies like this:
+\begin{lstlisting}
+abstract Number
+abstract FloatingPoint{Size} <: Number # inherit from Number
+bitstype 32 Float32 <: FloatingPoint{32} # inherit from a parametric abstract type
+type Complex{T} <: Number
+    real::T
+    img::T
+end
+\end{lstlisting}
+With this type hierarchy you can overload functions with abstract, concrete or untyped arguments.
+\begin{lstlisting}
+foo{T}(x::Number, y::Complex{T}) = println("some number: ", x, " some complex Number: ", y) # shorthand function defintion
+function foo(x, y::Float32)
+    println("overloading foo with a new signature")
+end
+\end{lstlisting}
 
+This gives Julia a more functional feel, although that you can mimic object oriented programming fairly well.
+The functions are also easy to pass around. Functions can be bound to variables and can then be called like normal functions.
+One of the most crucial features is the very simple, overheadless C-Interface. 
+Thanks to the binary compatibility of LLVM's emited assembly, a C function call to a shared library inside Julia has the same overhead as it would be from inside C\cite{CCALL}. 
+This is perfect for dealing with low-level libraries like OpenCL and OpenGL.
 
- Python 
- Python 63.2	 C 36.1	 Other 0.7
 
 
 \subsection{OpenGL}
-OpenGL is a low-level graphics API. As such it doesn't offer much abstraction over the Video hardware, but instead offers high flexibility and performance.
+OpenGL is a low-level graphics API implemented by the video card vendor via their video driver. 
+As such it doesn't offer much abstraction over the actual \ac{GPU}, but instead offers high flexibility and performance.
+OpenGL 1.0 was released in 1992 and the current version is 4.5 with 5.0 aka Vulkan just around the corner.
+Not all video drivers implement the newest OpenGL standards. 
+As a result, one has to decide to which OpenGL version to program against, allowing a trade-off between modernity and platform support.
+For Romeo, it was decided to support OpenGL 3.3 as the lowest bound, as it is sufficiently available, while still having most of the modern features.
+The features include instance rendering, vertex arrays and modern \ac{GLSL} shader.
 
 
 \subsection{Reactive}
