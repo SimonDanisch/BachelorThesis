@@ -98,7 +98,7 @@ The measurement of success is again relatively difficult to do. (I need to think
 
 
 
-\section{Technologies Used}
+\section{Used Technologies}
 
 \subsection{The Julia Programming Language}
 The basic introduction of Julia has already been given in the Background chapter.
@@ -147,7 +147,13 @@ The features include instance rendering, vertex arrays and modern \ac{GLSL} shad
 is an functional event system based on ELM's language principles.
 
 \subsection{GLFW}
-Simple OpenGL context and window creation library written in C.
+GLFW is a cross platform OpenGL context and window creation library written in C.
+GLFW allows to register callbacks for a multitude of events like keyboard, mouse and window events.
+This, together with a wrapper library for Julia makes GLFW perfect for doing the window creation.
+In addition, GLFW exposes low level features like the operating systems context handle.
+This can be used for creating advanced contexts that share memory with another context.
+Romeo doesn't use this feature yet, but it makes GLFW a future proof choice.
+
 
 \section{Implementation}
 
@@ -234,8 +240,8 @@ Like this, even C can be outperformed in terms of speed, as C doesn't have just 
 GLAbstraction is the abstraction layer over ModernGL.
 It wraps OpenGL primitives like Buffers and Textures in Julia objects and hooks them up to Julia's garbage collector.
 Additionally, it implements convenient functions to load shader code and it makes it easy to feed the shader with the correct data types.
-Besides wrapping OpenGL, it also offers the linear algebra needed for the various 3D transformation and camera code.
-On top of that, it defines a perspective and orthographic camera type which can be used with signals to manipulate the parameters of the camera.
+Besides suplying an abstraction layer over OpenGL, it also offers the linear algebra needed for the various 3D transformation and camera code.
+Building up on that, it defines a signal based perspective and orthographic camera type.
 
 
 \subsection{GLWindow}
