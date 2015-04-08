@@ -20,7 +20,7 @@ Luckily, there is a new programming language namely Julia building upon the comp
 This is well illustrated in figure \ref{fig:juliabench}. Code length is an ambiguous measure for conciseness, but if the code is similarly refactored it is a good indicator of how many lines of code need to be written to achieve the same goal.
 \ac{LLVM} is an impressive compiler infrastructure, which has front ends for different languages and back-ends for different chip architectures. 
 A language designer has the task, to emit \ac{LLVM} \ac{IR}, which than gets just in time compiled and optimized to the architecture resulting in fast machine code.
-\ac{LLVM}'s concept is effective, as you can accumulate state of the art optimizations in one place, making them accessible to many languages, while being able to compile to different platforms. There are x86, ARM, OpenCL and CUDA back ends. While Julia doesn't support them all, it will hopefully be possible in the future. 
+\ac{LLVM}'s concept is effective, as you can accumulate state of the art optimizations in one place, making them accessible to many languages, while being able to compile to different platforms. There are x86, ARM, \ac{OpenCL} and CUDA back ends. While Julia doesn't support them all, it will hopefully be possible in the future. 
 \ac{LLVM} is also used by Clang, the C/C++ front end for \ac{LLVM} rivaling \ac{gcc} and it is used by Apple's programming language Swift. 
 This makes \ac{LLVM} a solid basis for a programming language, as these are highly successful projects guaranteeing \ac{LLVM} further prospering of the technology.
 %See table \ref{table:FEComparison}, for a little benchmark.
@@ -29,8 +29,8 @@ To get high performant 3D graphics rendering, there are on the first sight a lot
 If you start to take the previous demands into account, the options shrink down considerably, though.
 The visualization library should be implemented in one high level language, which can be used for scientific computing and has state of the art speed. At this point, there are close to zero libraries left. As you can see in figure \ref{fig:juliabench}, Matlab, Python and R disqualify, as they are too slow. JavaScript, Java, Go and Lua are missing a scientific background and the others are too low level for the described goals.
 This leaves only Julia, but in Julia there weren't any 3D libraries available, which means that one has to start from scratch.
-There are only a couple of GPU accelerated low-level libraries available, namely Khrono's OpenGL, Microsoft's DirectX, Apple's Metal and AMD's Mantel, which are offering basically the same functionality. As only OpenGL is truly cross-platform, this leaves only OpenGL as an option.
-So for the purpose of high speed visualizations, OpenGL was wrapped with a high-level interface written in Julia. This leaves us with one binary dependency not written in Julia, namely the video driver, which implements OpenGL.
+There are only a couple of GPU accelerated low-level libraries available, namely Khrono's \ac{OpenGL}, Microsoft's DirectX, Apple's Metal and AMD's Mantel, which are offering basically the same functionality. As only \ac{OpenGL} is truly cross-platform, this leaves only \ac{OpenGL} as an option.
+So for the purpose of high speed visualizations, \ac{OpenGL} was wrapped with a high-level interface written in Julia. This leaves us with one binary dependency not written in Julia, namely the video driver, which implements \ac{OpenGL}.
 
 Measurement of success is pretty straight forward, but the devil is in the detail.
 It's easy to benchmark the code, but quite difficult to find a baseline, as one either has to implement the whole software with the alternative technologies, or one has to find similar software.
@@ -54,7 +54,7 @@ To get an idea of the effectiveness of my strategy, usage patterns from Github w
 \subsubsection{Event System}
 For interaction events have to be handled. The chosen event system is named Reactive, which also reflects its design principle.
 Reactive programming is an event driven approach, using signals as the abstraction. 
-Signals are values, which change over time, which can be transformed via functions, yielding a new signal.
+Signals are values, which change over time. They can be transformed via functions, yielding a new signal.
 Here is an example to clarify the notion of signals:
 \begin{lstlisting}
 a = Input(40) # an integer signal.
@@ -64,8 +64,11 @@ push!(a, 20) # updates a, resulting in c being 22
 \end{lstlisting}
 
 The event system was chosen for two reasons:
-First, because it simply was the only available event system for Julia at that time.
+First, because it was the only available event system for Julia at that time.
 Secondly, it naturally represents change over time, which is a perfect fit for animations.
+Due to its forward driven approach, it also gives the ability to render only the values that have changed. 
+This gives the system a more greedy behaviour leading to better performance.
+
 
 
 \subsubsection{Interfaces}
@@ -73,9 +76,9 @@ Working with a computer means working with interfaces to a computer, which in th
 We already dealt with the lowest relevant abstraction: the choice of programming language, which forms our first interface to the computer.
 The next level of abstraction is the general architecture of the modules, which has been discussed previously. 
 This chapter is about the API design choices that have been made.
-The first API is the OpenGL layer. The philosophy is to make the wrapper for native libraries as thin and reusable as possible and an one to one mapping of the library itself.
+The first API is the \ac{OpenGL} layer. The philosophy is to make the wrapper for native libraries as thin and reusable as possible and an one to one mapping of the library itself.
 This guarantees re-usability for others, as they might be used to work only with the low-level library and they might disagree with any higher-level abstraction.
-Over this sits an abstraction layer needed to simplify the work with OpenGL.
+Over this sits an abstraction layer needed to simplify the work with \ac{OpenGL}.
 With this abstraction, the actual visualization library is implemented.
 APIs for visualization libraries are very difficult to realize, as there are endless ways of visualizing the same data.
 The design choice here was to use Julia's rich type system, to better describe the data. 
@@ -129,17 +132,17 @@ This gives Julia a more functional feel, although that you can mimic object orie
 The functions are also easy to pass around. Functions can be bound to variables and can then be called like normal functions.
 One of the most crucial features is the very simple, overheadless C-Interface. 
 Thanks to the binary compatibility of LLVM's emited assembly, a C function call to a shared library inside Julia has the same overhead as it would be from inside C\cite{CCALL}. 
-This is perfect for dealing with low-level libraries like OpenCL and OpenGL.
+This is perfect for dealing with low-level libraries like \ac{OpenGL} and \ac{OpenCL}.
 
 
 
-\subsection{OpenGL}
-OpenGL is a low-level graphics API implemented by the video card vendor via their video driver. 
+\subsection{\ac{OpenGL}}
+\ac{OpenGL} is a low-level graphics API implemented by the video card vendor via their video driver. 
 As such it doesn't offer much abstraction over the actual \ac{GPU}, but instead offers high flexibility and performance.
-OpenGL 1.0 was released in 1992 and the current version is 4.5 with 5.0 aka Vulkan just around the corner.
-Not all video drivers implement the newest OpenGL standards. 
-As a result, one has to decide to which OpenGL version to program against, allowing a trade-off between modernity and platform support.
-For Romeo, it was decided to support OpenGL 3.3 as the lowest bound, as it is sufficiently available, while still having most of the modern features.
+\ac{OpenGL} 1.0 was released in 1992 and the current version is 4.5 with 5.0 aka Vulkan just around the corner.
+Not all video drivers implement the newest \ac{OpenGL} standards. 
+As a result, one has to decide to which \ac{OpenGL} version to program against, allowing a trade-off between modernity and platform support.
+For Romeo, it was decided to support \ac{OpenGL} 3.3 as the lowest bound, as it is sufficiently available, while still having most of the modern features.
 The features include instance rendering, vertex arrays and modern \ac{GLSL} shader.
 
 
@@ -147,7 +150,7 @@ The features include instance rendering, vertex arrays and modern \ac{GLSL} shad
 is an functional event system based on ELM's language principles.
 
 \subsection{GLFW}
-GLFW is a cross platform OpenGL context and window creation library written in C.
+GLFW is a cross platform \ac{OpenGL} context and window creation library written in C.
 GLFW allows to register callbacks for a multitude of events like keyboard, mouse and window events.
 This, together with a wrapper library for Julia makes GLFW perfect for doing the window creation.
 In addition, GLFW exposes low level features like the operating systems context handle.
@@ -172,8 +175,8 @@ The Romeo package itself is small and just defines the high-level functionality 
 This includes window layout and connecting all the different event sources to create the wanted behavior.
 To do this, Romeo relies on a multitude of packages, which step for step abstract away the underlying low-level code that is used to do the window creation and rendering.
 GLVisualize is the main package offering the rendering functionality and the editor widgets like text fields and sliders.
-For rendering GLVisualize relies on GLAbstraction, which defines a high-level interface to OpenGL.
-OpenGL function loading is done by ModernGL, which keeps all the function and Enums definitions from OpenGL with version higher than 3.0.
+For rendering GLVisualize relies on GLAbstraction, which defines a high-level interface to \ac{OpenGL}.
+\ac{OpenGL} function loading is done by ModernGL, which keeps all the function and Enums definitions from \ac{OpenGL} with version higher than 3.0.
 The event management is handled by Reactive.
 
 \subsection{Reactive}
@@ -195,12 +198,12 @@ push!(b, 5) # updates a, resulting in c being 22
 \end{lstlisting}
 Visualizing dynamic data makes the event system a crucial component of the library.
 The event system was challenging to integrate for several reasons.
-First of all Reactive is a functional event system, while OpenGL relies heavily on global states, which are two perpendicular concepts.
+First of all Reactive is a functional event system, while \ac{OpenGL} relies heavily on global states, which are two perpendicular concepts.
 Also, it doesn't allow to rearrange the event tree. In other words if you have two signal branches, there is no way to fuse them together.
 Finally, it doesn't reuse memory for signals. This means, if you have a signal for a large array every lift operation will allocate new memory for the array.
 Working around these shortcomings reduced the ease of use of the overall API.
 It has lead to two design choices which are sub optimal.
-First, the event system is decoupled from the render loop, to set the global OpenGL states appropriately.
+First, the event system is decoupled from the render loop, to set the global \ac{OpenGL} states appropriately.
 This means, that the structure is as follows:
 \begin{lstlisting}
 #instead of:
@@ -227,25 +230,25 @@ end
 \end{lstlisting}
 
 \subsection{ModernGL}
-OpenGL is implemented by the video card vendor and is shipped via the video driver, which comes in the form of a C-Library.
-The challenge is, to load the function pointer system and vendor independently. Also one further complication is, that depending on the platform, function pointer are only available after an OpenGL context was created and may only be valid for this context. \cite{wgl}
+\ac{OpenGL} is implemented by the video card vendor and is shipped via the video driver, which comes in the form of a C-Library.
+The challenge is, to load the function pointer system and vendor independently. Also one further complication is, that depending on the platform, function pointer are only available after an \ac{OpenGL} context was created and may only be valid for this context. \cite{wgl}
 This problem is solved, by initializing a function pointer cache with null and as soon as the function is called the first time the real pointer gets loaded. This is suboptimal, as the pointer cannot be inlined and has to be checked for null.
 In the newest version of Julia, this can be implemented even more efficiently with staged functions. Staged functions can be thought of as a runtime macro.
 At the first call of the function code can be generated, which then will get compiled in time and replaces the function definition. 
-This makes the an OpenGL function call nearly twice as fast.
+This makes the an \ac{OpenGL} function call nearly twice as fast.
 Like this, even C can be outperformed in terms of speed, as C doesn't have just in time compilation capabilities, so the function pointers can not be inlined like this. [benchmark pending, probably better in discussion though?]
 
 
 \subsection{GLAbstraction}
 GLAbstraction is the abstraction layer over ModernGL.
-It wraps OpenGL primitives like Buffers and Textures in Julia objects and hooks them up to Julia's garbage collector.
+It wraps \ac{OpenGL} primitives like Buffers and Textures in Julia objects and hooks them up to Julia's garbage collector.
 Additionally, it implements convenient functions to load shader code and it makes it easy to feed the shader with the correct data types.
-Besides suplying an abstraction layer over OpenGL, it also offers the linear algebra needed for the various 3D transformation and camera code.
+Besides suplying an abstraction layer over \ac{OpenGL}, it also offers the linear algebra needed for the various 3D transformation and camera code.
 Building up on that, it defines a signal based perspective and orthographic camera type.
 
 
 \subsection{GLWindow}
-GLWindow is a lightweight wrapper around GLFW. GLFW is a C-Library, that offers cross-platform OpenGL window and context creation and event handling.
+GLWindow is a lightweight wrapper around GLFW. GLFW is a C-Library, that offers cross-platform \ac{OpenGL} window and context creation and event handling.
 GLWindows is the abstraction layer, that builds upon a Julia wrapper of GLFW.
 It mainly offers a screen type, which contains signals for all the different GLFW events (Mouse, Keyboard, etc...). 
 It also offers a hierarchical structure for nesting screens in each other. 

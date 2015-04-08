@@ -3,29 +3,44 @@
 
 \subsection{Related Work}
 
-
 \subsubsection{The Julia Programming Language}
-Bringing Julia's ease of use and speed to a dynamic visualization library is the declared goal, which makes Julia a crucial building block for this thesis.
-Julia was published in 2012, which makes it a very new language.
+Bringing Julia's ease of use and speed to a dynamic visualization library is the declared goal.
+So Julia plays a crucial role in this thesis. It is the most important previous work, as much as it is the most heavily used technology in this thesis.
+This chapter gives a short introduction to the Julia Programming Language.
+
+Julia was published in 2012, which makes it a very new language. It is currently at version 0.3.7 stable and 0.4 alpha.
+Following common versioning conventions this means Julia is still in the beta release phase with the core features and names suspicable to change.
+
 Julia is a multi paradigma language for scientific computing.
-The focus on scientific computing means, that Julia's standard library is equipped with a lot of functions, data structures and specialized syntax for implementing complex math.
+The focus on scientific computing means, that Julia's standard library is equipped with a lot of functions, data structures and specialized syntax for implementing complex math like linear algebra and statistics.
 It promises to approach C speed, while being dynamically typed language which is easy to use.
-Julia was created to integrate a lot of advantages from other languages into one language.
+This is made possible by the compile process which can be described as statically compiled at runtime.
+Julia uses a garbage collector, taking the memory management work away from the programmer.
+Julia was created to integrate a lot of advantages from other languages.
 These include \cite{WhyJulia}
 \begin{itemize}
-	\item C like performance 
+	\item C like performance
+	\item native C interface
 	\item macros like in Lisp
 	\item mathematical notations like Matlab
 	\item good at general purpose programming as python
 	\item easy for statistics as R.
 \end{itemize}
-This makes it the perfect language for a fast scientific visualization library.
+These are the reasons why Julia is well suited for implementing an interactive scientific visualization library.
+Interactive visualizations have very hard demands on performance. 
+You need around 60 frames per second to feel comfortable, so there are only 0.016 seconds available for computing a single frame.
+There should be no stutters and interfacing C-libraries should be simple and fast in order to communicate with the video driver.
+This is the one side, but the other is equally important:
+You can do the scientific programming in the same language as you do the visualization.
+Like this, Julia's native data types can be used without serialization and copies and the library can be extended by the Julia programmer.
+Extending the library is supposed to be a lot easier than in other languages, thanks to Julia's concise and high-level coding style.
+
 
 \subsubsection{IJulia}
 IJulia is the Julia language backend for IPython.
 IPython is a software stack, which was created to allow for interactive computing in Python.
 It offers an interactive shell to execute python scripts, \ac{GUI} toolkits, tab completion and rich media visualizations.
-It comes with a web based notebook, which enables you to write formated documentations together with data, inlined plots and executable program sniplets. You can also formulate mathematical formulas in latex, which will get rendered and inlined nicely into an IJulia Notebook.
+It comes with a web based notebook, which enables you to write formated documentations together with data, inlined plots and executable program snippets. You can also formulate mathematical formulas in latex, which will get rendered and inlined nicely into an IJulia Notebook.
 See figure \ref{fig:ijulianotebook} for an example.
 
 IJulia offers a very similar feature set compared to Romeo, but it has a different focus.
