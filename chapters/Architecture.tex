@@ -49,25 +49,11 @@ So the code written for this thesis should be open source, modular, written in a
 
 This is pretty difficult to measure as these are either binary choices, which are either followed or not, 
 or higher level concepts like writing concise code, which can be a matter of taste.
-To get an idea of the effectiveness of my strategy, usage patterns from Github will be analyzed.
+To get an idea of the effectiveness of my strategy, usage patterns and feedback from Github will be analyzed.
 
 \subsubsection{Event System}
-For interaction events have to be handled. The chosen event system is named Reactive, which also reflects its design principle.
-Reactive programming is an event driven approach, using signals as the abstraction. 
-Signals are values, which change over time. They can be transformed via functions, yielding a new signal.
-Here is an example to clarify the notion of signals:
-\begin{lstlisting}
-a = Input(40) # an integer signal.
-b = Input(2) # an integer signal.
-c = lift(+, a,b) # creates a new signal with the value 42
-push!(a, 20) # updates a, resulting in c being 22
-\end{lstlisting}
+The event system is a crucial part of the library, as the proclaimed goal is to visualize dynamic, animated data.
 
-The event system was chosen for two reasons:
-First, because it was the only available event system for Julia at that time.
-Secondly, it naturally represents change over time, which is a perfect fit for animations.
-Due to its forward driven approach, it also gives the ability to render only the values that have changed. 
-This gives the system a more greedy behaviour leading to better performance.
 
 
 
@@ -83,9 +69,9 @@ With this abstraction, the actual visualization library is implemented.
 APIs for visualization libraries are very difficult to realize, as there are endless ways of visualizing the same data.
 The design choice here was to use Julia's rich type system, to better describe the data. 
 Julia makes this possible, as you can name the same data differently, without loosing performance.
-So you can actually have a unit like meter represented as a native floating point type and have the visualization specialize to this.
-Like this you can have a single function e.g. \textit{visualize}, that does creates a default visualization for a lot of common data.
-It is parameterizable and can actually be overloaded for different styles.
+So you can have a unit like meter represented as a native floating point type and have the visualization specialize to this.
+Like this you can have a single function e.g. \textit{visualize}, that does create a default visualization for different data types.
+It is parameterizable and can be overloaded for different styles.
 So the signature looks like this in the end:
 \begin{lstlisting}
 visualization{data} = visualize(data, style=default, parameters=default)
@@ -108,7 +94,7 @@ The basic introduction of Julia has already been given in the Background chapter
 This chapter is focused on how to write programs with Julia.
 Most influential language construct are it's hierarchical type system and multiple dispatch.
 Multiple dispatch is basically runtime function overloading. To better understand multiple dispatch, one has to be familiar with Julia's type system.
-The type system builds uppon four basic components. Composite types, which are comparable to C structs, parametric composite types, bitstypes, abstract and parametric abstract types.
+The type system builds upon four basic components. Composite types, which are comparable to C structs, parametric composite types, bitstypes, abstract and parametric abstract types.
 While the first three are all concrete types, abstract types can be used to build a type hierarchy. Every concrete type can inherit from one abstract type, while abstract types can also inherit from abstract types.
 So you can build type hierarchies like this:
 \begin{lstlisting}
@@ -122,7 +108,7 @@ end
 \end{lstlisting}
 With this type hierarchy you can overload functions with abstract, concrete or untyped arguments.
 \begin{lstlisting}
-foo{T}(x::Number, y::Complex{T}) = println("some number: ", x, " some complex Number: ", y) # shorthand function defintion
+foo{T}(x::Number, y::Complex{T}) = println("some number: ", x, " some complex Number: ", y) # shorthand function definition
 function foo(x, y::Float32)
     println("overloading foo with a new signature")
 end
@@ -130,8 +116,8 @@ end
 
 This gives Julia a more functional feel, although that you can mimic object oriented programming fairly well.
 The functions are also easy to pass around. Functions can be bound to variables and can then be called like normal functions.
-One of the most crucial features is the very simple, overheadless C-Interface. 
-Thanks to the binary compatibility of LLVM's emited assembly, a C function call to a shared library inside Julia has the same overhead as it would be from inside C\cite{CCALL}. 
+One of the most crucial features is the very simple, overhead less C-Interface. 
+Thanks to the binary compatibility of LLVM's emitted assembly, a C function call to a shared library inside Julia has the same overhead as it would be from inside C\cite{CCALL}. 
 This is perfect for dealing with low-level libraries like \ac{OpenGL} and \ac{OpenCL}.
 
 
@@ -147,7 +133,21 @@ The features include instance rendering, vertex arrays and modern \ac{GLSL} shad
 
 
 \subsection{Reactive}
-is an functional event system based on ELM's language principles.
+Reactive is a functional event system designed for event driven programming.
+It implements Elm's signal based event system in Julia.
+Signals are values that change over time.
+These signals can be transformed via arbitrary functions which creates a new signal. 
+This simple principle leads too a surprisingly simple yet effective way of programming event based applications.
+\begin{lstlisting}
+a = Input(40) # an integer signal.
+b = Input(2) # an integer signal.
+c = lift(+, a,b) # creates a new signal with the callback plus. Equal to c = a+b
+lift(println, c) # executes println, every time that c is updated. 
+push!(a, 20) # updates a, resulting in c being 22
+#prints: 22
+push!(b, 5) # updates a, resulting in c being 22
+#prints: 25
+\end{lstlisting}
 
 \subsection{GLFW}
 GLFW is a cross platform \ac{OpenGL} context and window creation library written in C.
@@ -181,22 +181,6 @@ The event management is handled by Reactive.
 
 \subsection{Reactive}
 
-Reactive is a functional event system designed for event driven programming.
-It implements Elm's signal based event system in Julia.
-Signals are values that change over time.
-These signals can be transformed via arbitrary functions which creates a new signal. 
-This simple principle leads too a surprisingly simple yet effective way of programming event based applications.
-\begin{lstlisting}
-a = Input(40) # an integer signal.
-b = Input(2) # an integer signal.
-c = lift(+, a,b) # creates a new signal with the callback plus. Equal to c = a+b
-lift(println, c) # executes println, every time that c is updated. 
-push!(a, 20) # updates a, resulting in c being 22
-#prints: 22
-push!(b, 5) # updates a, resulting in c being 22
-#prints: 25
-\end{lstlisting}
-Visualizing dynamic data makes the event system a crucial component of the library.
 The event system was challenging to integrate for several reasons.
 First of all Reactive is a functional event system, while \ac{OpenGL} relies heavily on global states, which are two perpendicular concepts.
 Also, it doesn't allow to rearrange the event tree. In other words if you have two signal branches, there is no way to fuse them together.
