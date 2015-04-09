@@ -56,7 +56,6 @@ The event system is a crucial part of the library, as the proclaimed goal is to 
 This means, there are hard demands for usability and speed on the event system.
 
 
-
 \subsubsection{Interfaces}
 Working with a computer means working with interfaces to a computer, which in the end simply jiggles around with zeros and ones. There is a huge hierarchy of abstractions involved, to make this process of binary juggling manageable to the human.
 We already dealt with the lowest relevant abstraction: the choice of programming language, which forms our first interface to the computer.
@@ -132,6 +131,17 @@ This is perfect for dealing with low-level libraries like \ac{OpenGL} and \ac{Op
 
 
 \subsection{\ac{OpenGL}}
+
+
+\vspace{1em}
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{graphics/opengl.png}
+    \captionof{figure}[OpenGL]{OpenGL program pipeline}
+    \label{fig:opengl}
+\end{minipage}
+
+
 \ac{OpenGL} is a low-level graphics API implemented by the video card vendor via the video driver. 
 As such it doesn't offer much abstraction over the actual \ac{GPU}, but instead offers high flexibility and performance.
 \ac{OpenGL} 1.0 was released in 1992 and the current version is 4.5.

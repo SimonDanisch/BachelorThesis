@@ -1,23 +1,35 @@
 \section{Results and Discussion}
+
 \subsection{Performance Analysis}
 benchmarks, benchmarks, benchmarks
+
 \subsection{Extendability Analysis}
+
 The modular design of Romeo has proven to be very effective and the goal of reusability has already proven itself.
-Most of the created modules are already used independantly by different people.
-GLVisualize is used by myself for two packages, namely GLPLot, a scientific plotting package for Julia and a for a prototype of a file explorer. 
+Most of the created modules are used independently by different people.
+GLVisualize is used by myself for two packages, namely GLPLot, a scientific plotting package for Julia and for a prototype of a file explorer. 
 It got forked by several users to create their own dynamic visualization packages.
 The same applies for ModernGL and GLAbstraction. Most other used packages are at least used by one other project.
 This indicates, that the abstraction and modularity is well designed, so that all the modules can function on their own.
 
-The only exception is GLWindow, which has been used just indirectly through my other packages. 
+The only exception is GLWindow, which has been used just indirectly through the other packages. 
 This can mean three things.
 First, it is badly abstracted and doesn't cleanly wrap one use case.
-Secondly, it can be, that the use case is not entirely clear to other people, which would not be a big surprice considering the minimal amount of documentation for GLWindow.
-And finally, considering the small group of people deveoping graphics for Julia, it could be that they simply don't need the lower level functionality of GLWindow and instead rely on my other packages that use GLWindow.
+Secondly, it can be, that the use case is not entirely clear to other people, which would not be a big surprise considering the minimal amount of documentation for GLWindow.
+And finally, considering the small group of people developing graphics for Julia, it could be that they simply don't need the lower level functionality of GLWindow and instead rely on my other packages that use GLWindow.
 
-This kind of modularity guarantees a broad user and developper base, which in turn results in rich functionality and stability.
-From further analyzing the github repository written by me, one can find out that there is a lack of documentation.
+This kind of modularity guarantees a broad user and developer base, which in turn results in rich functionality and stability.
+From further analyzing the Github repository written or this thesis, one can find out that there is a general lack of documentation.
 This hinders people from contributing and using the packages, but could not been 
+
+The implementation in just one language has been achieved by choice. There are only a few exceptions, like the kernel code for OpenGL shaders, which can't currently be written in Julia. 
+They can use exactly the same tools and immediately see their results without complicated compilations.
+This together with the speed is one of the main achievements compared to other libraries offering similar functionality, like IJulia, VTK and Matlab.
+To further proof this point I will analyze the mentioned software in more detail.
+For this I will analyze the language usage statistics and necessary tools needed in order to extend the software.
+One needs to note, that the statistics of used languages is just a weak indicator for the complexity of some software.
+Using different languages for one project can make sense, if the project involves different domains, with domain specific languages giving an advantage.
+This chapter will only discuss the complexity introduced by different languages, which are only needed for compatibility with other libraries and if a slow language is used together with a fast language.
 
 \subsubsection{IJulia}
 So IJUlia is written in:
@@ -35,5 +47,9 @@ Python 78.5	 JavaScript 15.1	 HTML 5.0	 Other 1.4
 
 
 This amounts to a total of 3.642.105 lines of code written in 29 languages.
+
+\subsubsection{Matlab}
+
+
 
 \subsection{Usability Analysis}
