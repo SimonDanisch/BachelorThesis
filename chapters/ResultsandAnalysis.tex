@@ -27,12 +27,15 @@ They can use exactly the same tools and immediately see their results without co
 This together with the speed is one of the main achievements compared to other libraries offering similar functionality, like IJulia, VTK and Matlab.
 To further proof this point I will analyze the mentioned software in more detail.
 For this I will analyze the language usage statistics and necessary tools needed in order to extend the software.
-One needs to note, that the statistics of used languages is just a weak indicator for the complexity of some software.
-Using different languages for one project can make sense, if the project involves different domains, with domain specific languages giving an advantage.
-This chapter will only discuss the complexity introduced by different languages, which are only needed for compatibility with other libraries and if a slow language is used together with a fast language.
+One needs to note, that the statistics of used languages is just a weak indicator for the extendability of a software.
+Using different languages for one project can make sense, if the project has different domains, where domain specific languages give an advantage.
+This chapter will only discuss the complexity introduced by different languages, which are needed for compatibility with other libraries or because the main language is too slow.
 
 \subsubsection{IJulia}
-So IJUlia is written in:
+First of all, IJulia uses ZMQ to bridge the web interface with the Julia instance.
+ZMQ is a messaging system using different sockets for communication like inproc, IPC, TCP, TIPC and multicas.
+While it is very fast at it's task of sending messages, it can't compete with the native performance of staying inside one language.
+This is not very important as long as there doesn't have to be much communication. This changes drastically for animations, where big memory chunks have to be streamed.
 
 using ZMQ(C++), D3, 
 Three.js
