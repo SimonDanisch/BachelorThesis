@@ -56,7 +56,6 @@ The event system is a crucial part of the library, as the proclaimed goal is to 
 
 
 
-
 \subsubsection{Interfaces}
 Working with a computer means working with interfaces to a computer, which in the end simply jiggles around with zeros and ones. There is a huge hierarchy of abstractions involved, to make this process of binary juggling manageable to the human.
 We already dealt with the lowest relevant abstraction: the choice of programming language, which forms our first interface to the computer.
@@ -93,9 +92,13 @@ The measurement of success is again relatively difficult to do. (I need to think
 The basic introduction of Julia has already been given in the Background chapter.
 This chapter is focused on how to write programs with Julia.
 Most influential language construct are it's hierarchical type system and multiple dispatch.
-Multiple dispatch is basically runtime function overloading. To better understand multiple dispatch, one has to be familiar with Julia's type system.
-The type system builds upon four basic components. Composite types, which are comparable to C structs, parametric composite types, bitstypes, abstract and parametric abstract types.
-While the first three are all concrete types, abstract types can be used to build a type hierarchy. Every concrete type can inherit from one abstract type, while abstract types can also inherit from abstract types.
+Multiple dispatch is in its core dynamic function overloading at runtime. 
+To better understand multiple dispatch, one has to be familiar with Julia's type system.
+The type system builds upon four basic components. 
+Composite types, which are comparable to C-Structs, parametric composite types, bits types, abstract and parametric abstract types.
+While the first three are all concrete types, abstract types can be used to build a type hierarchy.
+Every concrete type can inherit from one abstract type, while abstract types can also inherit from abstract types.
+Bit types are just immutable, stack allocated memory chunks, usable for implementing numbers.
 So you can build type hierarchies like this:
 \begin{lstlisting}
 abstract Number
@@ -108,14 +111,19 @@ end
 \end{lstlisting}
 With this type hierarchy you can overload functions with abstract, concrete or untyped arguments.
 \begin{lstlisting}
-foo{T}(x::Number, y::Complex{T}) = println("some number: ", x, " some complex Number: ", y) # shorthand function definition
-function foo(x, y::Float32)
-    println("overloading foo with a new signature")
+foo{T}(y::Complex{T}, y::Float32) = println("some number: ", x, " some complex Number: ", y) # shorthand function definition
+function foo(x)
+    println("overloading foo with a new unspecific signature")
 end
 \end{lstlisting}
+What will happen at runtime is, that Julia compiles functions specialized on it's parameters and with the results overloads the original function.
+So foo will originally be overloaded with two methods. 
+Now if you call foo with one Float32 argument, a new method will be added specialized to Float32.
+Like this, if the function does not access non constant global values, all types inside the function will be known at call time.
+This allows Julia to than statically compile the function body, propagating the type information down the call-tree.
 
 This gives Julia a more functional feel, although that you can mimic object oriented programming fairly well.
-The functions are also easy to pass around. Functions can be bound to variables and can then be called like normal functions.
+Functions are also easy to pass around. They can be bound to variables and can then be called like normal functions via the variable name.
 One of the most crucial features is the very simple, overhead less C-Interface. 
 Thanks to the binary compatibility of LLVM's emitted assembly, a C function call to a shared library inside Julia has the same overhead as it would be from inside C\cite{CCALL}. 
 This is perfect for dealing with low-level libraries like \ac{OpenGL} and \ac{OpenCL}.
@@ -123,11 +131,12 @@ This is perfect for dealing with low-level libraries like \ac{OpenGL} and \ac{Op
 
 
 \subsection{\ac{OpenGL}}
-\ac{OpenGL} is a low-level graphics API implemented by the video card vendor via their video driver. 
+\ac{OpenGL} is a low-level graphics API implemented by the video card vendor via the video driver. 
 As such it doesn't offer much abstraction over the actual \ac{GPU}, but instead offers high flexibility and performance.
-\ac{OpenGL} 1.0 was released in 1992 and the current version is 4.5 with 5.0 aka Vulkan just around the corner.
-Not all video drivers implement the newest \ac{OpenGL} standards. 
-As a result, one has to decide to which \ac{OpenGL} version to program against, allowing a trade-off between modernity and platform support.
+\ac{OpenGL} 1.0 was released in 1992 and the current version is 4.5.
+A critical element when developing \ac{OpenGL} applications is, that not all video drivers implement the newest \ac{OpenGL} standards.
+
+As a result, one has to decide which \ac{OpenGL} version to program against, trading between modernity and platform support.
 For Romeo, it was decided to support \ac{OpenGL} 3.3 as the lowest bound, as it is sufficiently available, while still having most of the modern features.
 The features include instance rendering, vertex arrays and modern \ac{GLSL} shader.
 
