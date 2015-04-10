@@ -54,7 +54,9 @@ To get an idea of the effectiveness of my strategy, usage patterns and feedback 
 \subsubsection{Event System}
 The event system is a crucial part of the library, as the proclaimed goal is to visualize dynamic, animated data.
 This means, there are hard demands for usability and speed on the event system.
-
+The chosen event system has an immidiate influence on how to handle animations. 
+This lead to the design choice of using signals. Signals are a very good abstraction for values that change over time.
+If well implemented, it makes it natural to reason about time, without the need of managing unrelated structures and callback code.
 
 \subsubsection{Interfaces}
 Working with a computer means working with interfaces to a computer, which in the end simply jiggles around with zeros and ones. There is a huge hierarchy of abstractions involved, to make this process of binary juggling manageable to the human.
@@ -132,12 +134,11 @@ This is perfect for dealing with low-level libraries like \ac{OpenGL} and \ac{Op
 
 \subsection{\ac{OpenGL}}
 
-
 \vspace{1em}
 \begin{minipage}{\linewidth}
     \centering
-    \includegraphics[width=0.9\linewidth]{graphics/opengl.png}
-    \captionof{figure}[OpenGL]{OpenGL program pipeline}
+    \includegraphics[width=0.5\linewidth]{graphics/RenderingPipeline.png}
+    \captionof{figure}[OpenGL]{Diagram of the Rendering Pipeline. The blue boxes are programmable shader stages. \cite{OpenGLPipeline}}
     \label{fig:opengl}
 \end{minipage}
 
@@ -151,13 +152,15 @@ As a result, one has to decide which \ac{OpenGL} version to program against, tra
 For Romeo, it was decided to support \ac{OpenGL} 3.3 as the lowest bound, as it is sufficiently available, while still having most of the modern features.
 The features include instance rendering, vertex arrays and modern \ac{GLSL} shader.
 
+In figure \ref{fig:opengl} you can see the basic architecture of a OpenGL program pipeline.
+
 
 \subsection{Reactive}
 Reactive is a functional event system designed for event driven programming.
 It implements Elm's signal based event system in Julia.
-Signals are values that change over time.
-These signals can be transformed via arbitrary functions which creates a new signal. 
+Signals can be transformed via arbitrary functions which in turn create a new signal.
 This simple principle leads too a surprisingly simple yet effective way of programming event based applications.
+
 \begin{lstlisting}
 a = Input(40) # an integer signal.
 b = Input(2) # an integer signal.
