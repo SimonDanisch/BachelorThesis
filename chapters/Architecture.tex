@@ -152,8 +152,11 @@ As a result, one has to decide which \ac{OpenGL} version to program against, tra
 For Romeo, it was decided to support \ac{OpenGL} 3.3 as the lowest bound, as it is sufficiently available, while still having most of the modern features.
 The features include instance rendering, vertex arrays and modern \ac{GLSL} shader.
 
-In figure \ref{fig:opengl} you can see the basic architecture of a OpenGL program pipeline.
+In figure \ref{fig:opengl} you can see the basic architecture of an OpenGL program pipeline.
+As the description states, the blue boxes are programmable shaders, while the dotted boxes are optional parts of the pipeline.
+The yellow boxes describe stages which are not directly accessible. They're part of the OpenGL state, which can be set via OpenGL commands.
 
+So in order to have a functioning OpenGL rendering pipeline one just needs to write a vertex shader and a fragment shader.
 
 \subsection{Reactive}
 Reactive is a functional event system designed for event driven programming.
