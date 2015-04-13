@@ -1,24 +1,28 @@
 \section{Results and Discussion}
 
 \subsection{Performance Analysis}
+If not stated otherwise, benchmarks are written by myself and executed on a intel i5 platform.
+
 \subsubsection{ModernGL}
 \vspace{1em}
 \begin{minipage}{\linewidth}
     \centering
     \includegraphics[width=0.9\linewidth]{graphics/glbench.pdf}
-    \captionof{figure}[OpenGL Wrapper]{Different performance of OpenGL wrappers. The time for $10^7$ calls was measured 100 times for each function}
+    \captionof{figure}[OpenGL Wrapper]{Different performance of OpenGL wrappers. The time for $10^7$ calls was measured 100 times for each function.}
     \label{fig:openglwrapper}
 \end{minipage}
 
+\vspace{1em}
 
 \begin{table}[htbp]
     \centering
-    \begin{tabular}{ l|l l l l }
+    \begin{tabular}{l|c|c}
+    	\hline
 		\textbf{Function} 	& \textbf{Python} 	 & \textbf{Julia StagedFunction} \\
 		\hline
-		glBindBuffer 		& 64.43451128046956  & 1.0076524116498202 \\
-		glClearColor 		& 474.72103691693053 & 1.016643368808133 \\
-		glStringi 			& 244.4388472473576  & 1.0712755081185565 \\
+		glBindBuffer 		& 64.43  & 1.00 \\
+		glClearColor 		& 474.72 & 1.02 \\
+		glStringi 			& 244.44  & 1.07 \\
     \end{tabular}
 	\captionof{table}[OGL Relative Speed]{Performance relative to C++ with Glew (slowdown, bigger is worse)}
     \label{table:relativespeedoglw}
@@ -30,7 +34,7 @@
 \begin{minipage}{\linewidth}
     \centering
     \includegraphics[width=0.9\linewidth]{graphics/juliabench.pdf}
-    \captionof{figure}[Julia Performance]{Julia's performance compared to other languages, taken from Julia's micro bench suite}
+    \captionof{figure}[Julia Performance]{Julia's performance compared to other languages, taken from Julia's micro bench suite \cite{JuliaBench}. Smaller is better, C performance = 1.0.}
     \label{fig:juliabench}
 \end{minipage}
 

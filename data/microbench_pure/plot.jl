@@ -14,6 +14,7 @@ benchmarks = benchmarks[benchmarks[:language].!= "c", :]
 benchmarks[:language] = setlevels!(benchmarks[:language], Dict{UTF8String,Any}(benchmarks[:language],
   [ lang == "javascript" ? "JavaScript" : ucfirst(lang) for lang in benchmarks[:language]]));
 
+# Couldn't find another way to move julia to the first place
 function movejulia(lang)
 	if lang == "Julia"
 		return "aJulia"
@@ -25,8 +26,7 @@ benchmarks = sort(benchmarks, cols=order(:language, by = movejulia), rev=true)
 jdata = benchmarks[benchmarks[:language].== "Julia", :]
 jmin = minimum(jdata[:time])
 jmax = maximum(jdata[:time])
-println(jmin)
-println(jmax)
+
 p = plot(benchmarks,
 	x = :language,
 	y = :time,

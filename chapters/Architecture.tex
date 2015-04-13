@@ -8,7 +8,7 @@ Certain design choices had to be made to guarantee this. As speed is the most co
 \begin{minipage}{\linewidth}
     \centering
     \includegraphics[width=0.9\linewidth]{graphics/julia_bench.pdf}
-    \captionof{figure}[Volume Visualization]{Languages speed relative to C (averaged benchmark results), plotted against the length of the needed code (Source in Appendix)}
+    \captionof{figure}[Volume Visualization]{Languages speed relative to C (averaged benchmark results), plotted against the length of the needed code (Source in Appendix).}
     \label{fig:juliabench}
 \end{minipage}
 
@@ -191,7 +191,7 @@ Romeo doesn't use this feature yet, but it makes GLFW a future proof choice.
 \begin{minipage}{\linewidth}
     \centering
     \includegraphics[width=0.9\linewidth]{graphics/architecture.pdf}
-    \captionof{figure}[Architecture]{Main modules used in Romeo and their relation (simplified)}
+    \captionof{figure}[Architecture]{Main modules used in Romeo and their relation (simplified).}
     \label{fig:architecture} 
 \end{minipage}
 
@@ -242,11 +242,7 @@ end
 \subsection{ModernGL}
 \ac{OpenGL} is implemented by the video card vendor and is shipped via the video driver, which comes in the form of a C-Library.
 The challenge is, to load the function pointer system and vendor independently. Also one further complication is, that depending on the platform, function pointer are only available after an \ac{OpenGL} context was created and may only be valid for this context. \cite{wgl}
-This problem is solved, by initializing a function pointer cache with null and as soon as the function is called the first time the real pointer gets loaded. This is suboptimal, as the pointer cannot be inlined and has to be checked for null.
-In the newest version of Julia, this can be implemented even more efficiently with staged functions. Staged functions can be thought of as a runtime macro.
-At the first call of the function code can be generated, which then will get compiled in time and replaces the function definition. 
-This makes the an \ac{OpenGL} function call nearly twice as fast.
-Like this, even C can be outperformed in terms of speed, as C doesn't have just in time compilation capabilities, so the function pointers can not be inlined like this. [benchmark pending, probably better in discussion though?]
+This problem is solved, by initializing a function pointer cache with null and as soon as the function is called the first time the real pointer gets loaded. 
 
 
 \subsection{GLAbstraction}
