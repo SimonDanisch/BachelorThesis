@@ -5,10 +5,35 @@
 \vspace{1em}
 \begin{minipage}{\linewidth}
     \centering
-    \includegraphics[width=0.7\linewidth]{graphics/glbench.pdf}
+    \includegraphics[width=0.9\linewidth]{graphics/glbench.pdf}
     \captionof{figure}[OpenGL Wrapper]{Different performance of OpenGL wrappers. The time for $10^7$ calls was measured 100 times for each function}
     \label{fig:openglwrapper}
 \end{minipage}
+
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{ l|l l l l }
+		\textbf{Function} 	& \textbf{Python} 	 & \textbf{Julia StagedFunction} \\
+		\hline
+		glBindBuffer 		& 64.43451128046956  & 1.0076524116498202 \\
+		glClearColor 		& 474.72103691693053 & 1.016643368808133 \\
+		glStringi 			& 244.4388472473576  & 1.0712755081185565 \\
+    \end{tabular}
+	\captionof{table}[OGL Relative Speed]{Performance relative to C++ with Glew (slowdown, bigger is worse)}
+    \label{table:relativespeedoglw}
+\end{table}
+
+\subsubsection{Julia}
+
+\vspace{1em}
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{graphics/juliabench.pdf}
+    \captionof{figure}[Julia Performance]{Julia's performance compared to other languages, taken from Julia's micro bench suite}
+    \label{fig:juliabench}
+\end{minipage}
+
 
 \subsection{Extendability Analysis}
 
