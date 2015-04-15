@@ -38,7 +38,6 @@ All language statistics have been made with cloc \cite{CLOC} the current master 
 \begin{table}[htbp]
     \centering
     \caption{Paraview, language statistic}
-    \sffamily 
     \begin{longtable}{ l|l|l|l|l }
         \hline
         \textbf{Language}              &\textbf{files} &\textbf{blank} &\textbf{comments} & \textbf{code} \\
@@ -65,7 +64,6 @@ All language statistics have been made with cloc \cite{CLOC} the current master 
         SUM:                           &5375         &168986         &238377         &830100\\
         \hline
     \end{longtable}
-    \normalfont
     \label{table:ParaviewStatistic}
 \end{table}
 
@@ -73,7 +71,7 @@ All language statistics have been made with cloc \cite{CLOC} the current master 
     \centering
     \caption{VTK, language statistic}
     \sffamily 
-    \begin{longtable}{ l|l|l|l|l }
+    \begin{longtable}{ l|c|c|c|c }
         \hline
         \textbf{Language}&      \textbf{files}&\textbf{blank}& \textbf{comment}& \textbf{code}\\
         \hline
@@ -126,10 +124,8 @@ All language statistics have been made with cloc \cite{CLOC} the current master 
 \section{Benchmark}
 
 \begin{table}[htb]
-\centering
-\caption{FE Implementation comparison}
-    \sffamily 
-    \begin{tabularx}{1.0\textwidth}{l | c | p{5cm}}
+    \centering
+    \begin{tabular}{l|c|c}
         \hline
         implementations         & Language  & Speed in Seconds \\
         \hline
@@ -139,9 +135,103 @@ All language statistics have been made with cloc \cite{CLOC} the current master 
         Comsol 4.4 with SPOOLES & Java      & 37    \\ 
         FinEALE                 & Matlab    & 810   \\
         \hline
-    \end{tabularx} 
-    \normalfont
+    \end{tabular}
+    \captionof{table}[FE Comparison]{FE Implementation comparison}
     \label{table:FEComparison}
+\end{table}
+
+
+
+\begin{table}[htbp]
+    \centering
+    \begin{longtable}{l|c|c|c}
+        \hline
+        Benchmark & LLVM35 & LLVM36 & Difference \\
+        \hline
+        Rodinia & 265.34 & 289.43 & 0.92 \\
+        Rodinia & 118.52 & 118.42 & 1.00 \\
+        FFTW & 6034.26 & 5961.52 & 0.99 \\
+        FFTW & 5988.02 & 5969.68 & 1.00 \\
+        FFTW & 4373.76 & 4349.26 & 0.99 \\
+        FFTW & 4405.26 & 4376.60 & 0.99 \\
+        Timed HMMer Search & 11.43 & 12.20 & 0.94 \\
+        Timed MAFFT Alignment & 4.69 & 4.69 & 1.00 \\
+        SciMark & 2008.04 & 1939.20 & 0.97 \\
+        SciMark & 556.37 & 537.07 & 0.97 \\
+        SciMark & 355.18 & 362.56 & 1.02 \\
+        SciMark & 2790.01 & 2452.42 & 0.88 \\
+        SciMark & 4843.14 & 4834.33 & 1.00 \\
+        SciMark & 1495.53 & 1509.64 & 1.01 \\
+        John The Ripper & 936.00 & 984.00 & 1.05 \\
+        John The Ripper & 5219000.00 & 5204000.00 & 1.00 \\
+        John The Ripper & 14767.00 & 14779.00 & 1.00 \\
+        Himeno Benchmark & 1572.74 & 1574.91 & 1.00 \\
+        Timed Apache Compilation & 23.56 & 25.34 & 0.93 \\
+        Timed ImageMagick Compilation & 19.13 & 20.67 & 0.93 \\
+        C-Ray & 12.13 & 12.73 & 0.95 \\
+        Smallpt & 148.00 & 145.00 & 1.02 \\
+        Stockfish & 3775.00 & 3812.00 & 0.99 \\
+        Bullet Physics Engine & 3.43 & 3.40 & 1.01 \\
+        Bullet Physics Engine & 5.85 & 5.95 & 0.98 \\
+        Bullet Physics Engine & 6.38 & 6.51 & 0.98 \\
+        Bullet Physics Engine & 5.99 & 5.68 & 1.05 \\
+        Bullet Physics Engine & 3.77 & 3.84 & 0.98 \\
+        Bullet Physics Engine & 1.25 & 1.23 & 1.02 \\
+        Bullet Physics Engine & 1.47 & 1.46 & 1.01 \\
+        FLAC Audio Encoding & 7.17 & 7.28 & 0.98 \\
+        LAME MP3 Encoding & 15.99 & 15.43 & 1.04 \\
+        Hierarchical INTegration & 240423016.30 & 264346632.10 & 1.10 \\
+        Apache Benchmark & 17643.10 & 19412.76 & 1.10 \\
+        \hline
+    \end{longtable}
+    \captionof{table}[\ac{LLVM} 3.5 compared to \ac{LLVM} 3.6]{
+        \ac{LLVM} 3.5 compared to \ac{LLVM} 3.6 in the Phoronix benchmark test suite\cite{LLVM35vsLLVM36}
+        }
+    \label{table:llvm35vsllvm36}
+\end{table}
+% latex table generated in Julia 0.3.5 by YTables
+% 2015-04-15T17:38:11 UTC
+\begin{table}[htbp]
+    \centering
+    \begin{longtable}{l|c|c|c}
+        \hline
+        Benchmark & GCC492 & LLVM35 & Difference \\
+        \hline
+        Timed MAFFT Alignment & 11.39 & 12.88 & 0.88 \\
+        Timed MrBayes Analysis & 25.44 & 26.28 & 0.97 \\
+        SciMark & 1179.35 & 1497.26 & 1.27 \\
+        SciMark & 564.44 & 603.62 & 1.07 \\
+        SciMark & 263.97 & 279.26 & 1.06 \\
+        SciMark & 1957.09 & 2070.94 & 1.06 \\
+        SciMark & 2046.08 & 2953.00 & 1.44 \\
+        SciMark & 1065.17 & 1579.54 & 1.48 \\
+        John The Ripper & 2382.00 & 926.00 & 0.39 \\
+        John The Ripper & 4296333.00 & 4925333.00 & 1.15 \\
+        Himeno Benchmark & 1618.11 & 1459.12 & 0.90 \\
+        ebizzy & 18192.00 & 17879.00 & 0.98 \\
+        Timed Apache Compilation & 55.65 & 38.61 & 1.44 \\
+        Timed PHP Compilation & 60.94 & 44.14 & 1.38 \\
+        C-Ray & 48.40 & 73.93 & 0.65 \\
+        Smallpt & 64.00 & 148.00 & 0.43 \\
+        Stockfish & 3933.00 & 4108.00 & 0.96 \\
+        Bullet Physics Engine & 5.75 & 6.08 & 0.95 \\
+        Bullet Physics Engine & 6.65 & 7.45 & 0.89 \\
+        Bullet Physics Engine & 5.76 & 6.59 & 0.87 \\
+        Bullet Physics Engine & 3.79 & 3.89 & 0.97 \\
+        Bullet Physics Engine & 1.23 & 1.31 & 0.94 \\
+        Bullet Physics Engine & 1.46 & 1.57 & 0.93 \\
+        FLAC Audio Encoding & 6.87 & 9.12 & 0.75 \\
+        LAME MP3 Encoding & 12.82 & 12.88 & 1.00 \\
+        Hierarchical INTegration & 206580965.69 & 237608504.18 & 1.15 \\
+        Apache Benchmark & 15429.86 & 15499.88 & 1.00 \\
+        FFTW & 6283.32 & 5443.12 & 0.87 \\
+        FFTW & 6053.00 & 5447.48 & 0.90 \\
+        FFTW & 4504.06 & 4260.74 & 0.95 \\
+        FFTW & 4091.20 & 4070.66 & 0.99 \\
+        \hline
+    \end{longtable}
+    \captionof{table}[\ac{gcc} 4.9.2 compared to \ac{LLVM} 3.5]{\ac{gcc} 4.9.2 compared to \ac{LLVM} 3.5 in the Phoronix benchmark test suite\cite{LLVMvsGCC}}
+    \label{table:llvmvsgcc}
 \end{table}
 
 

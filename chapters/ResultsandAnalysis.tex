@@ -63,6 +63,28 @@ The biggest remaining difference in this case is the garbage collector. I won't 
 The other remaining difference to other technologies will then be, the difference in between different compiler technologies.
 \ac{LLVM} biggest rival is \ac{gcc}. If C++ code compiled with \ac{gcc} is much faster than when it is compiled with \ac{LLVM}, Julia will also be much slower than the \ac{gcc} version.
 In order to investigate this, one last benchmark will be analyzed.
+This is the summary of the Phoronix benchmark suite run with \ac{gcc} and \ac{LLVM}:
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{l|c|c}
+    \hline
+    \textbf{Method} & \textbf{\ac{gcc} vs \ac{LLVM} 3.5} & \textbf{\ac{LLVM} 3.5 vs \ac{LLVM} 3.6} \\
+    \hline
+    mean & 0.99 & 0.99 \\
+    median & 0.97 & 1.00 \\
+    maximum & 1.48 & 1.10 \\
+    minimum & 0.39 & 0.88 \\
+    \hline
+  \end{tabular}
+    \captionof{table}[gcc vs llvm summary]{Summary of the Phoronix benchmark. Unit is speedup of LLVM, bigger is better. \cite{LLVM35vsLLVM36}\cite{LLVMvsGCC}\cite{Phoronix}}
+    \label{table:gccvsllvm}
+\end{table}
+
+The full tables can be found in the appendix under the table \ref{table:llvm35vsllvm36} and \ref{table:llvmvsgcc}.
+The results suggest, that \ac{LLVM} is well in the range of \ac{gcc}, even though that there can be big differences between the two.
+This is quite comforting, especially if you consider, that LLVM is much younger than gcc. With Apple betting on LLVM, it is to be expected that \ac{LLVM} will stay competitive, which means Julia should in theory stay competitive as well.
+
+
 
 \subsubsection{ModernGL}
 \vspace{1em}
@@ -104,7 +126,7 @@ From this benchmark can be concluded, that Julia offers a solid basis for an \ac
 
 \subsection{Extendability Analysis}
 
-The modular design of Romeo has proven to be very effective and the goal of reusability has already proven itself.
+The modular design of Romeo has proven to be very effective and the goal of re-usability has already proven itself.
 Most of the created modules are used independently by different people.
 GLVisualize is used by myself for two packages, namely GLPLot, a scientific plotting package for Julia and for a prototype of a file explorer. 
 It got forked by several users to create their own dynamic visualization packages.
@@ -146,9 +168,8 @@ Python 78.5	 JavaScript 15.1	 HTML 5.0	 Other 1.4
 
 \subsubsection{Paraview and VTK}
 
-
-
 This amounts to a total of 3.642.105 lines of code written in 29 languages.
+
 
 \subsubsection{Matlab}
 
