@@ -123,6 +123,23 @@ As all the OpenGL wrappers are pretty mature by now and bind to the same C libra
 Python does very bad here, but it must be noted that there are a lot of different Python distributions, where some of the promise to have better C interoperability. As this benchmarks goal is to show that Julia's ccall interface is comparable to a c function call from inside C++, the python options haven't been researched that thoroughly.
 From this benchmark can be concluded, that Julia offers a solid basis for an \ac{OpenGL} wrapper library.
 
+\subsubsection{Reactive}
+
+\vspace{1em}
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{graphics/react_bench.pdf}
+    \captionof{figure}[Reactive 1]{Reactives performance for high memory, simple event graph}
+    \label{fig:reactive1}
+\end{minipage}
+\vspace{1em}
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{graphics/react_bench2.pdf}
+    \captionof{figure}[Reactive 2]{Reactives performance for complicated graph, simple calculation}
+    \label{fig:reactive1}
+\end{minipage}
+
 
 \subsubsection{IJulia}
 First of all, IJulia uses ZMQ to bridge the web interface with the Julia instance.
