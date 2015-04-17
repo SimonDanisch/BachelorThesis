@@ -125,6 +125,12 @@ From this benchmark can be concluded, that Julia offers a solid basis for an \ac
 
 \subsubsection{Reactive}
 
+It is relatively hard to benchmark the used event system in real world scenarious as it's hard to find a baseline.
+One would have to rewrite Romeo with another Event system. Using other visulization libraries as a baseline is also difficult, as it is hard to isolate the performance of the event system.
+This is why we will compare an reactive event graph with its unrolled version.
+The unrolled version is basically just the functions in the callback graph executed one after the other. 
+This would yield optimal performance and could not be beaten by any event system, which means it is a good baseline.
+
 \vspace{1em}
 \begin{minipage}{\linewidth}
     \centering
@@ -133,14 +139,17 @@ From this benchmark can be concluded, that Julia offers a solid basis for an \ac
     \label{fig:reactive1}
 \end{minipage}
 \vspace{1em}
+This is the first version which manipulates a large array with five chained functions.
+As you can see, the performance difference is minimal in this case.
 \begin{minipage}{\linewidth}
     \centering
     \includegraphics[width=0.9\linewidth]{graphics/react_bench2.pdf}
     \captionof{figure}[Reactive 2]{Reactives performance for complicated graph, simple calculation}
     \label{fig:reactive1}
 \end{minipage}
-
-
+The other example does not look that favorable. 
+The graph has some branches but executes funtions on very small vectors (e.g Vector3).
+This seems to be a bad scenario for Reactive. This is bad for the overall performance of Romeo as this is what the Camera code mostly looks like.
 \subsubsection{IJulia}
 First of all, IJulia uses ZMQ to bridge the web interface with the Julia instance.
 ZMQ is a messaging system using different sockets for communication like inproc, IPC, TCP, TIPC and multicas.
