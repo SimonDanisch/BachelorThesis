@@ -200,6 +200,13 @@ push!(b, 5) # updates a, resulting in c being 22
 #prints: 25
 \end{lstlisting}
 
+Lifting a signal creates a callback, which gets called whenever the signal changes.
+There are more operations than lifting, like folding, merging, filtering and so on.
+With this, one can build up a complex tree of operators which will get applied to the origin signal.
+For the concrete case of Reactive, every signal carries around a list of children and parents.
+Each signal has a rank, so that you can build up a sorted heap with these information.
+So every time a signal is updated, the heap can be traversed and the functions get applied in the right order, updating all the values of the children.
+
 \subsection{GLFW}
 GLFW is a cross platform \ac{OpenGL} context and window creation library written in C.
 GLFW allows to register callbacks for a multitude of events like keyboard, mouse and window events.
@@ -230,44 +237,19 @@ For rendering GLVisualize relies on GLAbstraction, which defines a high-level in
 \ac{OpenGL} function loading is done by ModernGL, which keeps all the function and Enums definitions from \ac{OpenGL} with version higher than 3.0.
 The event management is handled by Reactive.
 
-\subsection{Reactive}
+\subsection{Event System}
 
 The event system was challenging to integrate for several reasons.
 First of all Reactive is a functional event system, while \ac{OpenGL} relies heavily on global states, which are two perpendicular concepts.
-Also, it doesn't allow to rearrange the event tree. In other words if you have two signal branches, there is no way to fuse them together.
-Finally, it doesn't reuse memory for signals. This means, if you have a signal for a large array every lift operation will allocate new memory for the array.
-Working around these shortcomings reduced the ease of use of the overall API.
-It has lead to two design choices which are sub optimal.
-First, the event system is decoupled from the render loop, to set the global \ac{OpenGL} states appropriately.
-This means, that the structure is as follows:
-\begin{lstlisting}
-#instead of:
-a = Input(data)
-b = lift(visualize, a)
-c = lift(render_opengl, b)
-# it is now:
-while window.open
-	render(b.value)
-end
-\end{lstlisting}
-The sub optimal performance of Reactive for large data has let to the following design:
-\begin{lstlisting}
-# instead of
-a = Input(large_array)
-b = lift(some_computation, a, some_timed_signal)
-c = lift(visualize, b)
-# it is now:
-a = visualize(large_array)
-lift(some_timed_signal) do time
-	b = some_computation(large_array, time)
-	update!(a, b) # write directly to the \ac{GPU} object
-end
-\end{lstlisting}
+Also, it doesn't allow to rearrange the event tree. 
+In other words, you can not create sub trees in advance and then fuse them together at run time.
 
 \subsection{ModernGL}
 \ac{OpenGL} is implemented by the video card vendor and is shipped via the video driver, which comes in the form of a C-Library.
-The challenge is, to load the function pointer system and vendor independently. Also one further complication is, that depending on the platform, function pointer are only available after an \ac{OpenGL} context was created and may only be valid for this context. \cite{wgl}
-This problem is solved, by initializing a function pointer cache with null and as soon as the function is called the first time the real pointer gets loaded. 
+The challenge is, to load the function pointers system and vendor independent. 
+Also one further complication is, that depending on the platform, function pointer are only available after an \ac{OpenGL} context was created and may only be valid for this context. \cite{wgl}
+This problem is solved, by initializing a function pointer cache with null and as soon as the function is called the first time the real pointer gets loaded.
+
 
 
 \subsection{GLAbstraction}
@@ -277,13 +259,12 @@ Additionally, it implements convenient functions to load shader code and it make
 Besides suplying an abstraction layer over \ac{OpenGL}, it also offers the linear algebra needed for the various 3D transformation and camera code.
 Building up on that, it defines a signal based perspective and orthographic camera type.
 
-
 \subsection{GLWindow}
-GLWindow is a lightweight wrapper around GLFW. GLFW is a C-Library, that offers cross-platform \ac{OpenGL} window and context creation and event handling.
-GLWindows is the abstraction layer, that builds upon a Julia wrapper of GLFW.
+GLWindow is a lightweight wrapper around GLFW.
 It mainly offers a screen type, which contains signals for all the different GLFW events (Mouse, Keyboard, etc...). 
-It also offers a hierarchical structure for nesting screens in each other. 
-All the screen areas are signals, which resize the screen area when they change. Like this, you can dynamically have the screen sizes depend on each other and react to resizing the window.
+It also offers a hierarchical structure for nesting screens. 
+All the screen areas are signals, which resize the screen area when they change. 
+This makes it simple to implement windows that react to changing screen areas or resized objects.
 
 
 
