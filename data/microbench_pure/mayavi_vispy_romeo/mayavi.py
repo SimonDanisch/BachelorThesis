@@ -5,9 +5,9 @@ def test_surf():
     """Test surf on regularly spaced co-ordinates like MayaVi."""
     def f(x, y):
         sin, cos = numpy.sin, numpy.cos
-        return sin(x + y) + sin(2 * x - y) + cos(3 * x + 4 * y)
+        return sin(x/50.0)*sin(y/50.0)/3.0
 
-    x, y = numpy.mgrid[-7.:7.05:0.1, -5.:5.05:0.05]
+    x, y = numpy.mgrid[1:1024, 1:1024]
     s = surf(x, y, f)
     #cs = contour_surf(x, y, f, contour_z=0)
     return s
