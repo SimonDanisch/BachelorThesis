@@ -270,15 +270,24 @@ This makes it simple to implement windows that react to changing screen areas or
 
 \subsection{GLVisualize}
 GLVisualize implements the main functionality of this library.
-It offers rendering of different primitives. GLVisiualize is designed with two intentions in mind: supplying a very simple interface consisting of just two functions and transport the data with as little conversions and copies to the GPU.
-This allows to manipulate the data directly on the GPU, which is the fastest way to update dynamic data.
-The interface to create visualizations is very simple and only consists of two functions:
+It structure is quite simple. 
+It relies as much as it can on common Julia datatypes and creates specialized vizualisations for them via dispatch.
+So instead of offering differently named functions for different visualizations, there is just one function with a lot of methods for different types.
+This has two advantages.
+First, it makes it very easy to use for visual debugging, as any value can be displayed immidiately without any user interaction.
+Secondly, the user doesn't have to remember or lookup the function name, as long as there is a default visualization for the type he is working with.
+The next design goal was to make this fit for dynamic data, which resultet in relying on as little transformation of the data as possible and directly transfering it to the GPU.
+Depending on the complexity of the visualization, this means the visualization can be updated with as little overhead as possible.
+
+The interface to create visualizations is very simple and only consists of three functions:
 \begin{lstlisting}
-visualization 		  = visualize(data::T, style=Style{:default}; parameters...)
-visualization, signal = edit(     data::T, style=Style{:default}; parameters...)
+Dict{Symbol, Any}     = visualization_defaults(data::T, style::Style) # returns a dictionary of paramers
+RenderObject 		  = visualize(data::T, style=Style{:default}; parameters...) # returns an object which can be directly rendered
+RenderObject, Signal  = edit(     data::T, style=Style{:default}; parameters...) # returns an RenderObject and signal which outputs the changed values
 \end{lstlisting}
 
-With this, the following data can be visualized:
+With this simple interface, the following data can be visualized:
+
 \begin{itemize}
 	\item Text (Vector of Glyphs)
 	\item Height fields with different primitives (Matrix of height values)
@@ -288,16 +297,16 @@ With this, the following data can be visualized:
 	\item Volumes (3D Array of intensities)
 	\item Particles (Vector of Points)
 	\item Vector Fields (3D array of directional Vectors)
-	\item Colors (Single Color values)
+    \item Colors (Single Color values)
 \end{itemize}
 
-These can be integrated into the same scene. For all of these, it is possible to change their values interactively.
-The edit function is making it easier to edit the values of the data.
+All of these can be integrated into the same scene and it is possible to change their parameters interactively.
+These interactions can be purely programatically, or via the widgets from the edit function.
 It calls the visualize function to render the data type and then registers appropriate events to update the data.
-Take a look at the text edit function. 
+Take a look at the text edit function.
 It first uploads the text to video memory and sets up the functionality to visualize it, and than updates the text data on the GPU according to the cursor position and keyboard input.
 
-Up to now, there is only an edit function available for text fields, colors, numbers, vectors and matrices.
+Up to now, there is an edit function available for strings, colors, numbers, vectors and matrices.
 
 
 \subsubsection{Romeo}
