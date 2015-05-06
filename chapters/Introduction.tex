@@ -26,7 +26,18 @@ At the current state, the speed of these languages suffer from the high level of
 This leads us straight to the contributation of this thesis.
 
 \subsection{Contribution}
-The contribution of this thesis is an interactive visualization library tied to a fast scientific computing language, while entirely written in the same language.
+The goal is to make it easier to understand complex algorithms and data.
+For that a fast visualization library is needed, which is optimized for dynamic data.
+It needs to be simple to use, as it would be no use if all your time is spend on visualizing the problem while this time could be used for understanding the problem better.
+Visualising data that changes over time is very sensitive to latency. If you can not calculate every value in time for a single frame, you either need to skip frames or delay them.
+This leads to stutters, which, depending on the size, can be unpleasant or completely corrupt the work-flow.
+Which makes it important, that every routine that is used in the visualization pipeline is as fast as possible.
+This is only possible, if everything is written in a fast language with as little conversations and memory transfers as possible. If the link between two languages can not be guaranteed to be fast, from this also follows, that everything should be written in one language.
+This has been achieved by writing Romeo in Julia.
+As the chosen language is also a high-level language and some effort was put into creating a concise architecture, a further contributation will be, that the development cycles can be very short and the library is easy to extend.
+Another contribution is the interactivity of the visualizations via simple widgets, which allow you to change the apperance of large datasets without any stutters.
+Also due to deep language integration and a design that gives every object a default visualization, it can be used to visualy debug your code or interactively write your program while updating your visualization.
+
 
 \subsection{Field of Research and Problem}
 
@@ -41,6 +52,7 @@ The contribution of this thesis is an interactive visualization library tied to 
 
 %Scientific computing: visual debugging, interactive programming, high performance
 %First rough sketch:
+It is not easy to pin down the correct research field of this thesis.
 The general research field is making the capabilities of computers more accessible and understandable.
 This is a very broad definition and there are many different ways of making it easier to use a computer. 
 One of the first big steps was to move from coding in binary to assembly. 
@@ -54,7 +66,7 @@ These efforts slowly pay off and there is a whole new range of languages, that c
 This is a relatively recent trend and hasn't fully arrived in scientific computing yet, as most languages still have their core implemented in another fast language, which makes it hard to extend them for non professional users.
 This is especially true for high performance visualization libraries, which mostly use C++ at their performance critical core.
 To leverage the extensibility of these libraries, this bachelor thesis implements a visualization library in a fast high level language.
-Visualizations where chosen as they are a crucial building blocks for many fields in scientific computing.
+Visualizations where chosen as they are a crucial building blocks for many fields in scientific computing and they can make it easier to better understand a problem. 
 
 Consider the following function $f(x,y,z)=\sin(\frac{x}{15})+\sin(\frac{y}{15})+\sin(\frac{z}{15})$, which describes a 3D volume mathematically. 
 This is a simple function, which is already not that easy to interpret. In figure \ref{fig:volume}, you can see different visualizations of f. 
@@ -70,5 +82,3 @@ The researcher would need to read in the 3D object he wants to analyze, have an 
 
 \subsection{Outlook}
 %Structure of BA and a few worts on the results 
-
-

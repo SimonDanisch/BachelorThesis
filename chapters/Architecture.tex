@@ -14,12 +14,13 @@ Certain design choices had to be made to guarantee this. As speed is the most co
 
 \subsubsection{Speed}
 Speed is mainly a usability factor. It's a factor, that can make a software unusable, or render it unproductive. Because of this, speed has taken a high priority in this thesis. As general coding productivity is also a concern, this thesis is set on using a high level language.
-Historically, these two demands can't be both satisfied.
+Historically, these two demands can't be satisfied both.
 How to achieve state of the art speed with a high level language is an ongoing research and basically the holy grail of language design.
 Luckily, there is a new programming language namely Julia building upon the compiler infrastructure \ac{LLVM}, promising a concise, high-level programming style, while approaching C-performance.
-This is well illustrated in figure \ref{fig:juliabench}. Code length is an ambiguous measure for conciseness, but if the code is similarly refactored it is a good indicator of how many lines of code need to be written to achieve the same goal.
+This is well illustrated in figure \ref{fig:juliabench}. Code length is an ambiguous measure for conciseness, but if the code is similarly refactored it is a good indicator of how many lines of code are needed to achieve the same goal.
 \ac{LLVM} is an impressive compiler infrastructure, which has front ends for different languages and back-ends for different chip architectures. 
-A language designer has the task, to emit \ac{LLVM} \ac{IR}, which than gets just in time compiled and optimized to the architecture resulting in fast machine code.
+%A language designer has the task, to create an abstract syntax tree, which can be feeded to ac{LLVM}. There it gets %converted to LLVM IR, which then can be heavily optimized. Every language that can be converted to LLVM IR can be combined %at this level, going through the same optimizations in the end. This is yields superiour language interfacing, as inlining %and other optimizations can be done over the boundary of one language.
+
 \ac{LLVM}'s concept is effective, as you can accumulate state of the art optimizations in one place, making them accessible to many languages, while being able to compile to different platforms. There are x86, ARM, \ac{OpenCL} and CUDA back ends. While Julia doesn't support them all, it will hopefully be possible in the future. 
 \ac{LLVM} is also used by Clang, the C/C++ front end for \ac{LLVM} rivaling \ac{gcc} and it is used by Apple's programming language Swift. 
 This makes \ac{LLVM} a solid basis for a programming language, as these are highly successful projects guaranteeing \ac{LLVM} further prospering of the technology.
@@ -29,7 +30,7 @@ To get high performant 3D graphics rendering, there are on the first sight a lot
 If you start to take the previous demands into account, the options shrink down considerably, though.
 The visualization library should be implemented in one high level language, which can be used for scientific computing and has state of the art speed. At this point, there are close to zero libraries left. As you can see in figure \ref{fig:juliabench}, Matlab, Python and R disqualify, as they are too slow. JavaScript, Java, Go and Lua are missing a scientific background and the others are too low level for the described goals.
 This leaves only Julia, but in Julia there weren't any 3D libraries available, which means that one has to start from scratch.
-There are only a couple of GPU accelerated low-level libraries available, namely Khrono's \ac{OpenGL}, Microsoft's DirectX, Apple's Metal and AMD's Mantel, which are offering basically the same functionality. As only \ac{OpenGL} is truly cross-platform, this leaves only \ac{OpenGL} as an option.
+There are only a couple of GPU accelerated low-level libraries available, namely Khrono's \ac{OpenGL}, Microsoft's DirectX, Apple's Metal and AMD's Mantel, which are offering basically the same functionality. As only \ac{OpenGL} is truly cross-platform, this leaves \ac{OpenGL} as an option.
 So for the purpose of high speed visualizations, \ac{OpenGL} was wrapped with a high-level interface written in Julia. This leaves us with one binary dependency not written in Julia, namely the video driver, which implements \ac{OpenGL}.
 
 Measurement of success is pretty straight forward, but the devil is in the detail.
@@ -64,25 +65,16 @@ We already dealt with the lowest relevant abstraction: the choice of programming
 The next level of abstraction is the general architecture of the modules, which has been discussed previously. 
 This chapter is about the API design choices that have been made.
 The first API is the \ac{OpenGL} layer. The philosophy is to make the wrapper for native libraries as thin and reusable as possible and an one to one mapping of the library itself.
-This guarantees re-usability for others, as they might be used to work only with the low-level library and they might disagree with any higher-level abstraction.
+This guarantees re-usability for others, as they might be used to work only with the low-level library or they might disagree with some higher-level abstraction and prefer to write their own.
 Over this sits an abstraction layer needed to simplify the work with \ac{OpenGL}.
 With this abstraction, the actual visualization library is implemented.
 APIs for visualization libraries are very difficult to realize, as there are endless ways of visualizing the same data.
 The design choice here was to use Julia's rich type system, to better describe the data. 
-Julia makes this possible, as you can name the same data differently, without loosing performance.
-So you can have a unit like meter represented as a native floating point type and have the visualization specialize to this.
-Like this you can have a single function e.g. \textit{visualize}, that does create a default visualization for different data types.
-It is parameterizable and can be overloaded for different styles.
-So the signature looks like this in the end:
-\begin{lstlisting}
-visualization{data} = visualize(data, style=default, parameters=default)
-\end{lstlisting}
-The same principle is used for editing data, so there is also:
-\begin{lstlisting}
-visualization{data}, signal{data} = edit(data, style=default, parameters=default)
-\end{lstlisting}
+Julia makes this possible, as you can create different types for the same data, without loosing performance.
+So you can have a unit like meters represented as a native floating point type and have the visualization specialize to this.
+Like this you can have a single function e.g. \textit{visualize}, that does create a default visualization for different data types. So instead of manually passing additional information to the visualization function, it is instead coded in the type itself.
 Together with the event system which consists of signals, it is possible to edit and visualize rich data over a simple interface, which is perfect for visual debugging, as it is always the same function call applied to the data and no further user interaction is needed.
-It is also easy to extend, as the user just has to overload the function, with a custom style and or parameters.
+It is also easy to extend, as the user just has to overload the function, with a custom style and optional key word arguments.
 Finally, there are also graphical user interfaces developed for this thesis. As also optimizing them is out of the scope of this thesis, they are kept very simple.
 The measurement of success is again relatively difficult to do. (I need to think this over)
 
@@ -101,7 +93,7 @@ Composite types, which are comparable to C-Structs, parametric composite types, 
 While the first three are all concrete types, abstract types can be used to build a type hierarchy.
 Every concrete type can inherit from one abstract type, while abstract types can also inherit from abstract types.
 Bit types are just immutable, stack allocated memory chunks, usable for implementing numbers.
-So you can build type hierarchies like this:
+You can build type hierarchies like this:
 \begin{lstlisting}
 abstract Number
 abstract FloatingPoint{Size} <: Number # inherit from Number
@@ -118,17 +110,19 @@ function foo(x)
     println("overloading foo with a new unspecific signature")
 end
 \end{lstlisting}
-What will happen at runtime is, that Julia compiles functions specialized on it's parameters and with the results overloads the original function.
-So foo will originally be overloaded with two methods. 
-Now if you call foo with one Float32 argument, a new method will be added specialized to Float32.
+What will happen at runtime is, that Julia compiles the function specialized on its arguments which results in overloading the function with the specific arguments.
+So in the previous example, foo will originally be overloaded with two methods. 
+Now, if you call foo with one Float32 argument, a new method will be added specialized to Float32.
 Like this, if the function does not access non constant global values, all types inside the function will be known at call time.
-This allows Julia to than statically compile the function body, propagating the type information down the call-tree.
+This allows Julia to statically compile the function body, while propagating the type information down the call-tree.
 
-This gives Julia a more functional feel, although that you can mimic object oriented programming fairly well.
-Functions are also easy to pass around. They can be bound to variables and can then be called like normal functions via the variable name.
-One of the most crucial features is the very simple, overhead less C-Interface. 
-Thanks to the binary compatibility of LLVM's emitted assembly, a C function call to a shared library inside Julia has the same overhead as it would be from inside C\cite{CCALL}. 
-This is perfect for dealing with low-level libraries like \ac{OpenGL} and \ac{OpenCL}.
+With multiple dispatch, Julia is definitely a functional oriented language. But there are also ways to give Julia a more object oriented feel.
+Functions are easy to pass around. They can be bound to variables and can then be called like normal functions via the variable name. This implies that functions can also be bound to objects. 
+But the object still needs to be passed to function via the arguments, so there is no self reference available in Julia.
+
+%Another of the most crucial features is the very simple, overhead less C-Interface. 
+%Thanks to the binary compatibility of LLVM's emitted assembly, a C function call to a shared library inside Julia has the %same overhead as it would be from inside C\cite{CCALL}. 
+%This is perfect for dealing with low-level libraries like \ac{OpenGL} and \ac{OpenCL}.
 
 
 \subsection{\ac{OpenGL}}
@@ -165,7 +159,6 @@ In newer API's general compute operations are available, making it possible to c
 Finally the fragment shader rasterizes the data to the screen.
 Here is a simple minimal example for a program rendering some vertex data with a flat color to the screen.
 
-
 \begin{lstlisting}
 //Vertex Shader
 in vec3 vertex; // vertex fed into the shader via a buffer
@@ -190,13 +183,13 @@ Signals can be transformed via arbitrary functions which in turn create a new si
 This simple principle leads too a surprisingly simple yet effective way of programming event based applications.
 
 \begin{lstlisting}
-a = Input(40) # an integer signal.
-b = Input(2) # an integer signal.
-c = lift(+, a,b) # creates a new signal with the callback plus. Equal to c = a+b
-lift(println, c) # executes println, every time that c is updated. 
-push!(a, 20) # updates a, resulting in c being 22
+a = Input(40)       # an integer signal.
+b = Input(2)        # an integer signal.
+c = lift(+, a,b)    # creates a new signal with the callback plus. Equal to c = a+b
+lift(println, c)    # executes println, every time that c is updated. 
+push!(a, 20)        # updates a, resulting in c being 22
 #prints: 22
-push!(b, 5) # updates a, resulting in c being 22
+push!(b, 5)         # updates a, resulting in c being 22
 #prints: 25
 \end{lstlisting}
 
@@ -204,7 +197,7 @@ Lifting a signal creates a callback, which gets called whenever the signal chang
 There are more operations than lifting, like folding, merging, filtering and so on.
 With this, one can build up a complex tree of operators which will get applied to the origin signal.
 For the concrete case of Reactive, every signal carries around a list of children and parents.
-Each signal has a rank, so that you can build up a sorted heap with these information.
+Each signal has a rank, in order to build up a sorted heap with these information.
 So every time a signal is updated, the heap can be traversed and the functions get applied in the right order, updating all the values of the children.
 
 \subsection{GLFW}
@@ -256,27 +249,26 @@ This problem is solved, by initializing a function pointer cache with null and a
 GLAbstraction is the abstraction layer over ModernGL.
 It wraps \ac{OpenGL} primitives like Buffers and Textures in Julia objects and hooks them up to Julia's garbage collector.
 Additionally, it implements convenient functions to load shader code and it makes it easy to feed the shader with the correct data types.
-Besides suplying an abstraction layer over \ac{OpenGL}, it also offers the linear algebra needed for the various 3D transformation and camera code.
+Besides supplying an abstraction layer over \ac{OpenGL}, it also offers the linear algebra needed for the various 3D transformation and camera code.
 Building up on that, it defines a signal based perspective and orthographic camera type.
 
 \subsection{GLWindow}
 GLWindow is a lightweight wrapper around GLFW.
 It mainly offers a screen type, which contains signals for all the different GLFW events (Mouse, Keyboard, etc...). 
 It also offers a hierarchical structure for nesting screens. 
-All the screen areas are signals, which resize the screen area when they change. 
+All the screen areas are signals, which result in the resizing the screen area when they change. 
 This makes it simple to implement windows that react to changing screen areas or resized objects.
-
 
 
 \subsection{GLVisualize}
 GLVisualize implements the main functionality of this library.
 It structure is quite simple. 
-It relies as much as it can on common Julia datatypes and creates specialized vizualisations for them via dispatch.
+It relies as much as it can on common Julia data types and creates specialized visualizations for them via dispatch.
 So instead of offering differently named functions for different visualizations, there is just one function with a lot of methods for different types.
 This has two advantages.
-First, it makes it very easy to use for visual debugging, as any value can be displayed immidiately without any user interaction.
+First, it makes it very easy to use for visual debugging, as any value can be displayed immediately without any user interaction.
 Secondly, the user doesn't have to remember or lookup the function name, as long as there is a default visualization for the type he is working with.
-The next design goal was to make this fit for dynamic data, which resultet in relying on as little transformation of the data as possible and directly transfering it to the GPU.
+The next design goal was to make this fit for dynamic data, which resulted in relying on as little transformation of the data as possible and directly transferring it to the GPU.
 Depending on the complexity of the visualization, this means the visualization can be updated with as little overhead as possible.
 
 The interface to create visualizations is very simple and only consists of three functions:
@@ -301,7 +293,7 @@ With this simple interface, the following data can be visualized:
 \end{itemize}
 
 All of these can be integrated into the same scene and it is possible to change their parameters interactively.
-These interactions can be purely programatically, or via the widgets from the edit function.
+These interactions can be purely programmatically, or via the widgets from the edit function.
 It calls the visualize function to render the data type and then registers appropriate events to update the data.
 Take a look at the text edit function.
 It first uploads the text to video memory and sets up the functionality to visualize it, and than updates the text data on the GPU according to the cursor position and keyboard input.
