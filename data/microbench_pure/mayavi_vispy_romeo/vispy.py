@@ -1,71 +1,54 @@
-"""An example of how to generate a 3D structured points dataset
-using numpy arrays.  Also shown is a way to visualize this data with
-the mayavi2 application.
-
-The script can be run like so::
-
-  $ mayavi2 -x structured_points3d.py
-
-Alternatively, it can be run as::
-
-  $ python structured_points3d.py
-
+# -*- coding: utf-8 -*-
+# vispy: gallery 30
+# -----------------------------------------------------------------------------
+# Copyright (c) 2014, Vispy Development Team. All Rights Reserved.
+# Distributed under the (new) BSD License. See LICENSE.txt for more info.
+# -----------------------------------------------------------------------------
 """
-# Author: Prabhu Ramachandran <prabhu at aero dot iitb dot ac dot in>
-# Copyright (c) 2007, Enthought, Inc.
-# License: BSD style.
+This example demonstrates the use of the SurfacePlot visual.
+"""
 
-from tvtk.api import tvtk
-from tvtk.array_handler import get_vtk_array_type
-from tvtk.common import is_old_pipeline
-from numpy import array, ogrid, sin, ravel
-from mayavi.scripts import mayavi2
+import sys
+import numpy as np
 
-# Make the data.
-dims = array((128, 128, 128))
-vol = array((-5., 5, -5, 5, -5, 5))
-origin = vol[::2]
-spacing = (vol[1::2] - origin)/(dims -1)
-xmin, xmax, ymin, ymax, zmin, zmax = vol
-x, y, z = ogrid[xmin:xmax:dims[0]*1j,
-                ymin:ymax:dims[1]*1j,
-                zmin:zmax:dims[2]*1j]
-x, y, z = [t.astype('f') for t in (x, y, z)]
-scalars = sin(x*y*z)/(x*y*z)
+from vispy import app, scene
+from vispy.util.filter import gaussian_filter
 
-# Make the tvtk dataset.
-spoints = tvtk.StructuredPoints(origin=origin, spacing=spacing,
-                                dimensions=dims)
-# The copy makes the data contiguous and the transpose makes it
-# suitable for display via tvtk.  Note that it is not necessary to
-# make the data contiguous since in that case the array is copied
-# internally.
-s = scalars.transpose().copy()
-spoints.point_data.scalars = ravel(s)
-spoints.point_data.scalars.name = 'scalars'
+canvas = scene.SceneCanvas(keys='interactive')
+view = canvas.central_widget.add_view()
+view.camera = scene.TurntableCamera(up='z')
 
-# This is needed in slightly older versions of VTK (like the 5.0.2
-# release) to prevent a segfault.  VTK does not detect the correct
-# data type.
-if is_old_pipeline():
-    spoints.scalar_type = get_vtk_array_type(s.dtype)
+# Simple surface plot example
+# x, y values are not specified, so assumed to be 0:50
+N = 100
 
-# Uncomment the next two lines to save the dataset to a VTK XML file.
-#w = tvtk.XMLImageDataWriter(input=spoints, file_name='spoints3d.vti')
-#w.write()
+i = np.float32(1.0)
+z = np.fromfunction(lambda x, y: np.sin(np.sqrt((((x+1/N)-0.5)*i)*(((x+1/N)-0.5)*i) + (((y+1/N)-0.5)*i)*(((y+1/N)-0.5)*i)))/np.sqrt((((x+1/N)-0.5)*i)*(((x+1/N)-0.5)*i) + (((y+1/N)-0.5)*i)*(((y+1/N)-0.5)*i)), (N, N), dtype=np.float32)
 
-# Now view the data.
-@mayavi2.standalone
-def view():
-    from mayavi.sources.vtk_data_source import VTKDataSource
-    from mayavi.modules.outline import Outline
-    from mayavi.modules.image_plane_widget import ImagePlaneWidget
+p1 = scene.visuals.SurfacePlot(z=z, color=(0.5, 0.5, 1, 1), shading='smooth')
+p1.transform = scene.transforms.AffineTransform()
+p1.transform.scale([1/49., 1/49., 1.0])
+p1.transform.translate([-0.5, -0.5, 0])
 
-    mayavi.new_scene()
-    src = VTKDataSource(data = spoints)
-    mayavi.add_source(src)
-    mayavi.add_module(Outline())
-    mayavi.add_module(ImagePlaneWidget())
+view.add(p1)
+
+# Add a 3D axis to keep us oriented
+axis = scene.visuals.XYZAxis(parent=view.scene)
+i = np.float32(1.0)
+def update(ev):
+	global p1
+	global i
+	i += np.float32(1.0)
+	p1.set_data(z=np.fromfunction(lambda x, y: np.sin(np.sqrt((((x/N)-0.5)*i)*(((x/N)-0.5)*i) + (((y/N)-0.5)*i)*(((y/N)-0.5)*i)))/np.sqrt((((x/N)-0.5)*i)*(((x/N)-0.5)*i) + (((y/N)-0.5)*i)*(((y/N)-0.5)*i)), (N, N), dtype=np.float32))
+
+timer = app.Timer()
+timer.connect(update)
+timer.start(0)
+
+
 
 if __name__ == '__main__':
-    view()
+    canvas.show()
+    p1.set_data(z = gaussian_filter(np.random.normal(size=(100, 100)), (1, 1)) * 10)
+    if sys.flags.interactive == 0:
+        app.run()

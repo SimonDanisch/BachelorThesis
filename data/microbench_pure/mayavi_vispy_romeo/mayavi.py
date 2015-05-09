@@ -1,22 +1,22 @@
 import numpy as np
 import mayavi.mlab as mlab
-import  moviepy.editor as mpy
 
-duration= 2 # duration of the animation in seconds (it will loop)
 
-# MAKE A FIGURE WITH MAYAVI
+N = 100
+i = 1.0
+z = np.fromfunction(lambda x, y: np.sin(np.sqrt((((x+1/N)-0.5)*i)*(((x+1/N)-0.5)*i) + (((y+1/N)-0.5)*i)*(((y+1/N)-0.5)*i)))/np.sqrt((((x+1/N)-0.5)*i)*(((x+1/N)-0.5)*i) + (((y+1/N)-0.5)*i)*(((y+1/N)-0.5)*i)), (N, N), dtype=np.float32)
 
-fig_myv = mlab.figure(size=(220,220), bgcolor=(1,1,1))
-X, Y = np.linspace(-2,2,200), np.linspace(-2,2,200)
-XX, YY = np.meshgrid(X,Y)
-ZZ = lambda d: np.sinc(XX**2+YY**2)+np.sin(XX+d)
+s = mlab.surf(z, warp_scale="auto")
 
-# ANIMATE THE FIGURE WITH MOVIEPY, WRITE AN ANIMATED GIF
+@mlab.animate(delay=10)
+def anim():
+    f = mlab.gcf()
+    i = 1.0
+    while True:
+        s.mlab_source.scalars = np.fromfunction(lambda x, y: np.sin(np.sqrt((((x/N)-0.5)*i)*(((x/N)-0.5)*i) + (((y/N)-0.5)*i)*(((y/N)-0.5)*i)))/np.sqrt((((x/N)-0.5)*i)*(((x/N)-0.5)*i) + (((y/N)-0.5)*i)*(((y/N)-0.5)*i)), (N, N), dtype=np.float32)
+        i = i+1.0
+        yield
 
-def make_frame(t):
-    mlab.clf() # clear the figure (to reset the colors)
-    mlab.mesh(YY,XX,ZZ(2*np.pi*t/duration), figure=fig_myv)
-    return mlab.screenshot(antialiased=True)
 
-animation = mpy.VideoClip(make_frame, duration=duration)
-animation.write_gif("sinc.gif", fps=20)
+anim()
+mlab.show()
