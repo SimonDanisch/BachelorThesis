@@ -28,8 +28,8 @@ Actually, it even comes second to C-speed with no other language being that clos
 This is a very promising first look at Julia, but it should be noted, that these benchmarks are written by the Julia core team.
 So it is not guaranteed, that there is not a bias favoring Julia in these Benchmarks.
 There is another benchmark comparing C++, Julia and F#, which was created by Palladium Consulting which should not have any interest in favoring one of the languages.
-They compare in a blog post series \cite{JuliaFSCpp} the performance of C++, Julia and F# for an IBM/370 floating point to IEEE floating point conversion algorithm.
-F# comes out last with 748.275 ms, than Julia with 483.769 ms and finally C++ with 463.474 ms. 
+They compare in a blog post series \cite{JuliaFSCpp} the performance of C++, Julia and F\# for an IBM/370 floating point to IEEE floating point conversion algorithm.
+F\# comes out last with 748.275 ms, than Julia with 483.769 ms and finally C++ with 463.474 ms. 
 At the citation time, the Author had updated the C++ version to achieve 388.668 ms. 
 This will be ignored, as it can not be said, if the other versions could not have been made faster with some more work as well.
 
@@ -56,14 +56,17 @@ It is Finite Element solver, which is an often used algorithm in material resear
 These are remarkable results, considering the small effort needed to program this in Julia, while being able to compete with established FEM solvers written in C++.
 
 
-This list could go on an and, but it is more constructive, to find out Julia's limit and analyze the reasons for Julia being so fast.
+This list could go on, but it is more constructive, to find out Julia's limits analytically.
 As already mentioned, Julia is statically compiled at runtime. This means, as long as all types can be inferred, Julia will have in the most cases identical performance to C++.
-The biggest remaining difference in this case is the garbage collector. I won't go much into detail here, as Julia's garbage collector is pretty young and only the future will show how big the actual difference will be. As seen in the benchmarks, it does not necessarily introduce big slowdowns. But there have been cases on the Julia mailing list, where large parts of code had to be changed in order to avoid that the garbage collector is the biggest bottle neck.
+The biggest remaining difference in this case is the garbage collection. Julia 0.3 has a mark and sweep garbage collector, while Julia 0.4 has an iterative mark and sweep garbage collector.
+As seen in the benchmarks, it does not necessarily introduce big slowdowns. 
+But there are issues, where garbage collection introduces a significant slow down\cite{ReadDlmGC}.
+I won't go much into detail here. Julia's garbage collector is very young and only the future will show how big the actual differences will be.
 
-The other remaining difference to other technologies will then be, the difference in between different compiler technologies.
-\ac{LLVM} biggest rival is \ac{gcc}. If C++ code compiled with \ac{gcc} is much faster than when it is compiled with \ac{LLVM}, Julia will also be much slower than the \ac{gcc} version.
-In order to investigate this, one last benchmark will be analyzed.
-This is the summary of the Phoronix benchmark suite run with \ac{gcc} and \ac{LLVM}:
+Another big difference is the difference in between different compiler technologies.
+\ac{LLVM}'s biggest rival is \ac{gcc}. If C++ code that is compiled with \ac{gcc} is much faster than the same code compiled with \ac{LLVM}, the \ac{gcc} version will also be faster as a comparable Julia program.
+In order to investigate the impact of this, one last benchmark will be analyzed.
+This is a summary of some articles posted on Phoronix, which benchmarked \ac{gcc} 4.92 against \ac{LLVM} 3.5 and 3.6:
 \begin{table}[ht]
   \centering
   \begin{tabular}{l|c|c}
@@ -82,8 +85,8 @@ This is the summary of the Phoronix benchmark suite run with \ac{gcc} and \ac{LL
 
 The full tables can be found in the appendix under the table \ref{table:llvm35vsllvm36} and \ref{table:llvmvsgcc}.
 The results suggest, that \ac{LLVM} is well in the range of \ac{gcc}, even though that there can be big differences between the two.
-This is quite comforting, especially if you consider, that LLVM is much younger than gcc. With Apple betting on LLVM, it is to be expected that \ac{LLVM} will stay competitive, which means Julia should in theory stay competitive as well.
-
+This is quite comforting, especially if you consider, that LLVM is much younger than gcc. 
+With big companies like Apple, Google\cite{GoogleAppleLLVM} and Microsoft\cite{MicrosoftLLVM} being invested in LLVM, it is to be expected that \ac{LLVM} will stay competitive, which means Julia should in theory stay competitive as well.
 
 
 \subsubsection{ModernGL}
@@ -110,25 +113,29 @@ This is quite comforting, especially if you consider, that LLVM is much younger 
 
 The OpenGL function loader from ModernGL has undergone some changes over the time. 
 Starting with a very simple solution, there have been pull requests to include better methods for the functional loading.
-The current approach wasn't written by me but by the Github user aaalexandrov.
-I have experimented with a pretty new Julia feature, namely staged functions, for function loading which in principle should yield the best performance as it directly inlines the function pointer.
-ModernGL gets benchmarked against Glew (with C++), PyOpenGL (with Python). From ModernGL itself, aaalexandrov's approach and the staged function approach are benchmarked.
-These libraries where chosen by popularity, which was determined via Google search rank and development status and ranking on Github.
+The current approach was not written by myself, but by the Github user aaalexandrov.
+Before aaalexandrov's approach, the fastest approach written for this thesis would have used a pretty new Julia feature, named staged functions. 
+They should in principle yield the best performance as it directly inlines the function pointer when called the first time.
+Staged functions only work with the newest Julia build, which is why aaalexandrov's approach is favorable.
+
+ModernGL gets benchmarked against Glew (with C++), PyOpenGL (with Python). From ModernGL itself, aaalexandrov's approach and the staged function approach gets benchmarked.
+These libraries where chosen by popularity, which was determined via Google search rank, development status and ranking on Github.
 Like this, it should be guaranteed that they are the representative wrappers for the language.
 
 The results can be seen in figure \ref{fig:openglwrapper}.
 ModernGL seems to do pretty well compared to C++ and python does very badly, with being roughly 400 times slower for glClearColor.
-Julia in contrast stays pretty much offers the same speed as C++ as can be seen in table \ref{table:relativespeedoglw}.
+Julia in contrast offers the same speed as C++ as can be seen in table \ref{table:relativespeedoglw}.
 As all the OpenGL wrappers are pretty mature by now and bind to the same C library, this should mainly be a C function call benchmark.
-Python does very bad here, but it must be noted that there are a lot of different Python distributions, where some of the promise to have better C interoperability. As this benchmarks goal is to show that Julia's ccall interface is comparable to a c function call from inside C++, the python options haven't been researched that thoroughly.
+Python does very bad here, but it must be noted that there are a lot of different Python distributions, where some promise to have better C interoperability. 
+As this benchmarks goal is to show that Julia's ccall interface is comparable to a c function call from inside C++, the python options have not been researched that thoroughly.
 From this benchmark can be concluded, that Julia offers a solid basis for an \ac{OpenGL} wrapper library.
 
 \subsubsection{Reactive}
 
-It is relatively hard to benchmark the used event system in real world scenarious as it's hard to find a baseline.
+It is relatively hard to benchmark the used event system in real world scenarious as it is hard to find a baseline.
 One would have to rewrite Romeo with another Event system. Using other visulization libraries as a baseline is also difficult, as it is hard to isolate the performance of the event system.
 This is why we will compare an event graph from Reactive with its unrolled version.
-For the unrolled version the functions from the callback graph have been executed in the same order as in the event graph, without introducing any event system related overhead.
+For the unrolled version the functions from the callback graph have been executed in the same order as the event graph would have, without introducing any event system related overhead.
 This way we can measure the overhead introduced by the event system.
 Two code samples have been benchmarked, one simulating the operation needed for the camera and the other simulates animating a large array.
 The first has low memory usage with a more complex event graph. The second has a straight forward event graph, but it must pass on a large array and needs to execute the callbacks on the array.
@@ -139,14 +146,14 @@ The first has low memory usage with a more complex event graph. The second has a
     \captionof{figure}[Reactive 1]{Reactives performance for complicated graph, simple calculation}
     \label{fig:reactive1}
 \end{minipage}
-As can be seen in figure \ref{fig:reactive1}, small operations with a complex event graph is bad scenario for Reactive.
-This doesn't come as a surprise as sorting and managing the graph structure is a much more complicated operation then adding two float32 values.
+As can be seen in figure \ref{fig:reactive1}, small operations with a complex event graph is a bad scenario for Reactive.
+This does not come as a surprise as sorting and managing the graph structure is a much more complicated operation then adding two float32 values.
 
 \vspace{1em}
 \begin{minipage}{\linewidth}
     \centering
     \includegraphics[width=0.9\linewidth]{graphics/react_bench.pdf}
-    \captionof{figure}[Reactive 2]{Reactives performance for high memory, simple event graph}
+    \captionof{figure}[Reactive 2]{Reactives performance for high memory, simple event graph. Reactive: circles. Baseline: lines}
     \label{fig:reactive2}
 \end{minipage}
 \vspace{1em}
