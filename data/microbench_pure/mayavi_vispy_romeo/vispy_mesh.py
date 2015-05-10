@@ -15,7 +15,7 @@ from vispy.visuals.transforms import (STTransform, AffineTransform,
 
 canvas      = scene.SceneCanvas(keys='interactive')
 canvas.view = canvas.central_widget.add_view()
-
+gloo.set_state(cull_face=False)
 verts, faces, normals, _lol = io.read_mesh("Rider.obj")
 mesh = scene.visuals.Mesh(vertices=verts, shading='smooth', faces=faces)
 
