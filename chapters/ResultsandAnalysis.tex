@@ -142,22 +142,22 @@ The first has low memory usage with a more complex event graph. The second has a
 
 \begin{minipage}{\linewidth}
     \centering
-    \includegraphics[width=0.9\linewidth]{graphics/react_bench2.pdf}
-    \captionof{figure}[Reactive 1]{Reactives performance for complicated graph, simple calculation}
+    \includegraphics[width=0.9\linewidth]{graphics/react_bench_2.pdf}
+    \captionof{figure}[Reactive 1]{Reactives performance for complicated graph, simple calculation. Mean difference : 1.45}
     \label{fig:reactive1}
 \end{minipage}
-As can be seen in figure \ref{fig:reactive1}, small operations with a complex event graph is a bad scenario for Reactive.
-This does not come as a surprise as sorting and managing the graph structure is a much more complicated operation then adding two float32 values.
+As can be seen in figure \ref{fig:reactive1}, small operations with a complex event graph has some overhead noticable overhead. The mean difference in this scenario is a constant factor of about 1.45 times slower.
+This does not come as a surprise as sorting and managing the graph structure obviously adds some overhead.
 
 \vspace{1em}
 \begin{minipage}{\linewidth}
     \centering
-    \includegraphics[width=0.9\linewidth]{graphics/react_bench.pdf}
-    \captionof{figure}[Reactive 2]{Reactives performance for high memory, simple event graph. Reactive: circles. Baseline: lines}
+    \includegraphics[width=0.9\linewidth]{graphics/react_bench_1.pdf}
+    \captionof{figure}[Reactive 2]{Reactives performance for high memory, simple event graph. Mean difference : 1.02}
     \label{fig:reactive2}
 \end{minipage}
 \vspace{1em}
-The second version looks much better for Reactive. The performance difference is neglectable, making Reactive a good choice in this scenario.
+The second version looks much better for Reactive. The performance difference is neglectable, making Reactive a good choice in this scenario. It
 
 \subsubsection{IJulia}
 First of all, IJulia uses ZMQ to bridge the web interface with the Julia instance.
