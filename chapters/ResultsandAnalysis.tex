@@ -282,7 +282,7 @@ This hinders people from contributing and using the packages.
 
 The implementation in just one language has been achieved by choice. There are only a few exceptions, like the kernel code for OpenGL shaders, which can currently not be written in Julia. 
 Julia programmers that use Romeo can extend Romeo with Julia and immediately see their results without complicated compilations.
-This together with the speed is one of the main achievements compared to other libraries offering similar functionality, like IJulia, VTK and Matlab.
+This together with the speed is one of the main achievements compared to other libraries offering similar functionality, like IJulia, Mayavi and Matlab.
 To further proof this point I will analyze the mentioned software in more detail.
 The language usage statistics and necessary tools needed in order to extend the software will be the main focus of the analysis.
 One needs to note, that the usage statistic of languages is just a weak indicator for the extendability of a software.
@@ -292,7 +292,7 @@ This chapter will only discuss the complexity introduced by languages, which are
 \subsubsection{IJulia}
 
 IJUlia is written in Julia and relies on ZMQ(C++) and IPython. 
-IPython uses multiple javascript rendering back-ends like Three.js and D3.
+IPython uses multiple JavaScript rendering back-ends like Three.js and D3.
 \begin{table}[htbp]
     \centering
     \begin{tabular}{l|l}
@@ -308,7 +308,7 @@ IPython uses multiple javascript rendering back-ends like Three.js and D3.
     \label{table:ijuliastack}
 \end{table}
 [more to come]
-\subsubsection{Paraview and VTK}
+\subsubsection{Mayavi and VTK}
 
 Table \ref{table:ParaviewStatistic} in the appendix shows an extensive summary of the used languages in the Paraview repository.
 It amounts to a total of 3.642.105 lines of code written in 29 languages.
@@ -323,5 +323,8 @@ This is why Matlab relays on a plug-in architecture, which enables developers to
 
 
 \subsection{Usability Analysis}
-[Consistency and ease of use of programming API in GLVisualize+GLAbstraction and Romeo.
-Short comment about the \ac{GUI}]
+%Consistency and ease of use of programming API in GLVisualize+GLAbstraction and Romeo.
+%Short comment about the \ac{GUI}
+Doing a broad user survey or similar methods was out of scope for this thesis.
+As a result from this, the usability has to be analyzed analytically.
+There are different aspects which can be analyzed. How much function names need to be remembered, how easy is it to look up functionality 
