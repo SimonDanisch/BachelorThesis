@@ -159,12 +159,97 @@ This does not come as a surprise as sorting and managing the graph structure obv
 \vspace{1em}
 The second version looks much better for Reactive. The performance difference is neglectable, making Reactive a good choice in this scenario. It
 
+\subsubsection{3D Rendering Benchmark}
+
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{graphics/vispy_mayavi_romeo.jpg}
+    \captionof{figure}[Benchmark]{Different visualizations of the same surface}
+    \label{fig:reactive1}
+\end{minipage}
+
+The biggest problem with benchmarking the 3D rendering speed is, that there is no library which will allow to exactly reproduce similar circumstances. Additionally, without extensive knowledge of the library, it is difficult to foresee what you actually benchmark. 
+As an example of why it is difficult to measure the framerate, consider Vispy. When you enable to measure the framerate, it will show very small numbers, as it only creates a new frame on demand.
+On the other  side, Romeo has still a fixed renderloop, which renders as much frames as possible, leading to totally different rendered frames per second. 
+This is why it was decided, to use the threshold at which a similar 3D scene is still conceived as enjoyably interactive. This is usually around 25 frames frames per second.
+So the benchmark was executed in the way, that the number regulizing the complexity of the 3D scene was increased untill one could not move the camera without stuttering anymore. The threshold is than the benchmark result.
+
+First benchmark is animating a 3D surface plot. The libraries offering this functionality where Vispy and Mayavi.
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{l|l|l}
+        \hline
+        \textbf{Library} & \textbf{Still} & \textbf{Animated} \\
+        \hline
+        Vispy            & 300            & 80    \\
+        Mayavi           & 800            & 150   \\
+        Romeo            & 900            & 600   \\
+        \hline
+        \hline
+        Speed up Vispy   & 9x            & 56x   \\
+        Speed up Mayavi  & 1.26x         & 16x   \\
+    \end{tabular}
+    \captionof{table}[3D Benchmark]{3D surface created from a NxN matrix. N for which rendering is still smooth.Speed up = (N_(romeo))^2 / (N_(x))^2}
+    \label{table:relativespeedoglw}
+\end{table}
+Vispy showed some problems, as the camera was never really smooth for the surface example. Also the normals were missing and there was no option to colorize the surface depending on the height.
+It was decided to use the threshold of going from a little stutter to unpleasant stutters, making vispy not completely fail.
+It would be too much to analyze the exact causes for Romeo being up first. But for vispy it was found out, that the normals where calculated on the CPU. It can be expected that the same goes for Mayavi, just that Mayavi is faster at calculating the normals.
+
+
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{graphics/romeo_mayavi_particles.jpg}
+    \captionof{figure}[Particles]{Rendered particles}
+    \label{fig:reactive1}
+\end{minipage}
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{l|l|l}
+        \hline
+        \textbf{Library} & \textbf{Still}  & \textbf{Animated}  \\ 
+        \hline
+        Mayavi           & 90000           & 2500  \\
+        Romeo            & 1000000         & 40000 \\
+        \hline
+        \hline
+        Speed up         & 11x             & 16x \\
+    \end{tabular}
+    \captionof{table}[3D Benchmark]{Maximum number of particles that could be displayed without stutter.}
+    \label{table:relativespeedoglw}
+\end{table}
+
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{graphics/sierpinsky.jpg}
+    \captionof{figure}[Sierpinsky]{Sierpinsky pyramid in 3D}
+    \label{fig:reactive1}
+\end{minipage}
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{l|l}
+        \hline
+        \textbf{Library} & \textbf{Still}\\ 
+        \hline
+        Compose3D        & 15625         \\
+        Romeo            & 1953125       \\
+        \hline
+        \hline
+        Speed up         & 125x          \\
+    \end{tabular}
+    \captionof{table}[3D Benchmark]{Maximum number of particles that could be displayed without stutter.}
+    \label{table:relativespeedoglw}
+\end{table}
+
+
 \subsubsection{IJulia}
 First of all, IJulia uses ZMQ to bridge the web interface with the Julia instance.
 ZMQ is a messaging system using different sockets for communication like inproc, IPC, TCP, TIPC and multicas.
 While it is very fast at it's task of sending messages, it can't compete with the native performance of staying inside one language.
 This is not very important as long as there doesn't have to be much communication between Julia and the IPython kernel. This changes drastically for animations, where big memory chunks have to be streamed.
-
 
 
 \subsection{Extensibility Analysis}
@@ -226,6 +311,8 @@ Matlab is closed source, which makes the core of Matlab impossible to extend.
 This is why Matlab relays on a plug-in architecture, which enables developers to write closed or open source plug-ins for Matlab.
 [Analysis of the plug-in Architecture]
 [more to come]
+
+
 \subsection{Usability Analysis}
 [Consistency and ease of use of programming API in GLVisualize+GLAbstraction and Romeo.
 Short comment about the \ac{GUI}]
