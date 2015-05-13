@@ -168,13 +168,13 @@ The second version looks much better for Reactive. The performance difference is
     \label{fig:reactive1}
 \end{minipage}
 
-The biggest problem with benchmarking the 3D rendering speed is, that there is no library which will allow to exactly reproduce similar circumstances. Additionally, without extensive knowledge of the library, it is difficult to foresee what you actually benchmark. 
-As an example of why it is difficult to measure the framerate, consider Vispy. When you enable to measure the framerate, it will show very small numbers, as it only creates a new frame on demand.
-On the other  side, Romeo has still a fixed renderloop, which renders as much frames as possible, leading to totally different rendered frames per second. 
-This is why it was decided, to use the threshold at which a similar 3D scene is still conceived as enjoyably interactive. This is usually around 25 frames frames per second.
-So the benchmark was executed in the way, that the number regulizing the complexity of the 3D scene was increased untill one could not move the camera without stuttering anymore. The threshold is than the benchmark result.
+The biggest problem with benchmarking the 3D rendering speed is, that there is no library which will allow to exactly reproduce similar circumstances. Additionally, without extensive knowledge of the library, it is difficult to foresee what you actually gets benchmarked. 
+As an example of why it is difficult to measure the frame rate we can look at Vispy. When you enable to measure the frame rate, it will show very low frame rates, as it only creates a new frame on demand.
+On the other  side Romeo has a fixed render loop, which renders as much frames as possible, leading to totally different amount of rendered frames per second. 
+This is why it was decided, to use the threshold at which a similar 3D scene is still conceived as enjoyable and interactive. This is usually around 25 frames frames per second.
+So the benchmark was executed in the way, that the number regulating the complexity of the 3D scene was increased until one could not move the camera without stutters. The recorded threshold is than the result of the Benchmark.
 
-First benchmark is animating a 3D surface plot. The libraries offering this functionality where Vispy and Mayavi.
+First benchmark is an animated and still 3D surface plot. The libraries offering this functionality where Vispy, Mayavi and Matlab.
 
 \begin{table}[htbp]
     \centering
@@ -184,19 +184,21 @@ First benchmark is animating a 3D surface plot. The libraries offering this func
         \hline
         Vispy            & 300            & 80    \\
         Mayavi           & 800            & 150   \\
+        Matlab           & 800            & 450   \\
         Romeo            & 900            & 600   \\
         \hline
         \hline
         Speed up Vispy   & 9x            & 56x   \\
         Speed up Mayavi  & 1.26x         & 16x   \\
+        Speed up Matlab  & 1.26x         & 1.7x  \\
     \end{tabular}
-    \captionof{table}[3D Benchmark]{3D surface created from a NxN matrix. N for which rendering is still smooth.Speed up = (N_(romeo))^2 / (N_(x))^2}
+    \captionof{table}[3D Benchmark]{3D surface created from a NxN matrix. N for which rendering is still smooth. Speed up = (N_(romeo))^2 / (N_(x))^2}
     \label{table:relativespeedoglw}
 \end{table}
-Vispy showed some problems, as the camera was never really smooth for the surface example. Also the normals were missing and there was no option to colorize the surface depending on the height.
-It was decided to use the threshold of going from a little stutter to unpleasant stutters, making vispy not completely fail.
-It would be too much to analyze the exact causes for Romeo being up first. But for vispy it was found out, that the normals where calculated on the CPU. It can be expected that the same goes for Mayavi, just that Mayavi is faster at calculating the normals.
-
+Vispy had some issues, as the camera was never really smooth for the surface example. Also the normals were missing and there was no option to colorize the surface depending on the height.
+It was decided to use the threshold of going from a little stutter to unpleasant stutters, making vispy not completely fail this benchmark.
+For Vispy it was found out, that the normals where calculated on the CPU resulting in a major slow down\cite{VispyGithub}. The same can be expected for Mayavi, but Mayavi seems to be faster at calculating the normals.
+There is not much information available on how Matlab renders their visualization, as it is closed source.
 
 \begin{minipage}{\linewidth}
     \centering
@@ -204,6 +206,8 @@ It would be too much to analyze the exact causes for Romeo being up first. But f
     \captionof{figure}[Particles]{Rendered particles}
     \label{fig:reactive1}
 \end{minipage}
+
+The next benchmark is only between Romeo and Mayavi, as the other libraries did not offer a comparable solution. Matlab does not allow to use cubes as particle primitives and Vispy only had an example, where you needed to write your own shader.
 
 \begin{table}[htbp]
     \centering
@@ -220,6 +224,7 @@ It would be too much to analyze the exact causes for Romeo being up first. But f
     \captionof{table}[3D Benchmark]{Maximum number of particles that could be displayed without stutter.}
     \label{table:relativespeedoglw}
 \end{table}
+Romeo is an order of magnitude faster in this specific benchmark. This is most likely due to the fact that Romeo uses OpenGL's native instance rendering.
 
 \begin{minipage}{\linewidth}
     \centering
@@ -227,6 +232,8 @@ It would be too much to analyze the exact causes for Romeo being up first. But f
     \captionof{figure}[Sierpinsky]{Sierpinsky pyramid in 3D}
     \label{fig:reactive1}
 \end{minipage}
+
+This benchmark is not entirely fair, as Compose3D is just a very rough prototype so far. But I was not able to find any other library with which you could easily display interactive 3D graphics in the IJulia or IPython notebook. This benchmark creates a sierpinsky gasket and Compose3D displays it in the IJulia notebook and Romeo displays it natively in a window.
 
 \begin{table}[htbp]
     \centering
@@ -240,9 +247,11 @@ It would be too much to analyze the exact causes for Romeo being up first. But f
         \hline
         Speed up         & 125x          \\
     \end{tabular}
-    \captionof{table}[3D Benchmark]{Maximum number of particles that could be displayed without stutter.}
+    \captionof{table}[3D Benchmark]{Maximum number of pyramids that could be displayed without stutter.}
     \label{table:relativespeedoglw}
 \end{table}
+Again, Romeo is an order of magnitude faster. This can change in the future when Compose3D matures.
+But one needs to notice, that Romeo utilizes OpenGL's instancing to gain this speed. Native instancing is not yet available on WebGL, which means it will not be available for the IPython notebook.
 
 
 \subsubsection{IJulia}
