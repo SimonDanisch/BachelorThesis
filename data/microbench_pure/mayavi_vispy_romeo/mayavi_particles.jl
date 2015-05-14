@@ -2,7 +2,7 @@ import numpy
 import mayavi
 from mayavi.mlab import *
 #max still 90.000
-#animated still 2500
+#animated still 2.500
 N = 90000
 
 x 	= numpy.random.rand(N) * 20.0

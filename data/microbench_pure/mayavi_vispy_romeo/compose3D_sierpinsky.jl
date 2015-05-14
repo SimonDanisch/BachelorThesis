@@ -13,5 +13,5 @@ function sierpinski(n)
         (Context(0.25w,0.25h,0.5d,(1/2)w,(1/2)h,(1/2)d), t))
     end
 end
-
+# Must be executed in IJulia notebook to be visible.
 compose(Context(-5mm,-5mm,-5mm,10mm,10mm,10mm), sierpinski(5))
