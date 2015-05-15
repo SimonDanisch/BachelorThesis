@@ -14,28 +14,35 @@ Finally this chapter will conclude with a solution to the problem, how to measur
 
 
 \subsection{Scientific Computing}
-Scientific computing is the area of computing, that evolves around all kind of scientific research.
-It is a very broad field involving a lot of different challenges. In some areas like particle physics, the problems are computationally so demanding, that they can only be solved with the help of super computers. In other areas like robotics, it is important to be fast, while running on embedded systems with small resources. In mathematics, speed does not need to be important, but it can be that the algorithm in itself is very difficult to comprehend. So the more comprehendable it can be written down in a programming language, the easier it will be to actually implement the algorithm.
+Scientific computing is the area of computing that evolves around all kind of scientific research.
+It is a very broad field involving a lot of different challenges. 
+In some areas like particle physics, the problems are computationally so demanding, that they can only be solved with the help of super computers. 
+In other areas like robotics, it is important to be efficient, because the algorithms are running on embedded systems with small resources. 
+In mathematics, speed does not need to be important, but it can be that the algorithm in itself is very difficult to comprehend. 
+So the more comprehendable it can be written down in a programming language, the easier it will be to actually implement the algorithm without errors.
 Above all, programming itself is often secondary to the research goal.
-This means, that it can be expected that the researcher just has rudimentary programming skills and that he does want to put as little time as possible into solving programming problems.
+This means, that it can be expected that the researcher just has rudimentary programming skills and that he wants to put as little time as possible into solving programming problems.
 So things like manual memory management and difficult design patterns with a lot of boilerplates are to be avoided in scientific computing.
 This has lead to the rise of programming languages and tools specifically tailored to scientific computing.
 The most prominent examples include Mathematica, R and Matlab. 
-They all aim to provide simple syntax for linear algebra stastical code, while taking away programatically difficult tasks like memory management. Also, they come with a rich standard library, which means most research can be done without loading any addtional module, which makes them great tools for rapid prototyping.
-At the current state, the speed of these languages suffer from the high level of abstraction. In order to cater to scientific research which is in need of highly performant code, a lot of the core is written in another language like C/C++ and Fortran.
+They all aim to provide simple syntax for linear algebra and stastical code, while taking away programatically difficult tasks like memory management. Also, they come with a rich standard library, which means most research can be done without loading any addtional module, which makes them great tools for rapid prototyping.
+At the current state, the speed of these languages suffer from the high level of abstraction. In order to cater to the fields of scientific computing which is in need of highly performant code, a lot of the core is written in another language like C/C++ and Fortran. This poses a problem in itself. 
+As soon as a researcher needs to do something out of the ordinary in a performant way, he needs to switch to a fast multi purpose language. So in the end he is loosing all the advantages of the high level scientific computing language.
+A pattern which has evolved out of this dilemma is, to prototype in a nice high level language and as soon as the alorithms has been confirmend to work, rewrite it in a fast low level language.
+One of the first language promosing to solve this dilemma for scientific computing is Julia. It is supposed to be high level and optimized for the work of scientific computing while approaching the speed of statically compiled languages like C.
 This leads us straight to the contributation of this thesis.
 
 \subsection{Contribution}
-The goal is to make it easier to understand complex algorithms and data.
-For that a fast visualization library is needed, which is optimized for dynamic data.
-It needs to be simple to use, as it would be no use if all your time is spend on visualizing the problem while this time could be used for understanding the problem better.
+
+The goal is to make it easier to work with complex algorithms and data in a better way.
+One of the things needed for that is a fast visualization library, which is deeply embedded into a fast scientific computing language. The library should be interactive, allowing to quickly iterate over different versions and also to enable interaction with complex algorithms.
 Visualising data that changes over time is very sensitive to latency. If you can not calculate every value in time for a single frame, you either need to skip frames or delay them.
-This leads to stutters, which, depending on the size, can be unpleasant or completely corrupt the work-flow.
+This leads to stutters, which, depending on the magnitude, can be unpleasant or completely corrupt the work-flow.
 Which makes it important, that every routine that is used in the visualization pipeline is as fast as possible.
 This is only possible, if everything is written in a fast language with as little conversations and memory transfers as possible. If the link between two languages can not be guaranteed to be fast, from this also follows, that everything should be written in one language.
 This has been achieved by writing Romeo in Julia.
 As the chosen language is also a high-level language and some effort was put into creating a concise architecture, a further contributation will be, that the development cycles can be very short and the library is easy to extend.
-Another contribution is the interactivity of the visualizations via simple widgets, which allow you to change the apperance of large datasets without any stutters.
+Another contribution is the interactivity of the visualizations via simple widgets, which allow you to change the apperance of large datasets or the datasets themselves without any stutters.
 Also due to deep language integration and a design that gives every object a default visualization, it can be used to visualy debug your code or interactively write your program while updating your visualization.
 
 

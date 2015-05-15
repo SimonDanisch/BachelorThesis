@@ -327,14 +327,28 @@ This is why Matlab relays on a plug-in architecture, which enables developers to
 %Short comment about the \ac{GUI}
 Doing a broad user survey or similar methods was out of scope for this thesis.
 As a result from this, the usability has to be done analytically.
-There are different aspects which can be analyzed. For example, how many function names need to be remembered, how easy they are memorized and how difficult it is to look up unknown functionality.
+There are different aspects which can be analyzed. For example, how many function names need to be remembered, how easy they are memorized, if they expose the wanted functionality and how difficult it is to look up unknown functionality.
 For this thesis, I will analyze the two main packages, namely GLVisualizes and GLAbstraction. 
 The named aspects will be analyzed and in addition feedback from Github will be used.
 
-GLAbstraction names: 56
+GLAbstraction functions: 56
 
-GLVisualize names: 5
+GLVisualize functions: 5
 
-GLVisulize has a very simple API, as it basically just has three functions: visualize, visualize_defaults, edit and renderloop.
-There is also bounce and loop, which creates signals which bounce and loop between two values.
-So for the GLVisualize, only very little function names have to be remembered.
+GLVisulize has a very simple API, as it offers only five functions: visualize, visualizedefaults, edit and renderloop.
+There is also the function bounce and loop, which offers a simplification for creating periodic signals.
+So for the GLVisualize, only very few function names have to be remembered.
+The question is, does this simple interface still allow people to create the visualization they want.
+At closer inspection one can see, that visualize is overloaded 67 times, with each of these methods having a set of keyword arguments which enables further customization.
+These can be very drastic changes. The particle visualization for example can take any mesh as a primitive. This enables a drastic customization, which was not possible in such an easy way in the other examined packages.
+Also, most of the functions take either a data type, or a signal of that data type.
+This makes it very intuitive to animate your data. In contrast, in order to setup the animation for the other packages, it took quite some time to find out how to update values of an existing visualization. This is acceptable, as it might take quite some time to find out, how to build a signal, and that Romeo is even using signals for animations.
+But when this is found out, Romeo mostly functions in the same, consistent way. For the other packages though, one needs to find out the names of the data for every visualization type in order to update them.
+So the usage principle for Romeo is, bring your data into the right type and Romeo will do the rest.
+If this can be done easily, Romeo will offer a very consistent and easy to learn API.
+The problem is, if this principle violated and there is no easy way to transform the data into the right format.
+But to be fair, you will have this with every kind of visualization API. The difference is in the end, how easy it is to transform the data. Lets examine an example, where GLVisualize often will not allow to directly call visualize on the data.
+There is only a method for a Mesh, but not for a vertex list plus a face list. If you actually create mesh data, you will often have the face and vertex list isolated. 
+So an API that offers a function like patch(x::VertexList, y::FaceList) will be more straightforward for a programmer. Especially, as this is the standard way of displaying a mesh in most scientific plotting packages.
+But this functionality can be added in a simple way for GLVisualize by defining patch(facelist, vertexlist) = visualize(Mesh(facelist, vertexlist)).
+As GLVisulize should stay as close to the principle of only having one function name, this should be moved to other interface only packages, though. 
