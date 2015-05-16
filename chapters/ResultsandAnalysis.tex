@@ -99,20 +99,20 @@ With big companies like Apple, Google\cite{GoogleAppleLLVM} and Microsoft\cite{M
 \end{minipage}
 \begin{table}[htbp]
     \centering
-    \begin{tabular}{l|c|c}
+    \begin{tabular}{l|c|c|c}
         \hline
-        \textbf{Function}   & \textbf{Python}    & \textbf{Julia StagedFunction} \\
+        \textbf{Function}   & \textbf{Python}    & \textbf{Staged Function} & \textbf{ModernGL} \\
         \hline
-        glBindBuffer        & 64.43              & 1.00\\
-        glClearColor        & 474.72             & 1.02\\
-        glStringi           & 244.44             & 1.07\\
+        glBindBuffer        & 64.43              & 1.00 & 1.04 \\
+        glClearColor        & 474.72             & 1.02 & 1.04 \\
+        glStringi           & 244.44             & 1.07 & 1.1  \\
     \end{tabular}
     \captionof{table}[OGL Relative Speed]{Performance relative to C++ with Glew (slowdown, bigger is worse)}
     \label{table:relativespeedoglw}
 \end{table}
 
 The OpenGL function loader from ModernGL has undergone some changes over the time. 
-Starting with a very simple solution, there have been pull requests to include better methods for the functional loading.
+Starting with a very simple solution, there have been pull requests to include better methods for the function loading.
 The current approach was not written by myself, but by the Github user aaalexandrov.
 Before aaalexandrov's approach, the fastest approach written for this thesis would have used a pretty new Julia feature, named staged functions. 
 They should in principle yield the best performance as it directly inlines the function pointer when called the first time.

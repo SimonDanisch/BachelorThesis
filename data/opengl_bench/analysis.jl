@@ -34,9 +34,11 @@ benchdata = DataFrame(
 )
 pydata = sort(benchdata[benchdata[:Method] .== "Py", :], cols = :Function)
 jdata = sort(benchdata[benchdata[:Method] .== "StagedFunction", :], cols = :Function)
+jdataa = sort(benchdata[benchdata[:Method] .== "ModernGL", :], cols = :Function)
 cdata = sort(benchdata[benchdata[:Method] .== "Glew", :], cols = :Function)
 println(pydata[:SpeedY]./cdata[:SpeedY])
 println(jdata[:SpeedY]./cdata[:SpeedY])
+println(jdataa[:SpeedY]./cdata[:SpeedY])
 #=
 benchdata = sort(benchdata, cols = :Function)
 

@@ -70,10 +70,10 @@ This guarantees re-usability for others, as they might be used to work only with
 Over this sits an abstraction layer needed to simplify the work with \ac{OpenGL}.
 With this abstraction, the actual visualization library is implemented.
 APIs for visualization libraries are very difficult to realize, as there are endless ways of visualizing the same data.
-The design choice here was to use Julia's rich type system, to better describe the data. 
+The design choice here was to use Julia's rich type system to better describe the data. 
 Julia makes this possible, as you can create different types for the same data, without loosing performance.
 So you can have a unit like meters represented as a native floating point type and have the visualization specialize to this.
-Like this you can have a single function e.g. \textit{visualize}, that does create a default visualization for different data types. So instead of manually passing additional information to the visualization function, it is instead coded in the type itself.
+Like this you can have a single function e.g. \textit{visualize}, that does create a default visualization for different data types. Instead of manually passing additional information to the visualization function, it is coded in the type itself.
 Together with the event system which consists of signals, it is possible to edit and visualize rich data over a simple interface, which is perfect for visual debugging, as it is always the same function call applied to the data and no further user interaction is needed.
 It is also easy to extend, as the user just has to overload the function with a custom style and optional key word arguments.
 Finally, there are also graphical user interfaces developed for this thesis. As also optimizing them is out of the scope of this thesis, they are kept very simple.
