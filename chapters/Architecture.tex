@@ -12,9 +12,10 @@ Certain design choices had to be made to guarantee this. As speed is the most co
     \label{fig:juliabench}
 \end{minipage}
 
+
 \subsubsection{Speed}
 Speed is mainly a usability factor. It's a factor, that can make a software unusable, or render it unproductive. Because of this, speed has taken a high priority in this thesis. As general coding productivity is also a concern, this thesis is set on using a high level language.
-Historically, these two demands can't be satisfied both.
+Historically, these two demands can't be satisfied at the same time.
 How to achieve state of the art speed with a high level language is an ongoing research and basically the holy grail of language design.
 Luckily, there is a new programming language namely Julia building upon the compiler infrastructure \ac{LLVM}, promising a concise, high-level programming style, while approaching C-performance.
 This is well illustrated in figure \ref{fig:juliabench}. Code length is an ambiguous measure for conciseness, but if the code is similarly refactored it is a good indicator of how many lines of code are needed to achieve the same goal.
@@ -34,23 +35,23 @@ There are only a couple of GPU accelerated low-level libraries available, namely
 So for the purpose of high speed visualizations, \ac{OpenGL} was wrapped with a high-level interface written in Julia. This leaves us with one binary dependency not written in Julia, namely the video driver, which implements \ac{OpenGL}.
 
 Measurement of success is pretty straight forward, but the devil is in the detail.
-It's easy to benchmark the code, but quite difficult to find a baseline, as one either has to implement the whole software with the alternative technologies, or one has to find similar software.
+It is easy to benchmark the code, but quite difficult to find a baseline, as one either has to implement the whole software with the alternative technologies, or one has to find similar software.
 This thesis will follow a hybrid strategy, comparing some simple implementations with different technologies and choose some rivaling state of the art libraries as a baseline.
 
 \subsubsection{Extensibility}
 Extensibility is an important factor, which can decide, if a library is fit for scientific computing or not. 
 It's not only that, but also a great factor determining growth of a software, as the more extensible the software is, the higher the probability that someone else contributes to it.
 In order to write extensible software, we first have to clarify what extensibility is.
-Extensible foremost needs, that the code is accessible. There are different levels of accessibility. The lowest level is closed source, where people purposely make the code inaccessible. While this is obvious, it is just a special case of not understanding the underlying language. Just shipping binaries without open sourcing the code, means that the source is only accessible in a language which is extremely hard to understand, namely the machine code of the binary. So another example for inaccessibility is to write in a language that is difficult to understand. Other barriers are obfuscated language constructs, missing documentations and cryptic highly optimized code.
+Extensible foremost needs that the code is accessible. There are different levels of accessibility. The lowest level is closed source, where people purposely make the code inaccessible. While this is obvious, it is just a special case of not understanding the underlying language. Just shipping binaries without open sourcing the code, means that the source is only accessible in a language which is extremely hard to understand, namely the machine code of the binary. So another example for inaccessibility is to write in a language that is difficult to understand. Other barriers are obfuscated language constructs, missing documentations and cryptic highly optimized code.
 Further more the design of the library in the whole is an important factor for extensibility. It's not only important, that all parts are understandable, but also, that every independent unit in the code solves only one problem.
 If this is guaranteed, re-usability in different contexts becomes much simpler. This allows for a broader user base, which in turn results in higher contributions and bug reports.
 Short concise code is also important, as it will take considerably less time to rewrite something, as the amount of code that has to be touched is shorter and less time is spend on understanding and rewriting the code.
 
 So the code written for this thesis should be open source, modular, written in a high level language and concise.
 
-This is pretty difficult to measure as these are either binary choices, which are either followed or not, 
+This is pretty difficult to measure as these are either binary choices, which are followed or not, 
 or higher level concepts like writing concise code, which can be a matter of taste.
-To get an idea of the effectiveness of my strategy, usage patterns and feedback from Github will be analyzed.
+To get an idea of the effectiveness of the strategy, usage patterns and feedback from Github will be analyzed.
 
 \subsubsection{Event System}
 The event system is a crucial part of the library, as the proclaimed goal is to visualize dynamic, animated data.
@@ -74,11 +75,9 @@ Julia makes this possible, as you can create different types for the same data, 
 So you can have a unit like meters represented as a native floating point type and have the visualization specialize to this.
 Like this you can have a single function e.g. \textit{visualize}, that does create a default visualization for different data types. So instead of manually passing additional information to the visualization function, it is instead coded in the type itself.
 Together with the event system which consists of signals, it is possible to edit and visualize rich data over a simple interface, which is perfect for visual debugging, as it is always the same function call applied to the data and no further user interaction is needed.
-It is also easy to extend, as the user just has to overload the function, with a custom style and optional key word arguments.
+It is also easy to extend, as the user just has to overload the function with a custom style and optional key word arguments.
 Finally, there are also graphical user interfaces developed for this thesis. As also optimizing them is out of the scope of this thesis, they are kept very simple.
 The measurement of success is again relatively difficult to do. (I need to think this over)
-
-
 
 \section{Used Technologies}
 

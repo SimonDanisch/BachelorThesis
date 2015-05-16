@@ -132,6 +132,22 @@ From this benchmark can be concluded, that Julia offers a solid basis for an \ac
 
 \subsubsection{Reactive}
 
+\begin{figure}
+\centering
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{graphics/react_bench_2.pdf}
+        \captionof{figure}[Reactive 1]{Complicated graph, simple calculation}
+        \label{fig:reactive1}
+    \end{minipage}%
+    \begin{minipage}{.5\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{graphics/react_bench_1.pdf}
+        \captionof{figure}[Reactive 2]{High memory, simple event graph}
+        \label{fig:reactive2}
+    \end{minipage}
+\end{figure}
+
 It is relatively hard to benchmark the used event system in real world scenarious as it is hard to find a baseline.
 One would have to rewrite Romeo with another Event system. Using other visulization libraries as a baseline is also difficult, as it is hard to isolate the performance of the event system.
 This is why we will compare an event graph from Reactive with its unrolled version.
@@ -140,30 +156,19 @@ This way we can measure the overhead introduced by the event system.
 Two code samples have been benchmarked, one simulating the operation needed for the camera and the other simulates animating a large array.
 The first has low memory usage with a more complex event graph. The second has a straight forward event graph, but it must pass on a large array and needs to execute the callbacks on the array.
 
-\begin{minipage}{\linewidth}
-    \centering
-    \includegraphics[width=0.9\linewidth]{graphics/react_bench_2.pdf}
-    \captionof{figure}[Reactive 1]{Reactives performance for complicated graph, simple calculation. Mean difference : 1.45}
-    \label{fig:reactive1}
-\end{minipage}
-As can be seen in figure \ref{fig:reactive1}, small operations with a complex event graph has some overhead noticable overhead. The mean difference in this scenario is a constant factor of about 1.45 times slower.
+
+
+
+As can be seen in figure \ref{fig:reactive1}, small operations with a complex event graph has some noticable overhead. Reactive is in this scenario about 1.45 times slower than the optimal version.
 This does not come as a surprise as sorting and managing the graph structure obviously adds some overhead.
 
-\vspace{1em}
-\begin{minipage}{\linewidth}
-    \centering
-    \includegraphics[width=0.9\linewidth]{graphics/react_bench_1.pdf}
-    \captionof{figure}[Reactive 2]{Reactives performance for high memory, simple event graph. Mean difference : 1.02}
-    \label{fig:reactive2}
-\end{minipage}
-\vspace{1em}
-The second version looks much better for Reactive. The performance difference is neglectable, making Reactive a good choice in this scenario. It
+The second scenario looks much better for Reactive. The performance difference is neglectable, making Reactive a good choice for creating signals with high memory throughput.
 
 \subsubsection{3D Rendering Benchmark}
 
 \begin{minipage}{\linewidth}
     \centering
-    \includegraphics[width=0.9\linewidth]{graphics/vispy_mayavi_romeo.jpg}
+    \includegraphics[width=\linewidth]{graphics/vispy_mayavi_romeo.jpg}
     \captionof{figure}[Benchmark]{Different visualizations of the same surface}
     \label{fig:reactive1}
 \end{minipage}
@@ -202,7 +207,7 @@ There is not much information available on how Matlab renders their visualizatio
 
 \begin{minipage}{\linewidth}
     \centering
-    \includegraphics[width=0.9\linewidth]{graphics/romeo_mayavi_particles.jpg}
+    \includegraphics[width=\linewidth]{graphics/romeo_mayavi_particles.jpg}
     \captionof{figure}[Particles]{Rendered particles}
     \label{fig:reactive1}
 \end{minipage}
@@ -228,7 +233,7 @@ Romeo is an order of magnitude faster in this specific benchmark. This is most l
 
 \begin{minipage}{\linewidth}
     \centering
-    \includegraphics[width=0.9\linewidth]{graphics/sierpinsky.jpg}
+    \includegraphics[width=\linewidth]{graphics/sierpinsky.jpg}
     \captionof{figure}[Sierpinsky]{Sierpinsky pyramid in 3D}
     \label{fig:reactive1}
 \end{minipage}
