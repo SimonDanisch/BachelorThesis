@@ -11,14 +11,14 @@ This chapter gives a short introduction to the Julia Programming Language.
 
 Julia was published in 2012, which makes it a very new language. It is currently at version 0.3.7 stable and 0.4 pre-release.
 Following common versioning conventions this means Julia is still in an early release phase with the core features and names suspicable to change.
+Julia is using the young compiler infrastructure \ac{LLVM} to generate fast assembly code.
 
 Julia is a multi paradigma language for scientific computing.
 The focus on scientific computing means, that Julia's standard library is equipped with a lot of functions, data structures and specialized syntax for implementing complex math like linear algebra and statistics.
 It promises to approach C speed, while being a dynamic language which is easy to use.
 This is made possible by the compile process which can be described as statically compiled at runtime.
-Julia uses a garbage collector, taking the memory management away from the programmer.
-There are quite a few things Julia promises to the developer described in the article \cite{WhyJulia}.
-These include:
+Julia uses a garbage collector, taking the task of memory management away from the programmer.
+There are quite a few things Julia promises to the developer described which includes the following items:\cite{WhyJulia}.
 \begin{itemize}
 	\item C like performance
 	\item native C interface
@@ -29,13 +29,18 @@ These include:
 \end{itemize}
 These are the reasons why Julia is well suited for implementing an interactive scientific visualization library.
 Interactive visualizations have very hard demands on performance. 
-You need around 60 frames per second to feel comfortable, so there are only 0.016 seconds available for computing a single frame.
-There should be no stutters and interfacing C-libraries should be simple and fast in order to communicate with the video driver.
-This is the one side, but the other is equally important:
+60 frames per second are needed to feel comfortable, so there are only 0.016 seconds available for computing a single frame.
+There should be no stutters and calling C-libraries should be simple and fast in order to communicate with the video driver.
+This is one side, but the other is equally important:
 You can do the scientific programming in the same language as you do the visualization.
-Like this, Julia's native data types can be used without serialization and copies and the library can be extended by the Julia programmer.
-Extending the library is supposed to be a lot easier than in other languages, thanks to Julia's concise and high-level coding style.
+Like this, Julia's native data types can be used without serialization, copies and the library can be extended by the Julia programmer.
+Finally, Julia's concise and high-level coding style and the intereactive execution model makes it a lot easier to extend software.
+This makes Julia a great foundation for any software.
+
 \subsubsection{\ac{LLVM}}
+
+
+
 
 \subsubsection{IJulia}
 IJulia is the Julia language back-end for IPython.
@@ -47,7 +52,7 @@ See figure \ref{fig:ijulianotebook} for an example.
 IJulia has some similar goals compared to Romeo, but it has a different focus.
 The notebook is completely web based, concentrates on 2D visualizations and interactivity is mostly limited to the programming and not the graphics.
 3D graphics are possible via Three.js, which is a powerful 3D visualization library based on WebGL.
-The integration is just prototypical and limited to simple 3D meshes up to now.
+The current integration is just prototypical and limited to simple 3D meshes up to now.
 
 
 \subsubsection{Matlab}
