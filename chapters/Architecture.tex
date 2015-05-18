@@ -16,60 +16,52 @@ Certain design choices had to be made to guarantee this. As speed is the most co
 \subsubsection{Speed}
 Speed is mainly a usability factor. It's a factor, that can make a software unusable, or render it unproductive. Because of this, speed has taken a high priority in this thesis. As general coding productivity is also a concern, this thesis is set on using a high level language.
 Historically, these two demands can't be satisfied at the same time.
-How to achieve state of the art speed with a high level language is an ongoing research and basically the holy grail of language design.
-Luckily, there is a new programming language namely Julia building upon the compiler infrastructure \ac{LLVM}, promising a concise, high-level programming style, while approaching C-performance.
-This is well illustrated in figure \ref{fig:juliabench}. Code length is an ambiguous measure for conciseness, but if the code is similarly refactored it is a good indicator of how many lines of code are needed to achieve the same goal.
-\ac{LLVM} is an impressive compiler infrastructure, which has front ends for different languages and back-ends for different chip architectures. 
-%A language designer has the task, to create an abstract syntax tree, which can be feeded to ac{LLVM}. There it gets %converted to LLVM IR, which then can be heavily optimized. Every language that can be converted to LLVM IR can be combined %at this level, going through the same optimizations in the end. This is yields superiour language interfacing, as inlining %and other optimizations can be done over the boundary of one language.
-
-\ac{LLVM}'s concept is effective, as you can accumulate state of the art optimizations in one place, making them accessible to many languages, while being able to compile to different platforms. There are x86, ARM, \ac{OpenCL} and CUDA back ends. While Julia doesn't support them all, it will hopefully be possible in the future. 
-\ac{LLVM} is also used by Clang, the C/C++ front end for \ac{LLVM} rivaling \ac{gcc} and it is used by Apple's programming language Swift. 
-This makes \ac{LLVM} a solid basis for a programming language, as these are highly successful projects guaranteeing \ac{LLVM} further prospering of the technology.
-%See table \ref{table:FEComparison}, for a little benchmark.
+How to achieve state of the art speed with a high level language is an ongoing research and basically the holy grail of language design. 
+Julia promises to do exactly this, which is illustrated in figure \ref{fig:juliabench}. 
+Code length is an ambiguous measure for conciseness, but if the code is similarly refactored it is a good indicator of how many lines of code are needed to achieve the same goal.
+From this figure we can conclude, that Julia at least comes close to its promises, which is why it has been chosen as the programming language.
 
 To get high performant 3D graphics rendering, there are on the first sight a lot of options.
 If you start to take the previous demands into account, the options shrink down considerably, though.
 The visualization library should be implemented in one high level language, which can be used for scientific computing and has state of the art speed. At this point, there are close to zero libraries left. As you can see in figure \ref{fig:juliabench}, Matlab, Python and R disqualify, as they are too slow. JavaScript, Java, Go and Lua are missing a scientific background and the others are too low level for the described goals.
-This leaves only Julia, but in Julia there weren't any 3D libraries available, which means that one has to start from scratch.
-There are only a couple of GPU accelerated low-level libraries available, namely Khrono's \ac{OpenGL}, Microsoft's DirectX, Apple's Metal and AMD's Mantel, which are offering basically the same functionality. As only \ac{OpenGL} is truly cross-platform, this leaves \ac{OpenGL} as an option.
+This leaves only Julia, but in Julia there were no 3D libraries available, which means that one has to start from scratch.
+There are only a couple of GPU accelerated low-level libraries available, namely Khrono's \ac{OpenGL}, Microsoft's DirectX, Apple's Metal and AMD's Mantel, which are offering basically the same functionality. 
+As only \ac{OpenGL} is truly cross-platform, this leaves \ac{OpenGL} as an option.
 So for the purpose of high speed visualizations, \ac{OpenGL} was wrapped with a high-level interface written in Julia. This leaves us with one binary dependency not written in Julia, namely the video driver, which implements \ac{OpenGL}.
 
 Measurement of success is pretty straight forward, but the devil is in the detail.
-It is easy to benchmark the code, but quite difficult to find a baseline, as one either has to implement the whole software with the alternative technologies, or one has to find similar software.
+It is easy to benchmark the code, but quite difficult to find a baseline, as one either has to implement the whole software with an alternative technologies, or one has to find similar software.
 This thesis will follow a hybrid strategy, comparing some simple implementations with different technologies and choose some rivaling state of the art libraries as a baseline.
 
 \subsubsection{Extensibility}
 Extensibility is an important factor, which can decide, if a library is fit for scientific computing or not. 
-It's not only that, but also a great factor determining growth of a software, as the more extensible the software is, the higher the probability that someone else contributes to it.
+It is not only that, but also a great factor determining growth of a software, as the more extensible the software is, the higher is the probability that someone else contributes to it.
 In order to write extensible software, we first have to clarify what extensibility is.
 Extensible foremost needs that the code is accessible. There are different levels of accessibility. The lowest level is closed source, where people purposely make the code inaccessible. While this is obvious, it is just a special case of not understanding the underlying language. Just shipping binaries without open sourcing the code, means that the source is only accessible in a language which is extremely hard to understand, namely the machine code of the binary. So another example for inaccessibility is to write in a language that is difficult to understand. Other barriers are obfuscated language constructs, missing documentations and cryptic highly optimized code.
-Further more the design of the library in the whole is an important factor for extensibility. It's not only important, that all parts are understandable, but also, that every independent unit in the code solves only one problem.
+Further more the design of the library in the whole is an important factor for extensibility. It is not only important, that all parts are understandable, but also, that every independent unit in the code solves only one problem. This guarantees that one can quickly exchange it, or use it somewhere else where the same problem needs to be solved.
 If this is guaranteed, re-usability in different contexts becomes much simpler. This allows for a broader user base, which in turn results in higher contributions and bug reports.
 Short concise code is also important, as it will take considerably less time to rewrite something, as the amount of code that has to be touched is shorter and less time is spend on understanding and rewriting the code.
 
-So the code written for this thesis should be open source, modular, written in a high level language and concise.
+So the code written for this thesis will be open source, modular, written in a high level language and concise.
 
 This is pretty difficult to measure as these are either binary choices, which are followed or not, 
 or higher level concepts like writing concise code, which can be a matter of taste.
 To get an idea of the effectiveness of the strategy, usage patterns and feedback from Github will be analyzed.
 
-\subsubsection{Event System}
-The event system is a crucial part of the library, as the proclaimed goal is to visualize dynamic, animated data.
-This means, there are hard demands for usability and speed on the event system.
-The chosen event system has an immidiate influence on how to handle animations. 
-This lead to the design choice of using signals. Signals are a very good abstraction for values that change over time.
-If well implemented, it makes it natural to reason about time, without the need of managing unrelated structures and callback code.
 
 \subsubsection{Interfaces}
 Working with a computer means working with interfaces to a computer, which in the end simply jiggles around with zeros and ones. There is a huge hierarchy of abstractions involved, to make this process of binary juggling manageable to the human.
 We already dealt with the lowest relevant abstraction: the choice of programming language, which forms our first interface to the computer.
 The next level of abstraction is the general architecture of the modules, which has been discussed previously. 
 This chapter is about the API design choices that have been made.
-The first API is the \ac{OpenGL} layer. The philosophy is to make the wrapper for native libraries as thin and reusable as possible and an one to one mapping of the library itself.
+
+The first API is the \ac{OpenGL} layer. The philosophy is to make the wrapper for native libraries as thin and reusable as possible and an one to one mapping of the underlying library.
 This guarantees re-usability for others, as they might be used to work only with the low-level library or they might disagree with some higher-level abstraction and prefer to write their own.
+
 Over this sits an abstraction layer needed to simplify the work with \ac{OpenGL}.
 With this abstraction, the actual visualization library is implemented.
-APIs for visualization libraries are very difficult to realize, as there are endless ways of visualizing the same data.
+
+\ac{API}s for visualization libraries are very difficult to realize, as there are endless ways of visualizing the same data.
 The design choice here was to use Julia's rich type system to better describe the data. 
 Julia makes this possible, as you can create different types for the same data, without loosing performance.
 So you can have a unit like meters represented as a native floating point type and have the visualization specialize to this.
@@ -79,13 +71,29 @@ It is also easy to extend, as the user just has to overload the function with a 
 Finally, there are also graphical user interfaces developed for this thesis. As also optimizing them is out of the scope of this thesis, they are kept very simple.
 The measurement of success is again relatively difficult to do. (I need to think this over)
 
+\subsubsection{Event System}
+The event system is a crucial part of the library, as the proclaimed goal is to visualize dynamic, animated data.
+This means, there are hard demands for usability and speed on the event system.
+The chosen event system has an immediate influence on how to handle animations. 
+This lead to the design choice of using signals. Signals are a very good abstraction for values that change over time.
+If well implemented, it makes it natural to reason about time, without the need of managing unrelated structures and callback code.
+
+
+
+
+
+
+
+
+
+
 \section{Used Technologies}
 
 \subsection{The Julia Programming Language}
 The basic introduction of Julia has already been given in the Background chapter.
 This chapter is focused on how to write programs with Julia.
 Most influential language construct are it's hierarchical type system and multiple dispatch.
-Multiple dispatch is in its core dynamic function overloading at runtime. 
+Multiple dispatch is in its core function overloading at runtime. 
 To better understand multiple dispatch, one has to be familiar with Julia's type system.
 The type system builds upon four basic components. 
 Composite types, which are comparable to C-Structs, parametric composite types, bits types, abstract and parametric abstract types.
@@ -102,13 +110,16 @@ type Complex{T} <: Number
     img::T
 end
 \end{lstlisting}
+
 With this type hierarchy you can overload functions with abstract, concrete or untyped arguments.
+
 \begin{lstlisting}
 foo{T}(y::Complex{T}, y::Float32) = println("some number: ", x, " some complex Number: ", y) # shorthand function definition
 function foo(x)
     println("overloading foo with a new unspecific signature")
 end
 \end{lstlisting}
+
 What will happen at runtime is, that Julia compiles the function specialized on its arguments which results in overloading the function with the specific arguments.
 So in the previous example, foo will originally be overloaded with two methods. 
 Now, if you call foo with one Float32 argument, a new method will be added specialized to Float32.
@@ -117,11 +128,11 @@ This allows Julia to statically compile the function body, while propagating the
 
 With multiple dispatch, Julia is definitely a functional oriented language. But there are also ways to give Julia a more object oriented feel.
 Functions are easy to pass around. They can be bound to variables and can then be called like normal functions via the variable name. This implies that functions can also be bound to objects. 
-But the object still needs to be passed to function via the arguments, so there is no self reference available in Julia.
+There is no self reference available in Julia, so the object still needs to be passed to function via the arguments
 
-%Another of the most crucial features is the very simple, overhead less C-Interface. 
-%Thanks to the binary compatibility of LLVM's emitted assembly, a C function call to a shared library inside Julia has the %same overhead as it would be from inside C\cite{CCALL}. 
-%This is perfect for dealing with low-level libraries like \ac{OpenGL} and \ac{OpenCL}.
+Another of the most crucial features is the very simple, overhead less C-Interface. 
+Thanks to the binary compatibility of LLVM's emitted assembly, a C function call to a shared library inside Julia has the same overhead as it would be from inside C\cite{CCALL}. 
+This is perfect for dealing with low-level libraries like \ac{OpenGL} and \ac{OpenCL}.
 
 
 \subsection{\ac{OpenGL}}
@@ -136,7 +147,7 @@ But the object still needs to be passed to function via the arguments, so there 
 
 
 \ac{OpenGL} is a low-level graphics API implemented by the video card vendor via the video driver. 
-As such it doesn't offer much abstraction over the actual \ac{GPU}, but instead offers high flexibility and performance.
+As such it does not offer much abstraction over the actual \ac{GPU}, but instead offers high flexibility and performance.
 \ac{OpenGL} 1.0 was released in 1992 and the current version is 4.5.
 A critical element when developing \ac{OpenGL} applications is, that not all video drivers implement the newest \ac{OpenGL} standards.
 
@@ -146,7 +157,7 @@ The features include instance rendering, vertex arrays and modern \ac{GLSL} shad
 
 In figure \ref{fig:opengl} you can see the basic architecture of an OpenGL program pipeline.
 As the description states, the blue boxes are programmable shaders, while the dotted boxes are optional parts of the pipeline.
-The yellow boxes describe stages which are not directly accessible. They're part of the OpenGL state, which can be set via OpenGL commands.
+The yellow boxes describe stages which are not directly accessible. They are part of the OpenGL state, which can be set via OpenGL commands.
 
 So in order to have a functioning OpenGL rendering pipeline one just needs to write a vertex shader and a fragment shader.
 All shaders are compiled and linked into a program object, which then can be executed on the \ac{GPU}.
@@ -154,8 +165,8 @@ Shaders are written in a C dialect specialized for vector operations.
 You feed shaders with data via buffers, textures and uniforms. Buffers are 1D arrays, textures 1D/2D/3D arrays with both having their own memory, while uniforms live in the program object.
 
 The different shaders are used to apply geometric, perspective transforms and calculating the light.
-In newer API's general compute operations are available, making it possible to create more flexible shaders.
-Finally the fragment shader rasterizes the data to the screen.
+In newer APIs general compute operations are available, making it possible to create more flexible shaders.
+Finally, the fragment shader rasterizes the data to the screen.
 Here is a simple minimal example for a program rendering some vertex data with a flat color to the screen.
 
 \begin{lstlisting}
@@ -205,7 +216,7 @@ GLFW allows to register callbacks for a multitude of events like keyboard, mouse
 This, together with a wrapper library for Julia makes GLFW perfect for doing the window creation.
 In addition, GLFW exposes low level features like the operating systems context handle.
 This can be used for creating advanced contexts that share memory with another context.
-Romeo doesn't use this feature yet, but it makes GLFW a future proof choice.
+Romeo does not use this feature yet, but it makes GLFW a future proof choice.
 
 
 \section{Implementation}
@@ -233,13 +244,14 @@ The event management is handled by Reactive.
 
 The event system was challenging to integrate for several reasons.
 First of all Reactive is a functional event system, while \ac{OpenGL} relies heavily on global states, which are two perpendicular concepts.
-Also, it doesn't allow to rearrange the event tree. 
+Also, it does not allow to rearrange the event tree. 
 In other words, you can not create sub trees in advance and then fuse them together at run time.
 
 \subsection{ModernGL}
-\ac{OpenGL} is implemented by the video card vendor and is shipped via the video driver, which comes in the form of a C-Library.
+\ac{OpenGL} is implemented by the video card vendor and is shipped via the video driver, which comes in the form of a C library.
 The challenge is, to load the function pointers system and vendor independent. 
-Also one further complication is, that depending on the platform, function pointer are only available after an \ac{OpenGL} context was created and may only be valid for this context. \cite{wgl}
+Also one further complication is, that depending on the platform, 
+function pointer are only available after an \ac{OpenGL} context was created and may only be valid for this context. \cite{wgl}
 This problem is solved, by initializing a function pointer cache with null and as soon as the function is called the first time the real pointer gets loaded.
 
 The OpenGL function loader from ModernGL has undergone some changes over the time.
@@ -248,8 +260,7 @@ The current approach in ModernGL master was not written by myself, but by the Gi
 Before aaalexandrov’s approach, the fastest approach would have used a pretty new Julia feature, named staged functions.
 It should in principle yield the best performance as it compiles a specialized version of the function when it gets called for the first time. This is perfect for OpenGL function loading, as the pointer to the function can only be queried after an OpenGL context has been created. When the staged function gets called the pointer can be queried and gets inlined into the just in time compiled function.
 
-Staged functions only work with the newest Julia build, which is why aaalexandrov’s approach is favorable.
-
+Staged functions only work with the newest Julia build, which is why aaalexandrov’s approach was used in the end.
 
 
 \subsection{GLAbstraction}
@@ -261,10 +272,10 @@ Building up on that, it defines a signal based perspective and orthographic came
 
 \subsection{GLWindow}
 GLWindow is a lightweight wrapper around GLFW.
-It mainly offers a screen type, which contains signals for all the different GLFW events (Mouse, Keyboard, etc...). 
+It mainly offers a screen type, which contains signals for all the different GLFW events. 
 It also offers a hierarchical structure for nesting screens. 
-All the screen areas are signals, which result in the resizing the screen area when they change. 
-This makes it simple to implement windows that react to changing screen areas or resized objects.
+All the screen areas are signals, which makes it easy to change the screen area. 
+This makes it simple to implement windows that react to changing the size of the windows or resized objects.
 
 
 \subsection{GLVisualize}
@@ -280,10 +291,10 @@ This makes it simple to implement windows that react to changing screen areas or
 GLVisualize implements the main functionality of this library.
 It structure is quite simple. 
 It relies as much as it can on common Julia data types and creates specialized visualizations for them via dispatch.
-So instead of offering differently named functions for different visualizations, there is just one function with a lot of methods for different types.
+So instead of offering differently named functions for different visualizations, there is just one function with lots of methods for different types.
 This has two advantages.
 First, it makes it very easy to use for visual debugging, as any value can be displayed immediately without any user interaction.
-Secondly, the user doesn't have to remember or lookup the function name, as long as there is a default visualization for the type he is working with.
+Secondly, the user doe not have to remember or lookup the function name, as long as there is a default visualization for the type he is working with.
 The next design goal was to make this fit for dynamic data, which resulted in relying on as little transformation of the data as possible and directly transferring it to the GPU.
 Depending on the complexity of the visualization, this means the visualization can be updated with as little overhead as possible.
 

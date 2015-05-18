@@ -1,7 +1,7 @@
 \section{Results and Discussion}
 
 \subsection{Performance Analysis}
-This chapter supplies some benchmarks, to analyze how close this thesis came to achieving the wanted performance, which should be on eye level with C.
+This chapter supplies some benchmarks, to analyze how close this thesis comes to achieve the wanted performance, which should be on eye level with C.
 
 If not stated otherwise, benchmarks are written for this thesis and executed on an Intel Core i5-4200U with an HD 4400 graphic and 8GB of RAM.
 Julia 0.4 has been used, C++ code hase been compiled with VS13 and for python the anaconda distribution with Python 2.7 was used.
@@ -14,8 +14,8 @@ Julia's performance is crucial for this thesis.
 If Julia does not perform close to C it would weaken the whole argument of writing the visualization library in Julia.
 It is a very tedious task to write representative benchmarks for a programming language. 
 The only way out is to rely on a multitude of sources and try to find analytical arguments.
-In this thesis, Julia's own benchmark suite will be used in addition to some real world benchmarks from the Julia mailing list, where users ported code from some other language to Julia.
-In addition, the general compiler structure of Julia will be analyzed to find indicators for Julia's overall performance.
+In this thesis, Julia's own benchmark suite will be used in addition to some real world benchmarks.
+In addition, the general compiler structure of Julia will be analyzed to find indicators for the limits of Julias performance.
 
 \vspace{1em}
 \begin{minipage}{\linewidth}
@@ -28,7 +28,7 @@ In addition, the general compiler structure of Julia will be analyzed to find in
 In the first benchmark from figure \ref{fig:juliabench}, we can see that Julia stays well within the range of C Speed. 
 Actually, it even comes second to C-speed with no other language being that close.
 This is a very promising first look at Julia, but it should be noted, that these benchmarks are written by the Julia core team.
-So it is not guaranteed, that there is not a bias favoring Julia in these Benchmarks.
+So it is not guaranteed, that there is no bias favoring Julia in these benchmarks.
 There is another benchmark comparing C++, Julia and F\#, which was created by Palladium Consulting which should not have any interest in favoring one of the languages.
 They compare the performance of C++, Julia and F\# for an IBM/370 floating point to IEEE floating point conversion algorithm. This is part of a blog series\cite{JuliaFSCpp} written by Palladium Consulting.
 F\# comes out last with 748.275 ms, than Julia with 483.769 ms and finally C++ with 463.474 ms. 
@@ -37,7 +37,7 @@ It looks like the author was only working on making the C++ version faster, so i
 
 
 The last Julia benchmark is more real world oriented. 
-It is Finite Element solver, which is an often used algorithm in material research and therefore represents a relevant use case for Julia.
+It is comparing Finite Element solver, which is an often used algorithm in material research and therefore represents a relevant use case for Julia.
 
 \begin{table}[htbp]
     \centering
@@ -58,8 +58,7 @@ It is Finite Element solver, which is an often used algorithm in material resear
 \end{table}
 These are remarkable results, considering that the author states it was not a big effort to achieve this. After all, the other libraries are established FEM solvers written in C++, which should not be easy to compete with.
 
-
-This list could go on, but it is more constructive, to find out Julia's limits analytically.
+This list could go on, but it is more constructive to find out Julia's limits analytically.
 As already mentioned, Julia is statically compiled at runtime. This means, as long as all types can be inferred at runtime, Julia will have in the most cases identical performance to C++.
 The biggest remaining difference in this case is the garbage collection. Julia 0.3 has a mark and sweep garbage collector, while Julia 0.4 has an iterative mark and sweep garbage collector.
 As seen in the benchmarks, it does not necessarily introduce big slowdowns.
@@ -70,7 +69,7 @@ But it can be said that Julia's garbage collector is very young and only the fut
 Another big difference is the difference in between different compiler technologies.
 \ac{LLVM}'s biggest rival is \ac{gcc}. If C++ code that is compiled with \ac{gcc} is much faster than the same code compiled with \ac{LLVM}, the \ac{gcc} version will also be faster as a comparable Julia program.
 In order to investigate the impact of this, one last benchmark will be analyzed.
-This is a summary of some articles posted on Phoronix, which benchmarked \ac{gcc} 4.92 against \ac{LLVM} 3.5 and 3.6:
+This is a summary of a series of articles posted on Phoronix, which benchmarked \ac{gcc} 4.92 against \ac{LLVM} 3.5 and \ac{LLVM} 3.5 against \ac{LLVM} 3.6:
 \begin{table}[ht]
   \centering
   \begin{tabular}{l|c|c}
@@ -122,7 +121,7 @@ ModernGL seems to do pretty well compared to C++ and python does very badly, wit
 Julia in contrast offers nearly the same speed as calling OpenGL functions from C++ as can be seen in the table \ref{table:relativespeedoglw}.
 As all the OpenGL wrappers are pretty mature by now and bind to the same C library (the video driver), this should mainly be a C function call benchmark.
 Python performs badly here, but it must be noted that there are a lot of different Python distributions and some promise to have better C interoperability.
-As this benchmarks goal is to show that Julia’s ccall interface is comparable to a c function call from inside C++, the python options have not been researched that thoroughly.
+As this benchmarks goal is to show that Julia’s ccall interface is comparable to a C function call from inside C++, the python options have not been researched that thoroughly.
 From this benchmark can be concluded, that Julia offers a solid basis for an OpenGL wrapper library.
 
 
@@ -257,16 +256,18 @@ But one needs to notice, that Romeo utilizes OpenGL's instancing to gain this sp
 \subsubsection{IJulia}
 It was not possible to compare IJulia directly with Romeo, as the feature set for plotting is too different.
 
-But there are certain factors, which can already 
-First of all, IJulia uses ZMQ to bridge the web interface with the Julia instance.
+But there are certain factors, which indicate, that is hard to reach optimal performance with IJulia.
+First of all, IJulia uses ZMQ to bridge the web interface with the Julia kernel.
 ZMQ is a messaging system using different sockets for communication like inproc, IPC, TCP, TIPC and multicas.
 While it is very fast at it's task of sending messages, it can not compete with the native performance of staying inside one language.
-This is not very important as long as there does not have to be much communication between Julia and the IPython kernel. This changes drastically for animations, where big memory chunks have to be streamed.
+This is not very important as long as there does not have to be much communication between Julia and the IPython kernel. This changes drastically for animations, where big memory chunks have to be streamed to the rendering engine of the browser. It can be expected, that this will always be a weakness of IJulia.
+On the other hand, GPU accelerated rendering in a web browser is also limited.
+It relies on WebGL, which offers only a subset of the OpenGL's functionality. So while the execution speed of OpenGL can be expected to be similar, there are a lot of new techniques missing, which could speed up rendering.
 
 
 \subsection{Extensibility Analysis}
 
-The modular design of Romeo has proven to be very effective and the goal of re-usability has already proven itself.
+The modular design of Romeo has proven to be effective and the goal of re-usability has already proven itself.
 Most of the created modules are used independently by different people.
 GLVisualize is used by myself for two packages, namely GLPlot, a scientific plotting package for Julia and for a prototype of a file explorer.
 It got forked by several users to create their own dynamic visualization packages.
@@ -290,7 +291,7 @@ To further proof this point I will analyze the mentioned software in more detail
 The language usage statistics and necessary tools needed in order to extend the software will be the main focus of the analysis.
 One needs to note, that the usage statistic of languages is just a weak indicator for the extendability of a software.
 Using different languages for one project can make sense if the project has different domains where domain specific languages give an advantage. As this means one needs to know all used languages, this still introduces complexity, but it is at least justified complexity.
-This chapter will only discuss the complexity introduced by languages, which are only needed for compatibility with other libraries or because the main language is too slow. This is something, which should be ideally avoided.
+This chapter will only discuss the complexity introduced by languages, which are only needed for compatibility with other libraries or because the main language is too slow. This is something, which should ideally be avoided.
 
 
 \subsubsection{IJulia}
@@ -341,21 +342,23 @@ GLAbstraction functions: 56
 GLVisualize functions: 5
 
 GLVisulize has a very simple API, as it offers only five functions: visualize, visualizedefaults, edit and renderloop.
-There is also the function bounce and loop, which offers a simplification for creating periodic signals.
+There are also the functions bounce and loop, which offers a simplification for creating periodic signals.
 So for the GLVisualize, only very few function names have to be remembered.
 The question is, does this simple interface still allow people to create the visualization they want.
 At closer inspection one can see, that visualize is overloaded 67 times, with each of these methods having a set of keyword arguments which enables further customization.
-These can be very drastic changes. The particle visualization for example can take any mesh as a primitive. This enables a customization, which was not possible in such an easy way in the other examined packages.
+These can introduce drastic changes. The particle visualization for example can take any mesh as a primitive. This enables a customization, which was not possible in such an easy way in the other examined packages.
 Also, most of the functions take either a data type, or a signal of that data type.
 This makes it very intuitive to animate your data. 
-In contrast, in order to setup the animation for the other packages, it took quite some time to find out how to update values of an existing visualization. This is acceptable, as it might take quite some time to find out how to build a signal and that Romeo is using signals for animations.
-But when this is found out, Romeo functions in the same, consistent way. You simply pass in a signal for the data that should change over time.
+In contrast, in order to setup the animation for the other packages, it took quite some time to find out how to update values of an existing visualization. This is acceptable, as it might take quite some time to find out that Romeo uses signals and how to work with signals.
+But when this is found out, Romeo functions in the same, consistent way. 
+You simply pass a signal for every attribute that should change over time.
 For the other packages though, one needs to find out the names of the data for every visualization type in order to update them, or if you can even update them.
-So the usage principle for Romeo is, bring your data into the right type and Romeo will do the rest.
-If this can be done easily, Romeo will offer a very consistent and easy to learn API.
-The problem is, if this principle violated and there is no easy way to transform the data into the right format.
-But to be fair, you will have this with every kind of visualization API. The difference is in the end, how easy it is to transform the data. Lets examine an example, where GLVisualize often will not allow to directly call visualize on the data.
-There is only a method for a Mesh, but not for a vertex list plus a face list. If you actually create mesh data, you will often have the face and vertex list isolated. 
-So an API that offers a function like patch(x::VertexList, y::FaceList) will be more straightforward for a programmer. Especially, as this is the standard way of displaying a mesh in most scientific plotting packages.
-But this functionality can be added in a simple way for GLVisualize by defining patch(facelist, vertexlist) = visualize(Mesh(facelist, vertexlist)).
+So the usage principle for Romeo is that if you can bring the data into the right format you are fine.
+Problems arise, if this can not be done easily.
+To be fair, you will have this problem with every kind of visualization API. 
+The difference is in the end, how easy it is to transform the data. 
+Lets examine an example, where GLVisualize often will not allow to directly call visualize on the data.
+There is only a method for visualizing a Mesh, but not for a vertex list plus a face list. If you actually create mesh data, you will often handle the face and vertex list isolated.
+So an API that offers a function like \texttt{visualize\_mesh(x::VertexList, y::FaceList)} will be more straightforward for a programmer. Especially, as this is the standard way of displaying a mesh in most scientific plotting packages.
+But this functionality can be added in a simple way for GLVisualize by defining \texttt{visualize\_mesh(facelist, vertexlist) = visualize(Mesh(facelist, vertexlist))}.
 As GLVisulize should stay as close to the principle of only having one function name, this should be moved to other interface only packages, though. 

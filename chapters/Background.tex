@@ -39,7 +39,12 @@ This makes Julia a great foundation for any software.
 
 \subsubsection{\ac{LLVM}}
 
+\ac{LLVM} is an impressive compiler infrastructure, which has front ends for different languages and back-ends for different chip architectures. 
+%A language designer has the task, to create an abstract syntax tree, which can be feeded to ac{LLVM}. There it gets %converted to LLVM IR, which then can be heavily optimized. Every language that can be converted to LLVM IR can be combined %at this level, going through the same optimizations in the end. This is yields superiour language interfacing, as inlining %and other optimizations can be done over the boundary of one language.
 
+\ac{LLVM}'s concept is effective, as you can accumulate state of the art optimizations in one place, making them accessible to many languages, while being able to compile to different platforms. There are x86, ARM, \ac{OpenCL} and CUDA back ends. While Julia doesn't support them all, it will hopefully be possible in the future. 
+\ac{LLVM} is also used by Clang, the C/C++ front end for \ac{LLVM} rivaling \ac{gcc} and it is used by Apple's programming language Swift. 
+This makes \ac{LLVM} a solid basis for a programming language, as these are highly successful projects guaranteeing \ac{LLVM} further prospering of the technology.
 
 
 \subsubsection{IJulia}
