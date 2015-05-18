@@ -361,4 +361,4 @@ Lets examine an example, where GLVisualize often will not allow to directly call
 There is only a method for visualizing a Mesh, but not for a vertex list plus a face list. If you actually create mesh data, you will often handle the face and vertex list isolated.
 So an API that offers a function like \texttt{visualize\_mesh(x::VertexList, y::FaceList)} will be more straightforward for a programmer. Especially, as this is the standard way of displaying a mesh in most scientific plotting packages.
 But this functionality can be added in a simple way for GLVisualize by defining \texttt{visualize\_mesh(facelist, vertexlist) = visualize(Mesh(facelist, vertexlist))}.
-As GLVisulize should stay as close to the principle of only having one function name, this should be moved to other interface only packages, though. 
+As GLVisulize should stay as close to the principle of only having one function name, this should be moved to other interface only packages, though.

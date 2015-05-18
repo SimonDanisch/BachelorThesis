@@ -5,6 +5,7 @@ In this chapter, a short overview will be given over the current state of the ar
 \subsection{Related Work}
 
 \subsubsection{The Julia Programming Language}
+
 Bringing Julia's ease of use and speed to a dynamic visualization library is the declared goal.
 So Julia plays a crucial role in this thesis. 
 It is the most important previous work, as much as Julia is the main used technology.
@@ -12,9 +13,10 @@ This chapter gives a short introduction to the Julia Programming Language.
 
 Julia was published in 2012, which makes it a very new language. It is currently at version 0.3.7 stable and 0.4 pre-release.
 Following common versioning conventions this means Julia is still in an early release phase with the core features and names suspicable to change.
-Julia is using the young compiler infrastructure \ac{LLVM} to generate fast assembly code.
+Julia is using the compiler infrastructure \ac{LLVM} to generate fast assembly code.
 
-Julia is a multi paradigma language for scientific computing.
+Julia is a multi paradigma language for scientific computing. 
+Some of its most important features are multiple dispatch, a dynamic type system, macros, good performance and an interface to C and Python.
 The focus on scientific computing means, that Julia's standard library is equipped with a lot of functions, data structures and specialized syntax for implementing complex math like linear algebra and statistics.
 It promises to approach C speed, while being a dynamic language which is easy to use.
 This is made possible by the compile process which can be described as statically compiled at runtime.
@@ -40,12 +42,13 @@ This makes Julia a great foundation for any software.
 
 \subsubsection{\ac{LLVM}}
 
-\ac{LLVM} is an impressive compiler infrastructure, which has front ends for different languages and back-ends for different chip architectures. 
-%A language designer has the task, to create an abstract syntax tree, which can be feeded to ac{LLVM}. There it gets %converted to LLVM IR, which then can be heavily optimized. Every language that can be converted to LLVM IR can be combined %at this level, going through the same optimizations in the end. This is yields superiour language interfacing, as inlining %and other optimizations can be done over the boundary of one language.
+\ac{LLVM} is an compiler infrastructure, which has front ends for different languages and compiles to different platforms like x86, ARM, \ac{OpenCL} and \ac{CUDA}. 
+A language designer must create an \ac{AST} which than \ac{LLVM} can convert into \ac{LLVM} \ac{IR}. This \ac{IR} can than be heavily optimized. 
+Every language that can be converted to \ac{LLVM} \ac{IR} can be combined at this level, going through the same optimizations in the end. This is yields superiour language interfacing, as inlining and other optimizations can be done over the boundary of one language.
 
-\ac{LLVM}'s concept is effective, as you can accumulate state of the art optimizations in one place, making them accessible to many languages, while being able to compile to different platforms. There are x86, ARM, \ac{OpenCL} and CUDA back ends. While Julia doesn't support them all, it will hopefully be possible in the future. 
-\ac{LLVM} is also used by Clang, the C/C++ front end for \ac{LLVM} rivaling \ac{gcc} and it is used by Apple's programming language Swift. 
-This makes \ac{LLVM} a solid basis for a programming language, as these are highly successful projects guaranteeing \ac{LLVM} further prospering of the technology.
+\ac{LLVM}'s concept is effective, as you can accumulate state of the art optimizations in one place, making them accessible to many languages. Because of the many backends, the language can run on many architectures. While Julia does not support them all, it will hopefully be possible in the future. 
+\ac{LLVM} is also used by Clang, the C/C++ front end for \ac{LLVM} rivaling \ac{gcc} and it is used by Apple's programming language Swift.
+This makes \ac{LLVM} a solid basis for a programming language, as these are highly successful projects guaranteeing \ac{LLVM} further prospering.
 
 
 \subsubsection{IJulia}
