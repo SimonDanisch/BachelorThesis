@@ -242,6 +242,14 @@ The challenge is, to load the function pointers system and vendor independent.
 Also one further complication is, that depending on the platform, function pointer are only available after an \ac{OpenGL} context was created and may only be valid for this context. \cite{wgl}
 This problem is solved, by initializing a function pointer cache with null and as soon as the function is called the first time the real pointer gets loaded.
 
+The OpenGL function loader from ModernGL has undergone some changes over the time.
+Starting with a very simple solution, there have been pull requests to include better methods for the function loading.
+The current approach in ModernGL master was not written by myself, but by the Github user aaalexandrov.
+Before aaalexandrov’s approach, the fastest approach would have used a pretty new Julia feature, named staged functions.
+It should in principle yield the best performance as it compiles a specialized version of the function when it gets called for the first time. This is perfect for OpenGL function loading, as the pointer to the function can only be queried after an OpenGL context has been created. When the staged function gets called the pointer can be queried and gets inlined into the just in time compiled function.
+
+Staged functions only work with the newest Julia build, which is why aaalexandrov’s approach is favorable.
+
 
 
 \subsection{GLAbstraction}
