@@ -1,6 +1,6 @@
 \section{Background}
 
-In this chapter, a short overview will be given over the current state of the art for visualization inside the field of scientific computing.
+In this chapter, a short overview will be given over the current state of the art for visualization inside the field of scientific computing and a short intro to Julia will be given.
 
 \subsection{Related Work}
 
@@ -21,24 +21,20 @@ The focus on scientific computing means, that Julia's standard library is equipp
 It promises to approach C speed, while being a dynamic language which is easy to use.
 This is made possible by the compile process which can be described as statically compiled at runtime.
 Julia uses a garbage collector, taking the task of memory management away from the programmer.
-There are quite a few things Julia promises to the developer described which includes the following items:\cite{WhyJulia}.
+There are quite a few things Julia promises to the developer which includes the following items\cite{WhyJulia}:
 \begin{itemize}
 	\item C like performance
 	\item native C interface
 	\item macros like in Lisp
 	\item mathematical notations like Matlab
-	\item good at general purpose programming as python
+	\item good at general purpose programming as Python
 	\item easy for statistics as R.
 \end{itemize}
-These are the reasons why Julia is well suited for implementing an interactive scientific visualization library.
-Interactive visualizations have very hard demands on performance. 
-60 frames per second are needed to feel comfortable, so there are only 0.016 seconds available for computing a single frame.
-There should be no stutters and calling C-libraries should be simple and fast in order to communicate with the video driver.
-This is one side, but the other is equally important:
-You can do the scientific programming in the same language as you do the visualization.
-Like this, Julia's native data types can be used without serialization, copies and the library can be extended by the Julia programmer.
-Finally, Julia's concise and high-level coding style and the intereactive execution model makes it a lot easier to extend software.
-This makes Julia a great foundation for any software.
+Another interesting feature of Julia is, that all user defined types are as fast and compact as build in types.
+This allowes Julia to write all arithmetic types in Julia itself, allowing anyone to extend and rewrite them without diving into the compiler. This means that you can write your own floating point type, with the same performance and characteristics as the build in floating point type.
+
+This makes Julia a very desirable scientific computing language, which promises to be also great for a visualization library.
+As part of this thesis, it will be investigated if Julia's claims have been achieved.
 
 \subsubsection{\ac{LLVM}}
 
@@ -75,7 +71,6 @@ It offers a broad range of functionality, including matrix manipulation, plottin
 It's proprietary software with a pricing of around \EUR{2000}\cite{MatlabPricing}, which can be extended via free, open source and proprietary modules like Simulink.
 
 Romeo intends to lay out the ground work to provide something remotely similar together with Julia. It is quite far away in terms of functionality, but it builds upon a more modern architecture, which intends to solve some problems that have accumulated for Matlab.
-While Julia 
 
 \subsubsection{Mayavi and VTK}
 \vspace{1em}
@@ -99,8 +94,8 @@ Obviously, the python part is not a shared goal, but creating an interactive 3D 
 Mayavi together with VTK is a very big project and in this sense not really comparable to Romeo.
 It amounts to a total of 3.642.105 lines of code written in 29 languages. The statistics can be found in table \ref{table:ParaviewStatistic} and \ref{table:VTKStatistic}.
 The biggest difference is, that Romeo is implemented in a scientific programming language, while Mayavis core uses VTK which is mainly implemented in C++.
-This has two big implications:
-Firstly, if the language doesn't have native C++ compatible data types and an overhead less C++ interface, shipping a large stream of data to VTK becomes slow.
+This has two big implications.
+Firstly, if the language does not have native C++ compatible data types and an overhead less C++ interface, shipping a large stream of data to VTK becomes slow.
 Secondly, one must know C++ to extend VTK. This makes it difficult to create customized visualizations.
 
 In contrast, Romeo is implemented in one language, making these tasks very simple and efficient.
@@ -120,5 +115,5 @@ These include\cite{VispyGoals}:
 \end{itemize}
 It is a fairly new library, promising to use modern OpenGL and state of the art performance.
 This is very similar to Romeo's goals, with the only difference being that Romeo is implented in Julia while Vispy is implemented in Python.
-So the only differenciation between Romeo and Vispy will be in performance and the concrete feature set.
+So the biggest differenciation between Romeo and Vispy will be the performance and the concrete feature set.
 

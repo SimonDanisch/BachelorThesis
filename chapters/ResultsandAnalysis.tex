@@ -206,7 +206,7 @@ There is not much information available on how Matlab renders their visualizatio
     \label{fig:reactive1}
 \end{minipage}
 
-The next benchmark is only between Romeo and Mayavi, as the other libraries did not offer a comparable solution. Matlab does not allow to use cubes as particle primitives and Vispy only had an example, where you needed to write your own shader, which can not be seen as a serious option. This a benchmark for easy to use and high level plotting libraries. It is always possible to write an optimal version yourself in some framework, but what really interesting is, how well you can solve a problem with the tools the library has readily available.
+The next benchmark is only between Romeo and Mayavi, as the other libraries did not offer a comparable solution. Matlab does not allow to use cubes as particle primitives and Vispy only had an example, where you needed to write your own shader, which can not be seen as a serious option. This is a benchmark for easy to use and high level plotting libraries. It is always possible to write an optimal version yourself in some framework, but what really interesting is, how well you can solve a problem with the tools the library has readily available.
 
 \begin{table}[htbp]
     \centering
@@ -225,15 +225,31 @@ The next benchmark is only between Romeo and Mayavi, as the other libraries did 
 \end{table}
 Romeo is an order of magnitude faster in this specific benchmark. This is most likely due to the fact that Romeo uses OpenGL's native instance rendering.
 
+
+\subsubsection{IJulia}
+
+It was not possible to compare IJulia directly with Romeo, as the feature set for plotting is too different.
+
+But there are certain factors, which indicate, that is hard to reach optimal performance with IJulia.
+First of all, IJulia uses ZMQ to bridge the web interface with the Julia kernel.
+ZMQ is a messaging system using different sockets for communication like inproc, IPC, TCP, TIPC and multicas.
+While it is very fast at it's task of sending messages, it can not compete with the native performance of staying inside one language.
+This is not very important as long as there does not have to be much communication between Julia and the IPython kernel. This changes drastically for animations, where big memory chunks have to be streamed to the rendering engine of the browser. It can be expected, that this will always be a weakness of IJulia.
+On the other hand, GPU accelerated rendering in a web browser is also limited.
+It relies on WebGL, which offers only a subset of the OpenGL's functionality. So while the execution speed of OpenGL can be expected to be similar, there are a lot of new techniques missing, which can speed up rendering.
+
+To investigate this another benchmark has been created.
+It is between Romeo and Compse3D, which was the only library found to be able to display 3D models created with Julia directly from the IJulia notebook.
+This benchmark is not entirely fair, as Compose3D is just a very rough prototype so far. 
+But there seems to be no other library with which you can easily create and display interactive 3D graphics in the IJulia or IPython notebook. 
+This benchmark creates a sierpinsky gasket and Compose3D displays it in the IJulia notebook while Romeo displays it natively in a window.
+
 \begin{minipage}{\linewidth}
     \centering
     \includegraphics[width=\linewidth]{graphics/sierpinsky.jpg}
     \captionof{figure}[Sierpinsky]{Sierpinsky pyramid in 3D}
     \label{fig:reactive1}
 \end{minipage}
-
-This benchmark is not entirely fair, as Compose3D is just a very rough prototype so far. But I was not able to find any other library with which you could easily create and display interactive 3D graphics in the IJulia or IPython notebook. This benchmark creates a sierpinsky gasket and Compose3D displays it in the IJulia notebook and Romeo displays it natively in a window.
-
 \begin{table}[htbp]
     \centering
     \begin{tabular}{l|l}
@@ -249,21 +265,9 @@ This benchmark is not entirely fair, as Compose3D is just a very rough prototype
     \captionof{table}[3D Benchmark]{Maximum number of pyramids that could be displayed without stutter.}
     \label{table:relativespeedoglw}
 \end{table}
+
 Again, Romeo is an order of magnitude faster. This can change in the future when Compose3D matures.
 But one needs to notice, that Romeo utilizes OpenGL's instancing to gain this speed. Native instancing is not yet available in WebGL, which means that this optimization will not be available for the IPython notebook in the near future.
-
-
-\subsubsection{IJulia}
-It was not possible to compare IJulia directly with Romeo, as the feature set for plotting is too different.
-
-But there are certain factors, which indicate, that is hard to reach optimal performance with IJulia.
-First of all, IJulia uses ZMQ to bridge the web interface with the Julia kernel.
-ZMQ is a messaging system using different sockets for communication like inproc, IPC, TCP, TIPC and multicas.
-While it is very fast at it's task of sending messages, it can not compete with the native performance of staying inside one language.
-This is not very important as long as there does not have to be much communication between Julia and the IPython kernel. This changes drastically for animations, where big memory chunks have to be streamed to the rendering engine of the browser. It can be expected, that this will always be a weakness of IJulia.
-On the other hand, GPU accelerated rendering in a web browser is also limited.
-It relies on WebGL, which offers only a subset of the OpenGL's functionality. So while the execution speed of OpenGL can be expected to be similar, there are a lot of new techniques missing, which could speed up rendering.
-
 
 \subsection{Extensibility Analysis}
 
@@ -337,28 +341,29 @@ There are different aspects which can be analyzed. For example, how many functio
 For this thesis, I will analyze the two main packages, namely GLVisualizes and GLAbstraction. 
 The named aspects will be analyzed and in addition feedback from Github will be used.
 
-GLAbstraction functions: 56
-
-GLVisualize functions: 5
-
 GLVisulize has a very simple API, as it offers only five functions: visualize, visualizedefaults, edit and renderloop.
 There are also the functions bounce and loop, which offers a simplification for creating periodic signals.
-So for the GLVisualize, only very few function names have to be remembered.
+These functions might get moved into Reactive, though.
+So for GLVisualize, only very few function names have to be remembered.
 The question is, does this simple interface still allow people to create the visualization they want.
 At closer inspection one can see, that visualize is overloaded 67 times, with each of these methods having a set of keyword arguments which enables further customization.
 These can introduce drastic changes. The particle visualization for example can take any mesh as a primitive. This enables a customization, which was not possible in such an easy way in the other examined packages.
 Also, most of the functions take either a data type, or a signal of that data type.
 This makes it very intuitive to animate your data. 
 In contrast, in order to setup the animation for the other packages, it took quite some time to find out how to update values of an existing visualization. This is acceptable, as it might take quite some time to find out that Romeo uses signals and how to work with signals.
-But when this is found out, Romeo functions in the same, consistent way. 
-You simply pass a signal for every attribute that should change over time.
-For the other packages though, one needs to find out the names of the data for every visualization type in order to update them, or if you can even update them.
-So the usage principle for Romeo is that if you can bring the data into the right format you are fine.
-Problems arise, if this can not be done easily.
+But when this is found out, Romeo functions in the same, consistent way. Signals add a fourth dimension to any parameter or data you would like to visualize, making the usage principle consistent across the different visualizations.
+
+For the other packages though, one needs to find out the names of the data for every visualization type in order to access and update them. Some attributes can not be animated, making the API even less consistent.
+
+So for Romeo one can achieve anything by bringing the data into the right format.
+Problems arise, if this can not be done easily or the format is not intuitive for the programmer.
 To be fair, you will have this problem with every kind of visualization API. 
-The difference is in the end, how easy it is to transform the data. 
+The difference is in the end, how easy it is to do the data transformations. 
 Lets examine an example, where GLVisualize often will not allow to directly call visualize on the data.
-There is only a method for visualizing a Mesh, but not for a vertex list plus a face list. If you actually create mesh data, you will often handle the face and vertex list isolated.
-So an API that offers a function like \texttt{visualize\_mesh(x::VertexList, y::FaceList)} will be more straightforward for a programmer. Especially, as this is the standard way of displaying a mesh in most scientific plotting packages.
+There is only a method for visualizing a Mesh, but not for a vertex list plus a face list. If you work with mesh data, you will often handle the face and vertex list isolated.
+So an API that offers a function like \texttt{visualize\_mesh(x::VertexList, y::FaceList)} will be more straightforward for a programmer.
+Especially, as this is the standard way of displaying a mesh in most scientific plotting packages. This has become one of the most occurring questions on github, even though that there are usage examples for displaying a mesh.
+
 But this functionality can be added in a simple way for GLVisualize by defining \texttt{visualize\_mesh(facelist, vertexlist) = visualize(Mesh(facelist, vertexlist))}.
 As GLVisulize should stay as close to the principle of only having one function name, this should be moved to other interface only packages, though.
+[more to come]

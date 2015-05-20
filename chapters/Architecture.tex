@@ -14,16 +14,17 @@ Certain design choices had to be made to guarantee this. As speed is the most co
 
 
 \subsubsection{Speed}
-Speed is mainly a usability factor. It's a factor, that can make a software unusable, or render it unproductive. Because of this, speed has taken a high priority in this thesis. As general coding productivity is also a concern, this thesis is set on using a high level language.
-Historically, these two demands can't be satisfied at the same time.
+Speed is mainly a usability factor. It is a factor, that can make a software unusable, or render it unproductive. Because of this, speed has taken a high priority in this thesis. As general coding productivity is also a concern, this thesis is set on using a high level language.
+Historically, these two demands can not be satisfied at the same time.
 How to achieve state of the art speed with a high level language is an ongoing research and basically the holy grail of language design. 
 Julia promises to do exactly this, which is illustrated in figure \ref{fig:juliabench}. 
 Code length is an ambiguous measure for conciseness, but if the code is similarly refactored it is a good indicator of how many lines of code are needed to achieve the same goal.
 From this figure we can conclude, that Julia at least comes close to its promises, which is why it has been chosen as the programming language.
 
 To get high performant 3D graphics rendering, there are on the first sight a lot of options.
-If you start to take the previous demands into account, the options shrink down considerably, though.
-The visualization library should be implemented in one high level language, which can be used for scientific computing and has state of the art speed. At this point, there are close to zero libraries left. As you can see in figure \ref{fig:juliabench}, Matlab, Python and R disqualify, as they are too slow. JavaScript, Java, Go and Lua are missing a scientific background and the others are too low level for the described goals.
+If you start to take the previous demands into account, the options shrink down considerably.
+The visualization library should be implemented in one high level language, which can be used for scientific computing and has state of the art speed. 
+At this point, there are close to zero libraries left. As you can see in figure \ref{fig:juliabench}, Matlab, Python and R disqualify, as they are too slow. JavaScript, Java, Go and Lua are missing a scientific background and the others are too low level for the described goals.
 This leaves only Julia, but in Julia there were no 3D libraries available, which means that one has to start from scratch.
 There are only a couple of GPU accelerated low-level libraries available, namely Khrono's \ac{OpenGL}, Microsoft's DirectX, Apple's Metal and AMD's Mantel, which are offering basically the same functionality. 
 As only \ac{OpenGL} is truly cross-platform, this leaves \ac{OpenGL} as an option.
@@ -48,14 +49,22 @@ This is pretty difficult to measure as these are either binary choices, which ar
 or higher level concepts like writing concise code, which can be a matter of taste.
 To get an idea of the effectiveness of the strategy, usage patterns and feedback from Github will be analyzed.
 
+\subsubsection{Event System}
+The event system is a crucial part of the library, as the proclaimed goal is to visualize dynamic, animated data.
+This means, there are hard demands for usability and speed on the event system.
+The chosen event system has an immediate influence on how to handle animations. 
+This lead to the design choice of using signals. Signals are a very good abstraction for values that change over time.
+If well implemented, it makes it natural to reason about time, without the need of managing unrelated structures and callback code.
 
 \subsubsection{Interfaces}
-Working with a computer means working with interfaces to a computer, which in the end simply jiggles around with zeros and ones. There is a huge hierarchy of abstractions involved, to make this process of binary juggling manageable to the human.
+
+Working with a computer means working with interfaces to a computer, which in the end simply juggles around with zeros and ones. There is a huge hierarchy of abstractions involved, to make this process of binary juggling manageable to the human.
 We already dealt with the lowest relevant abstraction: the choice of programming language, which forms our first interface to the computer.
 The next level of abstraction is the general architecture of the modules, which has been discussed previously. 
 This chapter is about the API design choices that have been made.
 
-The first API is the \ac{OpenGL} layer. The philosophy is to make the wrapper for native libraries as thin and reusable as possible and an one to one mapping of the underlying library.
+The first API is the \ac{OpenGL} layer. 
+The philosophy is to make the wrapper for native libraries as thin and reusable as possible and an one to one mapping of the underlying library.
 This guarantees re-usability for others, as they might be used to work only with the low-level library or they might disagree with some higher-level abstraction and prefer to write their own.
 
 Over this sits an abstraction layer needed to simplify the work with \ac{OpenGL}.
@@ -71,16 +80,6 @@ It is also easy to extend, as the user just has to overload the function with a 
 Finally, there are also graphical user interfaces developed for this thesis. As also optimizing them is out of the scope of this thesis, they are kept very simple.
 The measurement of success is again relatively difficult to do. (I need to think this over)
 
-\subsubsection{Event System}
-The event system is a crucial part of the library, as the proclaimed goal is to visualize dynamic, animated data.
-This means, there are hard demands for usability and speed on the event system.
-The chosen event system has an immediate influence on how to handle animations. 
-This lead to the design choice of using signals. Signals are a very good abstraction for values that change over time.
-If well implemented, it makes it natural to reason about time, without the need of managing unrelated structures and callback code.
-
-
-
-
 
 
 
@@ -92,13 +91,13 @@ If well implemented, it makes it natural to reason about time, without the need 
 \subsection{The Julia Programming Language}
 The basic introduction of Julia has already been given in the Background chapter.
 This chapter is focused on how to write programs with Julia.
-Most influential language construct are it's hierarchical type system and multiple dispatch.
+Most influential language construct are its hierarchical type system and multiple dispatch.
 Multiple dispatch is in its core function overloading at runtime. 
 To better understand multiple dispatch, one has to be familiar with Julia's type system.
 The type system builds upon four basic components. 
 Composite types, which are comparable to C-Structs, parametric composite types, bits types, abstract and parametric abstract types.
-While the first three are all concrete types, abstract types can be used to build a type hierarchy.
-Every concrete type can inherit from one abstract type, while abstract types can also inherit from abstract types.
+While the first three are all concrete types, abstract types can not be instanciated but are used to build a type hierarchy.
+Every concrete type can only inherit from one abstract type, while abstract types can also inherit from abstract types.
 Bit types are just immutable, stack allocated memory chunks, usable for implementing numbers.
 You can build type hierarchies like this:
 \begin{lstlisting}
@@ -120,15 +119,17 @@ function foo(x)
 end
 \end{lstlisting}
 
-What will happen at runtime is, that Julia compiles the function specialized on its arguments which results in overloading the function with the specific arguments.
-So in the previous example, foo will originally be overloaded with two methods. 
-Now, if you call foo with one Float32 argument, a new method will be added specialized to Float32.
+What will happen at runtime is, that Julia compiles a method specialized on the arguments which results in overloading the function with the concretely typed arguments.
+To illustrate this let us look at the example. 
+Initially, foo will be overloaded with two methods.
+Now, if you call foo with one Float32 argument, a new method will be added at run time specialized to Float32.
 Like this, if the function does not access non constant global values, all types inside the function will be known at call time.
 This allows Julia to statically compile the function body, while propagating the type information down the call-tree.
 
 With multiple dispatch, Julia is definitely a functional oriented language. But there are also ways to give Julia a more object oriented feel.
-Functions are easy to pass around. They can be bound to variables and can then be called like normal functions via the variable name. This implies that functions can also be bound to objects. 
-There is no self reference available in Julia, so the object still needs to be passed to function via the arguments
+Functions are first-class, so they are easy to pass around. 
+They can be bound to variables and can then be called like normal functions via the variable name. This implies that functions can also be bound to objects.
+There is no self reference available in Julia, so the object still needs to be passed to function via the function arguments
 
 Another of the most crucial features is the very simple, overhead less C-Interface. 
 Thanks to the binary compatibility of LLVM's emitted assembly, a C function call to a shared library inside Julia has the same overhead as it would be from inside C\cite{CCALL}. 
@@ -157,7 +158,7 @@ The features include instance rendering, vertex arrays and modern \ac{GLSL} shad
 
 In figure \ref{fig:opengl} you can see the basic architecture of an OpenGL program pipeline.
 As the description states, the blue boxes are programmable shaders, while the dotted boxes are optional parts of the pipeline.
-The yellow boxes describe stages which are not directly accessible. They are part of the OpenGL state, which can be set via OpenGL commands.
+The yellow boxes describe stages which are not directly accessible. They are part of the global OpenGL state, which can be set via OpenGL commands.
 
 So in order to have a functioning OpenGL rendering pipeline one just needs to write a vertex shader and a fragment shader.
 All shaders are compiled and linked into a program object, which then can be executed on the \ac{GPU}.
@@ -294,15 +295,15 @@ It relies as much as it can on common Julia data types and creates specialized v
 So instead of offering differently named functions for different visualizations, there is just one function with lots of methods for different types.
 This has two advantages.
 First, it makes it very easy to use for visual debugging, as any value can be displayed immediately without any user interaction.
-Secondly, the user doe not have to remember or lookup the function name, as long as there is a default visualization for the type he is working with.
+Secondly, the user does not have to remember or lookup the function name, as long as there is a default visualization for the type he is working with.
 The next design goal was to make this fit for dynamic data, which resulted in relying on as little transformation of the data as possible and directly transferring it to the GPU.
 Depending on the complexity of the visualization, this means the visualization can be updated with as little overhead as possible.
 
 The interface to create visualizations is very simple and only consists of three functions:
 \begin{lstlisting}
-Dict{Symbol, Any}     = visualization_defaults(data::T, style::Style) # returns a dictionary of paramers
-RenderObject 		  = visualize(data::T, style=Style{:default}; parameters...) # returns an object which can be directly rendered
-RenderObject, Signal  = edit(     data::T, style=Style{:default}; parameters...) # returns an RenderObject and signal which outputs the changed values
+Dict{Symbol, Any}     = visualization_defaults(data::Union(Signal{T}, T), style::Style) # returns a dictionary of parameters
+RenderObject 		  = visualize(data::Union(Signal{T}, T), style=Style{:default}; parameters...) # returns an object which can be directly rendered
+RenderObject, Signal  = edit(data::Union(Signal{T}, T), style=Style{:default}; parameters...) # returns an RenderObject and signal which outputs the changed values
 \end{lstlisting}
 
 With this simple interface, the following data can be visualized:
