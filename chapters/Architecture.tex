@@ -187,6 +187,10 @@ void main()
 }
 \end{lstlisting}
 
+All visualization code is written in OpenGL shaders, which get compiled and called via GLAbstraction.
+
+
+
 \subsection{Reactive}
 Reactive\cite{Reactive} is a functional event system designed for event driven programming.
 It implements Elm's\cite{Elm} signal based event system in Julia.
@@ -210,6 +214,7 @@ With this, one can build up a complex tree of operators which will get applied t
 For the concrete case of Reactive, every signal carries around a list of children and parents.
 Each signal has a rank, in order to build up a sorted heap with these information.
 So every time a signal is updated, the heap can be traversed and the functions get applied in the right order, updating all the values of the children.
+Reactive is used in all parts of the library. It builds the basis for the camera code, the widgets and any value that needs to be animated is realized via a signal.
 
 \subsection{GLFW}
 GLFW\cite{GLFW} is a cross platform \ac{OpenGL} context and window creation library written in C.
