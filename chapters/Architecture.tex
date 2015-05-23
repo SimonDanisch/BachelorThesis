@@ -1,4 +1,4 @@
-\section{Design}
+\section{Requirements}
 
 All building blocks in this thesis are developed with the purpose in mind to give the user the possibility to visualize and interact with complex 2D and 3D data, while being able to easily extend the library.
 To enable this kind of functionality, a lot of parts of the infrastructure need to work seamlessly together.
@@ -142,7 +142,7 @@ This is perfect for dealing with low-level libraries like \ac{OpenGL} and \ac{Op
 \begin{minipage}{\linewidth}
     \centering
     \includegraphics[width=0.5\linewidth]{graphics/RenderingPipeline.png}
-    \captionof{figure}[OpenGL]{Diagram of the Rendering Pipeline. The blue boxes are programmable shader stages. \cite{OpenGLPipeline}}
+    \captionof{figure}[OpenGL]{Diagram of the Rendering Pipeline. The blue boxes are programmable shader stages. Arrows show the flow of data\cite{OpenGLPipeline}}
     \label{fig:opengl}
 \end{minipage}
 
@@ -240,10 +240,15 @@ This chapter is about the implementation of Romeo.
 The Romeo package itself is small and just defines the high-level functionality of the editor.
 This includes window layout and connecting all the different event sources to create the wanted behavior.
 To do this, Romeo relies on a multitude of packages, which step for step abstract away the underlying low-level code that is used to do the window creation and rendering.
+As you can see in figure \ref{fig:architecture}, Romeo uses GLVisualize for creating \ac{GUI} elements and the visualisations. 
+The code evaluation is done via Julia build-in functions.
+Windows are managed with GLWindow. GLWindow creates an OpenGL window with the help of GLFW and converts all window events into Reactive's signals. It also offers a very simple render queue, for rendering graphics attached to a window.
+Reactive signals are not only used as the event sources, but are also the main abstraction for time varying values in GLVisualize.
 GLVisualize is the main package offering the rendering functionality and the editor widgets like text fields and sliders.
-For rendering GLVisualize relies on GLAbstraction, which defines a high-level interface to \ac{OpenGL}.
-\ac{OpenGL} function loading is done by ModernGL, which keeps all the function and Enums definitions from \ac{OpenGL} with version higher than 3.0.
-The event management is handled by Reactive.
+
+For rendering GLVisualize relies on GLAbstraction, which defines a high-level interface for ModernGL.
+ModernGL does the \ac{OpenGL} function loading and exposes all the function and Enums definitions from \ac{OpenGL} with version higher than 3.0.
+
 
 \subsection{Event System}
 
