@@ -188,8 +188,8 @@ void main()
 \end{lstlisting}
 
 \subsection{Reactive}
-Reactive is a functional event system designed for event driven programming.
-It implements Elm's signal based event system in Julia.
+Reactive\cite{Reactive} is a functional event system designed for event driven programming.
+It implements Elm's\cite{Elm} signal based event system in Julia.
 Signals can be transformed via arbitrary functions which in turn create a new signal.
 This simple principle leads too a surprisingly simple yet effective way of programming event based applications.
 
@@ -212,7 +212,7 @@ Each signal has a rank, in order to build up a sorted heap with these informatio
 So every time a signal is updated, the heap can be traversed and the functions get applied in the right order, updating all the values of the children.
 
 \subsection{GLFW}
-GLFW is a cross platform \ac{OpenGL} context and window creation library written in C.
+GLFW\cite{GLFW} is a cross platform \ac{OpenGL} context and window creation library written in C.
 GLFW allows to register callbacks for a multitude of events like keyboard, mouse and window events.
 This, together with a wrapper library for Julia makes GLFW perfect for doing the window creation.
 In addition, GLFW exposes low level features like the operating systems context handle.
@@ -221,7 +221,6 @@ Romeo does not use this feature yet, but it makes GLFW a future proof choice.
 
 
 \section{Implementation}
-
 
 \vspace{1em}
 \begin{minipage}{\linewidth}
