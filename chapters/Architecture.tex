@@ -248,6 +248,8 @@ GLVisualize is the main package offering the rendering functionality and the edi
 
 For rendering GLVisualize relies on GLAbstraction, which defines a high-level interface for ModernGL.
 ModernGL does the \ac{OpenGL} function loading and exposes all the function and Enums definitions from \ac{OpenGL} with version higher than 3.0.
+Like already pointed out in the requirements, special care has been taken to make all modules self sufficient. 
+Every single package can be used for other applications, which allows for higher flexibility and a broader user base.
 
 
 \subsection{Event System}
@@ -283,7 +285,7 @@ Building up on that, it defines a signal based perspective and orthographic came
 \subsection{GLWindow}
 GLWindow is a lightweight wrapper around GLFW.
 It mainly offers a screen type, which contains signals for all the different GLFW events. 
-It also offers a hierarchical structure for nesting screens. 
+It also offers a hierarchical structure for nesting screens.
 All the screen areas are signals, which makes it easy to change the screen area. 
 This makes it simple to implement windows that react to changing the size of the windows or resized objects.
 

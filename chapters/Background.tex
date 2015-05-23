@@ -22,6 +22,7 @@ It promises to approach C speed, while being a dynamic language which is easy to
 This is made possible by the compile process which can be described as statically compiled at runtime.
 Julia uses a garbage collector, taking the task of memory management away from the programmer.
 There are quite a few things Julia promises to the developer which includes the following items\cite{WhyJulia}:
+
 \begin{itemize}
 	\item C like performance
 	\item native C interface
@@ -30,10 +31,18 @@ There are quite a few things Julia promises to the developer which includes the 
 	\item good at general purpose programming as Python
 	\item easy for statistics as R.
 \end{itemize}
+
 Another interesting feature of Julia is, that all user defined types are as fast and compact as build in types.
 This allowes Julia to write all arithmetic types in Julia itself, allowing anyone to extend and rewrite them without diving into the compiler. This means that you can write your own floating point type, with the same performance and characteristics as the build in floating point type.
 
-This makes Julia a very desirable scientific computing language, which promises to be also great for a visualization library.
+Julia claims to take an approach at scientific computing which is more modern than other programming languages.
+They justify this by pointing out the performance characteristics of Julia and the possibilities that come from this. 
+Julia allows to write even the performance critical core in Julia itself. This means Julia does not need to call out to C and most of the standard library is implemented in Julia. 
+In contrast, Matlab, Python and R need to implement any perfomance criticial code in another language, which has lead to a programming pattern which is known by the name of vectorization. This pattern has evolved, as the vector operations that are build into the language are much faster than self written vector operation.
+This means, if one needs performance, the code needs to be rewriten to only use functions implemented in some module that relies on another, faster language.
+A deeper analysis of this problem can be found in the first Julia paper\cite{2012arXiv1209.5145B}.
+
+All in all, this makes Julia a very desirable scientific computing language, which promises to be also great for a visualization library.
 As part of this thesis, it will be investigated if Julia's claims have been achieved.
 
 \subsubsection{\ac{LLVM}}
@@ -65,12 +74,17 @@ The current integration is just prototypical and limited to simple 3D meshes up 
 \ac{Matlab} is a numerical computing environment that comes with its own programming language.
 It was created in 1984 by Cleve Moler. He designed it to leverage the effort of accessing LINPACK and EISPACK for his students.
 Since then it grew to be a widely used tool for scientific computing in all areas, ranging from teaching to actual engineering uses in companies.
-It offers a broad range of functionality, including matrix manipulation, plotting of functions and data, creation of user interfaces and interfacing with a range of languages like C/C++, Java Fortran and Python.
+It offers a broad range of functionality, including matrix manipulation, plotting of functions and data, creation of user interfaces and interfacing with a range of languages like C/C++, Java Fortran and Python. 
+Matlab has made itself quite the name with having print ready visualization tools deeply integrated into the standard library.
 
 \ac{Matlab} itself is written in C, C++, Java and MATLAB.
 It's proprietary software with a pricing of around \EUR{2000}\cite{MatlabPricing}, which can be extended via free, open source and proprietary modules like Simulink.
 
-Romeo intends to lay out the ground work to provide something remotely similar together with Julia. It is quite far away in terms of functionality, but it builds upon a more modern architecture, which intends to solve some problems that have accumulated for Matlab.
+Romeo intends to lay out the ground work to provide a similar deep integration of visualizations in Julia. 
+It is quite far away in terms of functionality, but it builds upon a more modern architecture.
+Romeo is using modern OpenGL and Julia intends to solve one of matlabs biggest problems, namely the need for vectorization.
+Overall, the biggest difference is that Romeo and Julia are open source, making them much more accessible and easier to extend than Matlab.
+
 
 \subsubsection{Mayavi and VTK}
 \vspace{1em}
