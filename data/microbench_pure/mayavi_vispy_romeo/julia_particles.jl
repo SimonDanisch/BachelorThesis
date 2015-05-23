@@ -3,7 +3,6 @@ using GLVisualize, AbstractGPUArray, GLAbstraction, GeometryTypes, Reactive, Col
 
 #animated max 40.000
 #still max 1 million
-generate(x,i) = rand()
 const N = 500
 #=
 const time_i 		= bounce(1f0:0.001f0:20f0) # lets the values "bounce" back and forth between 1 and 50, f0 for Float32
