@@ -356,6 +356,7 @@ The texture approach has the disadvantage that 1D textures offer maximum sizes b
 
 
 \subsubsection{Vector Graphics Rendering}
+
 Vector graphics are difficult to render, as they are by any means difficult to render for the \ac{GPU}.
 Long stretched, curved and thin lines introduce several problems for the GPU.
 First of all, the GPU renders fragments (pixels) to the screen in tiles which are usualy around 64x64 pixels in size. Every pixel in this tile is rendered via a \ac{GPU} thread, which is completely blocked for this tile. Areas that are empty will not spawn a GPU thread.
@@ -365,20 +366,37 @@ The final problem is anti-aliasing of thin lines. With usual anti-aliasing techn
 
 
 \subsubsection{Volume Rendering}
-If one speaks about volumes in computer graphics, one usually refers to voxels or texels, which are 3D pixels.
-There are sparse and dense storage options for texels and also different meta informations for every voxel like speed, rotation, color and so forth.
-Volume renderings are not a trivial taks, expecially as it is difficult to make a visualization which lets you peek inside a volume without discarding important informations.
-This is why different forms of visualizations are needed, to get a good representation of a volume.
-GLVisualize is able to render iso surfaces, maximum intensity projections and an absorbtion based visualization form. On top of this, the particle systems can be used to give further insights into the volume by rendering particles for each voxel. This is especially helpful for sparse volumes, as these have are not supported natively by GLVisualize yet.
+\vspace{1em}
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{graphics/volumes.png}
+    \captionof{figure}[Volumes]{Different visualizations rendered with GLVisualize. As can be seen, every methods misses critical features of the volume.}
+    \label{fig:volumes}
+\end{minipage}
 
-For the Volume rendering two techniques are being uses. Marching tedrahedra and ray marching. Marchin tedrahedra is an algorithm that can be used to extract a mesh representation of an iso surface from a volume.
-Marching tedrahedra was implemented in Julia in the package Meshes.jl. On the other side a ray marching volume rendering method was explicitely implemented for this thesis on the GPU. It also allows to render iso surfaces, but also all the other mentioned visualizations from a dense voxel volume.
-Both techniques have their advantages. While marching tedrahedras is relatively slow, it can be used to generate a mesh which is very fast to display. Ray casting on the other hands allows for a wide range of visualization forms and is rather fast as it runs on the GPU, but you can not cache the ray marching step camera position independant.
+
+If one speaks about volumes in computer graphics, one usually refers to voxels, which can be understood as 3D pixels. They represent values on a 3D grid. The name stems from the marriage of volume and pixel.
+There are sparse and dense storage options for voxels and different informations can be represented, like speed, rotation, color, intensities and so forth.
+Volume renderings are not a trivial tasks, as it is already difficult to make a visualization which lets you peek inside a volume without discarding important informations\ref{fig:volumes}.
+This is why different forms of visualizations are needed to get a good representation of a volume.
+GLVisualize is able to render iso surfaces, maximum intensity projections and an absorbtion based visualization form. 
+On top of this, the particle systems can be used to give further insights into the volume by rendering particles for each voxel. This is especially helpful for sparse volumes, as these are not yet supported natively by GLVisualize.
+
+For the Volume rendering two techniques are being used. 
+Marching tedrahedra and ray marching. 
+Marchin tedrahedra is an algorithm that can be used to extract a mesh representation of an iso surface from a volume.
+Ray marching is the process of shooting rays from the camera origin through the object.
+With every step inside the volume, values are sampled and depending on the combination of these values, different visualization forms can be realized. When you stop at a certain value, iso-surfaces can be rendered. If only the maximum is kept, it will yield a maximum intensity projection. When all values are combined via an absorption function, the volume will be displayed as if it contains translucent smoke.
+
+The ray marching rendering method was explicitely implemented for this thesis on the GPU. For the marching tedrahedra algorithm there was already a Julia implementation available in the package Meshes.jl. 
+Both techniques have their advantages. 
+While marching tedrahedras is relatively slow, it can be used to generate a mesh which is very fast to display. 
+Ray casting on the other hands allows for a wide range of visualization forms and is rather fast as it runs on the GPU. The downside is, that one can not cache the ray marching step camera position independant.
 
  
 
 \subsection{Scene Graph}
-The scene graph is in the case of Romeo not a specialized data structure, but rather just a list of objects, which can be directly rendered with OpenGL. So GLAbstraction, GLVisualize and GLWindow are involved in this. GLvisualize creates a renderable object with GLAbstraction, which will get pushed into a renderque in the screen from GLWindow.
+The scene graph is in the case of Romeo not a specialized data structure, but rather just a list of objects, which can be directly rendered with OpenGL. Functionality from Reactive, GLAbstraction, GLVisualize and GLWindow are involved in this. GLvisualize creates a renderable object with GLAbstraction, which will get pushed into a renderque in the screen from GLWindow. Everything that moves is handled via signals from Reactive.
 This is an extremely simple form of a scene graph, which does not allow to perform any optimizations.
 Optimizations usually include sorting in order to reduce OpenGL state changes and culling of invisible objects.
 As GLVisualize produces OpenGL code which relies only on very few calls to OpenGL, the first optimization is not as important.
