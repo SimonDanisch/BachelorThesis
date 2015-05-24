@@ -377,7 +377,7 @@ The final problem is anti-aliasing of thin lines. With usual anti-aliasing techn
 
 If one speaks about volumes in computer graphics, one usually refers to voxels, which can be understood as 3D pixels. They represent values on a 3D grid. The name stems from the marriage of volume and pixel.
 There are sparse and dense storage options for voxels and different informations can be represented, like speed, rotation, color, intensities and so forth.
-Volume renderings are not a trivial tasks, as it is already difficult to make a visualization which lets you peek inside a volume without discarding important informations\ref{fig:volumes}.
+Volume renderings are not a trivial tasks, as it is already difficult to make a visualization which lets you peek inside a volume without discarding important informations. This is illustrated in figure \ref{fig:volumes}.
 This is why different forms of visualizations are needed to get a good representation of a volume.
 GLVisualize is able to render iso surfaces, maximum intensity projections and an absorbtion based visualization form. 
 On top of this, the particle systems can be used to give further insights into the volume by rendering particles for each voxel. This is especially helpful for sparse volumes, as these are not yet supported natively by GLVisualize.
@@ -388,8 +388,8 @@ Marchin tedrahedra is an algorithm that can be used to extract a mesh representa
 Ray marching is the process of shooting rays from the camera origin through the object.
 With every step inside the volume, values are sampled and depending on the combination of these values, different visualization forms can be realized. When you stop at a certain value, iso-surfaces can be rendered. If only the maximum is kept, it will yield a maximum intensity projection. When all values are combined via an absorption function, the volume will be displayed as if it contains translucent smoke.
 
-The ray marching rendering method was explicitely implemented for this thesis on the GPU. For the marching tedrahedra algorithm there was already a Julia implementation available in the package Meshes.jl. 
-Both techniques have their advantages. 
+The ray marching rendering method was explicitely implemented for this thesis on the GPU. For the marching tedrahedra algorithm there was already a Julia implementation available in the package Meshes.jl \cite{Tedrahedra}. The resulting mesh can be displayed.
+Both techniques have their advantages and disadvanteges. 
 While marching tedrahedras is relatively slow, it can be used to generate a mesh which is very fast to display. 
 Ray casting on the other hands allows for a wide range of visualization forms and is rather fast as it runs on the GPU. The downside is, that one can not cache the ray marching step camera position independant.
 
