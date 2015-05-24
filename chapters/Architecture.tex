@@ -339,6 +339,10 @@ It first uploads the text to video memory and sets up the functionality to visua
 
 Up to now, there is an edit function available for strings, colors, numbers, vectors and matrices.
 
+\subsubsection{Mesh primitive Rendering}
+The rendering of meshes in OpenGL is pretty straight forward with a normal vertex and fragment stage.
+Vertex, Normal and UV data is supplied via Vertex Arrays, perspective transformations via uniform matrices.
+In the fragment shader, the lighting model is applied, which is in this case a simple phong-blinn.
 
 \subsubsection{Particle Rendering}
 Most of the visualizations in GLVisualize are realised via instancing a mesh primitive.
@@ -351,9 +355,46 @@ Theís additional information can be stored in uniform buffers, uniform arrays o
 The texture approach has the disadvantage that 1D textures offer maximum sizes between 1024 and 8192 elements, so for greater amounts of particles the 1D vector had to be transformed to a 2D texture.
 
 
-
 \subsubsection{Vector Graphics Rendering}
+Vector graphics are difficult to render, as they are by any means difficult to render for the \ac{GPU}.
+Long stretched, curved and thin lines introduce several problems for the GPU.
+First of all, the GPU renders fragments (pixels) to the screen in tiles which are usualy around 64x64 pixels in size. Every pixel in this tile is rendered via a \ac{GPU} thread, which is completely blocked for this tile. Areas that are empty will not spawn a GPU thread.
+So if one tile is only populated by one thin line, this means it will spawn a GPU thread, which be mostly idle, as it only has work for around 90 pixels from the 4096 pixels in the tile.
+Another problem is that splines used in vector graphics are usually suplied as bezier curves, which are very demanding to rasterize.
+The final problem is anti-aliasing of thin lines. With usual anti-aliasing techniques, lines which are thinner than one pixel will introduce artefacts, as OpenGL primitives smaller than a pixel will get discarded by the OpenGL pipeline. So additional care needs to be taken in order to assure, that primitives are always thicker than one pixel.
+
+
 \subsubsection{Volume Rendering}
+If one speaks about volumes in computer graphics, one usually refers to voxels or texels, which are 3D pixels.
+There are sparse and dense storage options for texels and also different meta informations for every voxel like speed, rotation, color and so forth.
+Volume renderings are not a trivial taks, expecially as it is difficult to make a visualization which lets you peek inside a volume without discarding important informations.
+This is why different forms of visualizations are needed, to get a good representation of a volume.
+GLVisualize is able to render iso surfaces, maximum intensity projections and an absorbtion based visualization form. On top of this, the particle systems can be used to give further insights into the volume by rendering particles for each voxel. This is especially helpful for sparse volumes, as these have are not supported natively by GLVisualize yet.
+
+For the Volume rendering two techniques are being uses. Marching tedrahedra and ray marching. Marchin tedrahedra is an algorithm that can be used to extract a mesh representation of an iso surface from a volume.
+Marching tedrahedra was implemented in Julia in the package Meshes.jl. On the other side a ray marching volume rendering method was explicitely implemented for this thesis on the GPU. It also allows to render iso surfaces, but also all the other mentioned visualizations from a dense voxel volume.
+Both techniques have their advantages. While marching tedrahedras is relatively slow, it can be used to generate a mesh which is very fast to display. Ray casting on the other hands allows for a wide range of visualization forms and is rather fast as it runs on the GPU, but you can not cache the ray marching step camera position independant.
+
+ 
+
+\subsection{Scene Graph}
+The scene graph is in the case of Romeo not a specialized data structure, but rather just a list of objects, which can be directly rendered with OpenGL. So GLAbstraction, GLVisualize and GLWindow are involved in this. GLvisualize creates a renderable object with GLAbstraction, which will get pushed into a renderque in the screen from GLWindow.
+This is an extremely simple form of a scene graph, which does not allow to perform any optimizations.
+Optimizations usually include sorting in order to reduce OpenGL state changes and culling of invisible objects.
+As GLVisualize produces OpenGL code which relies only on very few calls to OpenGL, the first optimization is not as important.
+But culling can make a large difference for big 3D scenes, as usually only a fraction needs to be rendered.
+As this is a more involved process, which would preferably be done completely on the GPU, this was not in the scope of this thesis.
+
+\subsection{3D Picking}
+3D picking is the process of infering, what object belongs to the pixel on the screen. It forms the basis for any mouse interaction with objects displayed on the screen.
+To make this as simple and fast as possible, a fairly simple approach has been chosen.
+GLVisualize prepares two framebuffer render targets. One for the color channel and one to represent the object id plus an additional number to store contextual information. The additional number is usually used for the instance index, which can be used to e.g. infer what text glyph is selected.
+When rendering, the fragment shader does not only write the color into the render target, but if the color is opaque also the current object id.
+This way transparency aware 3D picking can be achieved without an extra processing step. 
+The advantage of this methods is that one does not need an extra pass over the geometry. The disadvantage is higher space requirements and that OpenGL's native anti-aliasing does not work well together with the additional render target. Also, the OpenGL pipeline has to be flushed in order to read from the framebuffer.
+The anti-aliasing problem can be solved by implementing an extra anti-aliasing step. This is the way to go, as OpenGL's native anti-aliasing is not the state of the art. 
+But as there was no time to do this, it means GLVisualize does not offer any anti-aliasing for mesh rendering in the current state.
+
 
 
 \subsection{Romeo}
