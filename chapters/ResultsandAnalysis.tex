@@ -60,7 +60,7 @@ These are remarkable results, considering that the author states it was not a bi
 
 This list could go on, but it is more constructive to find out Julia's limits analytically.
 As already mentioned, Julia is statically compiled at runtime. This means, as long as all types can be inferred at runtime, Julia will have in the most cases identical performance to C++.
-The biggest remaining difference in this case is the garbage collection. Julia 0.3 has a mark and sweep garbage collector, while Julia 0.4 has an iterative mark and sweep garbage collector.
+The biggest remaining difference in this case is the garbage collection. Julia 0.3 has a mark and sweep garbage collector, while Julia 0.4 has an incremental garbage collector.
 As seen in the benchmarks, it does not necessarily introduce big slowdowns.
 But there are issues, where garbage collection introduces a significant slow down\cite{ReadDlmGC}.
 Analysing this further is not in the scope of this thesis, though. 
@@ -74,7 +74,7 @@ This is a summary of a series of articles posted on Phoronix, which benchmarked 
   \centering
   \begin{tabular}{l|c|c}
     \hline
-    \textbf{Method} & \textbf{\ac{gcc} vs \ac{LLVM} 3.5} & \textbf{\ac{LLVM} 3.5 vs \ac{LLVM} 3.6} \\
+    \textbf{Statistic} & \textbf{\ac{gcc} vs \ac{LLVM} 3.5} & \textbf{\ac{LLVM} 3.5 vs \ac{LLVM} 3.6} \\
     \hline
     mean & 0.99 & 0.99 \\
     median & 0.97 & 1.00 \\

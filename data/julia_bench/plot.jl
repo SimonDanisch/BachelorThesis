@@ -24,14 +24,14 @@ p = plot(result,
     y = :meantime,
     color = :language,
     Scale.y_log10,
-    Guide.ylabel(nothing),
-    Guide.xlabel(nothing),
+    Guide.ylabel("Averaged Benchmark Time"),
+    Guide.xlabel("Normalized amount of lines of code"),
     Theme(
         default_point_size = 1mm,
         guide_title_position = :left,
-        colorkey_swatch_shape = :circle,
+        colorkey_swatch_shape = :square,
         minor_label_font = "Georgia",
         major_label_font = "Georgia",
     )
 )
-draw(PNG("benchmarks.png", 8inch, 8inch/golden), p)
+draw(PDF("benchmarks.pdf", 8inch, 8inch/golden), p)

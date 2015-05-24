@@ -340,7 +340,23 @@ It first uploads the text to video memory and sets up the functionality to visua
 Up to now, there is an edit function available for strings, colors, numbers, vectors and matrices.
 
 
-\subsubsection{Romeo}
+\subsubsection{Particle Rendering}
+Most of the visualizations in GLVisualize are realised via instancing a mesh primitive.
+So the barplot is nothing else than a cube placed in a grid, with scaling informations that get applied to every individual cube. The surface plot is a quad or any other 2D mesh spaced across a grid, while the vertexes are projected onto a height field. The vectorfield is a mesh placed regularly inside a cube, while the rotations from the vectorfield gets applied to this mesh. 
+Even text rendering functions in the same way. The difference is just, that the particle not only holds position information, but also indexes to a texture atlas in which renderings of the glyphs are cached. So when rendering the text particles, the exact scale and image of the glyph is queried, which will then be used to render a quad with the image of the particular glyph to the screen.
+The texture atlas approach was chosen, because rendering a high quality vector graphic is very time consuming, especially if the description of the font is only available as a bezier spline.% Closer description, or source?!
+All particles are rendered via OpenGL's instanced rendering API, which allows to render millions of particles with only one draw call and very little memory usage, as the geometry of the particle just needs to be uploaded one time.
+The geometry of the particle will then be rendered x times. For every individual particle additional information like color, position, scale and so forth can be queried from the fragment or vertex shader.
+Theís additional information can be stored in uniform buffers, uniform arrays or textures. Textures have been choosen for this thesis, as they offer the greatest support among devices and are easy to use. In the future, other approaches can be implemented, gaining more performance or flexibility.
+The texture approach has the disadvantage that 1D textures offer maximum sizes between 1024 and 8192 elements, so for greater amounts of particles the 1D vector had to be transformed to a 2D texture.
+
+
+
+\subsubsection{Vector Graphics Rendering}
+\subsubsection{Volume Rendering}
+
+
+\subsection{Romeo}
 So far Romeo just consists of one file with 500 lines of code. It just defines some simple text field, a search field, and a visualize and edit window.
 The texts gets evaluated as Julia code as soon as it changes. Like this, the text field acts like a very simple \ac{REPL}.
 Via the search field, you can execute simple Julia statements and the results will be displayed in the visualize window, while all parameters can be edited via the edit window.
