@@ -85,10 +85,10 @@ The measurement of success is again relatively difficult to do. (I need to think
 
 
 
-
 \section{Used Technologies}
 
 \subsection{The Julia Programming Language}
+
 The basic introduction of Julia has already been given in the Background chapter.
 This chapter is focused on how to write programs with Julia.
 Most influential language construct are its hierarchical type system and multiple dispatch.
@@ -121,19 +121,100 @@ end
 
 What will happen at runtime is, that Julia compiles a method specialized on the arguments which results in overloading the function with the concretely typed arguments.
 To illustrate this let us look at the example. 
-Initially, foo will be overloaded with two methods.
-Now, if you call foo with one Float32 argument, a new method will be added at run time specialized to Float32.
+Initially, \textit{foo} will be overloaded with two methods.
+Now, if you call \textit{foo} with one \textit{Float32} argument, a new method will be added at run time specialized to \textit{Float32}.
 Like this, if the function does not access non constant global values, all types inside the function will be known at call time.
-This allows Julia to statically compile the function body, while propagating the type information down the call-tree.
+This allows Julia to statically compile the function body, while propagating the type information down the call tree.
 
-With multiple dispatch, Julia is definitely a functional oriented language. But there are also ways to give Julia a more object oriented feel.
+With multiple dispatch, Julia is a functional oriented language. But there are also ways to give Julia a more object oriented feel.
 Functions are first-class, so they are easy to pass around. 
 They can be bound to variables and can then be called like normal functions via the variable name. This implies that functions can also be bound to objects.
 There is no self reference available in Julia, so the object still needs to be passed to function via the function arguments
 
 Another of the most crucial features is the very simple, overhead less C-Interface. 
 Thanks to the binary compatibility of LLVM's emitted assembly, a C function call to a shared library inside Julia has the same overhead as it would be from inside C\cite{CCALL}. 
-This is perfect for dealing with low-level libraries like \ac{OpenGL} and \ac{OpenCL}.
+This is perfect for integrating low-level libraries like \ac{OpenGL} and \ac{OpenCL}.
+
+Julia's performance is crucial for this thesis. 
+If Julia does not perform close to C it would weaken the whole argument of writing the visualization library in Julia.
+It is a very tedious task to write representative benchmarks for a programming language. 
+The only way out is to rely on a multitude of sources and try to find analytical arguments.
+In this thesis, Julia's own benchmark suite will be used in addition to some real world benchmarks.
+In addition, the general compiler structure of Julia will be analyzed to find indicators for the limits of Julias performance.
+
+\vspace{1em}
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{graphics/juliabench.pdf}
+    \captionof{figure}[Julia Performance]{Julia's performance compared to other languages, taken from Julia's micro bench suite \cite{JuliaBench}. Smaller is better, C performance = 1.0.}
+    \label{fig:juliabench}
+\end{minipage}
+
+In the first benchmark from figure \ref{fig:juliabench}, we can see that Julia stays well within the range of C Speed. 
+Actually, it even comes second to C-speed with no other language being that close.
+This is a very promising first look at Julia, but it should be noted, that these benchmarks are written by the Julia core team.
+So it is not guaranteed, that there is no bias favoring Julia in these benchmarks.
+There is another benchmark comparing C++, Julia and F\#, which was created by Palladium Consulting which should not have any interest in favoring one of the languages.
+They compare the performance of C++, Julia and F\# for an IBM/370 floating point to IEEE floating point conversion algorithm. This is part of a blog series\cite{JuliaFSCpp} written by Palladium Consulting.
+F\# comes out last with 748.275 ms, than Julia with 483.769 ms and finally C++ with 463.474 ms. 
+At the citation time, the Author had updated the C++ version to achieve 388.668 ms. 
+It looks like the author was only working on making the C++ version faster, so it can not be said that the other versions could not have been made faster too.
+
+The last Julia benchmark is more real world oriented. 
+It is comparing Finite Element solver, which is an often used algorithm in material research and therefore represents a relevant use case for Julia.
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{l|c|c|c}
+        \hline
+        \textbf{N}  & \textbf{Julia} & \textbf{FEniCS(Python + C++)}  & \textbf{FreeFem++(C++)}\\
+        \hline
+        121         & 0.99           & 0.67             & 0.01 \\
+        2601        & 1.07           & 0.76             & 0.05 \\
+        10201       & 1.37           & 1.00             & 0.23 \\
+        40401       & 2.63           & 2.09             & 1.05 \\
+        123201      & 6.29           & 5.88             & 4.03 \\
+        251001      & 12.28          & 12.16            & 9.09 \\
+        \hline
+    \end{tabular}
+    \captionof{table}[FEM Benchmark]{Performance of a FEM solver written in Julia compared to some existing libraries. \cite{FMSolver}}
+    \label{table:fembench}
+\end{table}
+These are remarkable results, considering that the author states it was not a big effort to achieve this. After all, the other libraries are established FEM solvers written in C++, which should not be easy to compete with.
+
+This list could go on, but it is more constructive to find out Julia's limits analytically.
+As already mentioned, Julia is statically compiled at runtime. This means, as long as all types can be inferred at runtime, Julia will have in the most cases identical performance to C++.
+The biggest remaining difference in this case is the garbage collection. Julia 0.3 has a mark and sweep garbage collector, while Julia 0.4 has an incremental garbage collector.
+As seen in the benchmarks, it does not necessarily introduce big slowdowns.
+But there are issues, where garbage collection introduces a significant slow down\cite{ReadDlmGC}.
+Analysing this further is not in the scope of this thesis, though. 
+But it can be said that Julia's garbage collector is very young and only the future will show how big the actual differences will be.
+
+Another big difference is the difference in between different compiler technologies.
+\ac{LLVM}'s biggest rival is \ac{gcc}. If C++ code that is compiled with \ac{gcc} is much faster than the same code compiled with \ac{LLVM}, the \ac{gcc} version will also be faster as a comparable Julia program.
+In order to investigate the impact of this, one last benchmark will be analyzed.
+This is a summary of a series of articles posted on Phoronix, which benchmarked \ac{gcc} 4.92 against \ac{LLVM} 3.5 and \ac{LLVM} 3.5 against \ac{LLVM} 3.6:
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{l|c|c}
+    \hline
+    \textbf{Statistic} & \textbf{\ac{gcc} vs \ac{LLVM} 3.5} & \textbf{\ac{LLVM} 3.5 vs \ac{LLVM} 3.6} \\
+    \hline
+    mean & 0.99 & 0.99 \\
+    median & 0.97 & 1.00 \\
+    maximum & 1.48 & 1.10 \\
+    minimum & 0.39 & 0.88 \\
+    \hline
+  \end{tabular}
+    \captionof{table}[gcc vs llvm summary]{Summary of the Phoronix benchmark. Unit is speedup of LLVM, bigger is better. \cite{LLVM35vsLLVM36}\cite{LLVMvsGCC}\cite{Phoronix}}
+    \label{table:gccvsllvm}
+\end{table}
+
+The full tables can be found in the appendix under the table \ref{table:llvm35vsllvm36} and \ref{table:llvmvsgcc}.
+The results suggest, that \ac{LLVM} is well in the range of \ac{gcc}, even though that there can be big differences between the two.
+These are promising results, especially if you consider that LLVM is much younger than gcc. 
+With big companies like Apple, Google\cite{GoogleAppleLLVM} and Microsoft\cite{MicrosoftLLVM} being invested in LLVM, it is to be expected that \ac{LLVM} will stay competitive, which means Julia should in theory stay competitive as well.
+
 
 
 \subsection{\ac{OpenGL}}
@@ -153,21 +234,29 @@ As such it does not offer much abstraction over the actual \ac{GPU}, but instead
 A critical element when developing \ac{OpenGL} applications is, that not all video drivers implement the newest \ac{OpenGL} standards.
 
 As a result, one has to decide which \ac{OpenGL} version to program against, trading between modernity and platform support.
-For Romeo, it was decided to support \ac{OpenGL} 3.3 as the lowest bound, as it is sufficiently available, while still having most of the modern features.
-The features include instance rendering, vertex arrays and modern \ac{GLSL} shader.
+For Romeo, it was decided to support \ac{OpenGL} 3.3 as the lowest bound, as it is sufficiently available, while still having most of the modern features. 
+All features that help to call less OpenGL functions can be considered as modern, as they take away the load from the CPU.
+The modern features used in this thesis include instance rendering, vertex arrays and \ac{GLSL} shader.
 
 In figure \ref{fig:opengl} you can see the basic architecture of an OpenGL program pipeline.
 As the description states, the blue boxes are programmable shaders, while the dotted boxes are optional parts of the pipeline.
 The yellow boxes describe stages which are not directly accessible. They are part of the global OpenGL state, which can be set via OpenGL commands.
 
-So in order to have a functioning OpenGL rendering pipeline one just needs to write a vertex shader and a fragment shader.
+So in order to have a functioning OpenGL rendering pipeline one needs to write at least a vertex shader and a fragment shader.
 All shaders are compiled and linked into a program object, which then can be executed on the \ac{GPU}.
-Shaders are written in a C dialect specialized for vector operations. 
+Shaders are written in a C dialect specialized for vector operations.
 You feed shaders with data via buffers, textures and uniforms. Buffers are 1D arrays, textures 1D/2D/3D arrays with both having their own memory, while uniforms live in the program object.
 
-The different shaders are used to apply geometric, perspective transforms and calculating the light.
-In newer APIs general compute operations are available, making it possible to create more flexible shaders.
-Finally, the fragment shader rasterizes the data to the screen.
+The different shaders are usually used to apply geometric, perspective transforms and calculating the light.
+In newer APIs general compute operations are available, making it possible to create more flexible shader stages.
+Finally, the fragment shader rasterizes the data to the render targets in the frame-buffer.
+The frame-buffer can then be displayed on the monitor.
+Frame-buffers can contain multiple render targets, which are buffers that the fragment shader can write to.
+The write operation is heavily restricted. The fragment shader can only write to the location calculated by the vertex shader and simultaneously reads from the frame-buffer are not possible. 
+This restriction exists to allow for the massive parallel execution model that OpenGL uses to speed up rendering times.
+
+The usual set of render targets includes a depth channel, stencil buffer and of course the color buffer.
+The depth channel is usually used to discard all fragments that are behind another fragment, while the stencil buffer can be used to discard arbitrary fragments. Custom render targets can be created in newer OpenGL versions which can be directly addressed via the fragment shader.
 Here is a simple minimal example for a program rendering some vertex data with a flat color to the screen.
 
 \begin{lstlisting}
@@ -180,16 +269,14 @@ void main()
     gl_position = projection*view*vec4(vertex, 1); // apply transformations to vertex and output to fragment shader
 }
 //Fragment shader
-out vec4 framebuffer_color; //output from fragment shader, which will get written into the display framebuffer
+out vec4 framebuffer_color; //color render target, which will get written into the display framebuffer
 void main()
 {
     framebuffer_color = vec4(1,0,0,1); // write a red pixel at gl_position from the vertex shader.
 }
 \end{lstlisting}
 
-All visualization code is written in OpenGL shaders, which get compiled and called via GLAbstraction.
-
-
+All visualization code is written in OpenGL shaders, which are compiled and executed via GLAbstraction.
 
 \subsection{Reactive}
 Reactive\cite{Reactive} is a functional event system designed for event driven programming.
@@ -342,28 +429,37 @@ Up to now, there is an edit function available for strings, colors, numbers, vec
 \subsubsection{Mesh primitive Rendering}
 The rendering of meshes in OpenGL is pretty straight forward with a normal vertex and fragment stage.
 Vertex, Normal and UV data is supplied via Vertex Arrays, perspective transformations via uniform matrices.
-In the fragment shader, the lighting model is applied, which is in this case a simple phong-blinn.
+In the fragment shader, a Blinn-Phong lighting model is applied.
 
 \subsubsection{Particle Rendering}
-Most of the visualizations in GLVisualize are realised via instancing a mesh primitive.
-So the barplot is nothing else than a cube placed in a grid, with scaling informations that get applied to every individual cube. The surface plot is a quad or any other 2D mesh spaced across a grid, while the vertexes are projected onto a height field. The vectorfield is a mesh placed regularly inside a cube, while the rotations from the vectorfield gets applied to this mesh. 
+Most of the visualizations in GLVisualize are realized via instancing a mesh primitive.
+So the bar plot is nothing else than a cube placed in a grid, with scaling informations that get applied to every individual cube. The surface plot is a quad or any other 2D mesh spaced across a grid, while the vertexes are projected onto a height field. The vector field is a mesh placed regularly inside a cube, while the rotations from the vector field gets applied to this mesh. 
 Even text rendering functions in the same way. The difference is just, that the particle not only holds position information, but also indexes to a texture atlas in which renderings of the glyphs are cached. So when rendering the text particles, the exact scale and image of the glyph is queried, which will then be used to render a quad with the image of the particular glyph to the screen.
-The texture atlas approach was chosen, because rendering a high quality vector graphic is very time consuming, especially if the description of the font is only available as a bezier spline.% Closer description, or source?!
+The texture atlas approach was chosen, because rendering a high quality vector graphic is very time consuming, especially if the description of the font is only available as a Bézier spline. A more detailed description can be found in \ref{vector rendering}.
 All particles are rendered via OpenGL's instanced rendering API, which allows to render millions of particles with only one draw call and very little memory usage, as the geometry of the particle just needs to be uploaded one time.
-The geometry of the particle will then be rendered x times. For every individual particle additional information like color, position, scale and so forth can be queried from the fragment or vertex shader.
-Theís additional information can be stored in uniform buffers, uniform arrays or textures. Textures have been choosen for this thesis, as they offer the greatest support among devices and are easy to use. In the future, other approaches can be implemented, gaining more performance or flexibility.
-The texture approach has the disadvantage that 1D textures offer maximum sizes between 1024 and 8192 elements, so for greater amounts of particles the 1D vector had to be transformed to a 2D texture.
+For every individual particle additional information like color, position, scale and so forth can be queried from within the fragment or vertex shader stage.
+This additional information can be stored in uniform buffers, uniform arrays or textures. Textures have been chosen for this thesis, as they offer the greatest support among devices and are easy to use. In the future, other approaches can be implemented, gaining more performance or flexibility.
+The texture approach has the disadvantage that 1D textures only offer a maximum sizes between 1024 and 8192 elements, so for greater amounts of particles a 1D vector has to be transformed to a 2D texture.
 
 
-\subsubsection{Vector Graphics Rendering}
+\subsubsection{Vector Graphics Rendering}\label{vector rendering}
+\vspace{1em}
+\begin{minipage}{\linewidth}
+    \centering
+    \includegraphics[width=0.9\linewidth]{graphics/utf8.png}
+    \captionof{figure}[UTF8]{GLVisualize's fast UTF8 rendering with the help of Cairo, a texture atlas and 2D particles.}
+    \label{fig:UTF8}
+\end{minipage}
 
-Vector graphics are difficult to render, as they are by any means difficult to render for the \ac{GPU}.
-Long stretched, curved and thin lines introduce several problems for the GPU.
-First of all, the GPU renders fragments (pixels) to the screen in tiles which are usualy around 64x64 pixels in size. Every pixel in this tile is rendered via a \ac{GPU} thread, which is completely blocked for this tile. Areas that are empty will not spawn a GPU thread.
-So if one tile is only populated by one thin line, this means it will spawn a GPU thread, which be mostly idle, as it only has work for around 90 pixels from the 4096 pixels in the tile.
-Another problem is that splines used in vector graphics are usually suplied as bezier curves, which are very demanding to rasterize.
-The final problem is anti-aliasing of thin lines. With usual anti-aliasing techniques, lines which are thinner than one pixel will introduce artefacts, as OpenGL primitives smaller than a pixel will get discarded by the OpenGL pipeline. So additional care needs to be taken in order to assure, that primitives are always thicker than one pixel.
-
+Vector graphics are difficult to render, as they are not well fit for the \ac{GPU}.
+Long stretched, curved and thin lines introduce several problems for the GPU\cite{Liland565821}.
+Another problem is that splines used in vector graphics are usually supplied as Bézier curves, which are very demanding to rasterize.
+Besides from that, anti-aliasing of thin lines introduces some problems as well. With post processing anti-aliasing techniques, lines which are thinner than one pixel will introduce artifacts, as OpenGL primitives smaller than a pixel will get discarded by the OpenGL pipeline. So additional care needs to be taken in order to assure, that primitives are always thicker than one pixel, or multi-sampling techniques have to be used.
+This is only a very short summary of the problems, which is only given to illustrate that this is not a problem that can be solved in the scope of this thesis. 
+Instead, Cairo is used for rendering fonts and other vector graphics. As Cairo is relatively slow, these renderings get cached in a texture atlas from which they can get queried and rendered to the screen in large numbers.
+This results in high quality and fast renderings. This comes at the cost of higher space requirements and resolution dependence.
+So when zooming into the vector graphics, either new versions have to be rendered with Cairo, or one gets pixelated results.
+In the future, distance fields can be used to reduce the resolution dependence\cite{Green:2007:IAM:1281500.1281665}.
 
 \subsubsection{Volume Rendering}
 \vspace{1em}
@@ -374,48 +470,53 @@ The final problem is anti-aliasing of thin lines. With usual anti-aliasing techn
     \label{fig:volumes}
 \end{minipage}
 
-
-If one speaks about volumes in computer graphics, one usually refers to voxels, which can be understood as 3D pixels. They represent values on a 3D grid. The name stems from the marriage of volume and pixel.
+Volumes in 3D computer graphics are usually represented with voxels, which can be understood as 3D pixels. 
+They represent values on a 3D grid. The name stems from the marriage of volume and pixel.
 There are sparse and dense storage options for voxels and different informations can be represented, like speed, rotation, color, intensities and so forth.
-Volume renderings are not a trivial tasks, as it is already difficult to make a visualization which lets you peek inside a volume without discarding important informations. This is illustrated in figure \ref{fig:volumes}.
+Volume renderings are no trivial tasks. Not only from a computational point of view, but it is also difficult to make a visualization which lets you peek inside a volume without discarding important informations. This is illustrated in figure \ref{fig:volumes}.
 This is why different forms of visualizations are needed to get a good representation of a volume.
-GLVisualize is able to render iso surfaces, maximum intensity projections and an absorbtion based visualization form. 
+GLVisualize is able to render iso-surfaces, maximum intensity projections and an absorption based visualization form. 
 On top of this, the particle systems can be used to give further insights into the volume by rendering particles for each voxel. This is especially helpful for sparse volumes, as these are not yet supported natively by GLVisualize.
 
 For the Volume rendering two techniques are being used. 
-Marching tedrahedra and ray marching. 
-Marchin tedrahedra is an algorithm that can be used to extract a mesh representation of an iso surface from a volume.
+Marching tetrahedra and ray marching. 
+Marching tetrahedra is an algorithm that can be used to extract a mesh representation of an iso surface from a volume.
 Ray marching is the process of shooting rays from the camera origin through the object.
-With every step inside the volume, values are sampled and depending on the combination of these values, different visualization forms can be realized. When you stop at a certain value, iso-surfaces can be rendered. If only the maximum is kept, it will yield a maximum intensity projection. When all values are combined via an absorption function, the volume will be displayed as if it contains translucent smoke.
+With every step inside the volume, values are sampled and depending on the combination of these values, different visualization forms can be realized. When you stop at a certain value, iso-surfaces can be rendered. 
+If only the maximum is kept, it will yield a maximum intensity projection. 
+When all values are combined via an absorption function, the volume will be displayed as if it is made of some translucent material like smoke.
 
-The ray marching rendering method was explicitely implemented for this thesis on the GPU. For the marching tedrahedra algorithm there was already a Julia implementation available in the package Meshes.jl \cite{Tedrahedra}. The resulting mesh can be displayed.
-Both techniques have their advantages and disadvanteges. 
-While marching tedrahedras is relatively slow, it can be used to generate a mesh which is very fast to display. 
-Ray casting on the other hands allows for a wide range of visualization forms and is rather fast as it runs on the GPU. The downside is, that one can not cache the ray marching step camera position independant.
-
+The ray marching rendering method was explicitly implemented for this thesis on the GPU. For the marching tetrahedra algorithm there was already a Julia implementation available in the package Meshes.jl\cite{Tedrahedra}. The resulting mesh can be displayed with GLVisualizes mesh rendering capabilities.
+Both techniques have their advantages and disadvantages. 
+While marching tetrahedra is relatively slow, it can be used to generate a mesh which is very fast to display. 
+Ray casting on the other hands allows for a wide range of visualization forms and is rather fast as it runs on the GPU. The downside is, that the calculation can not be cached camera position independent.
  
 
 \subsection{Scene Graph}
-The scene graph is in the case of Romeo not a specialized data structure, but rather just a list of objects, which can be directly rendered with OpenGL. Functionality from Reactive, GLAbstraction, GLVisualize and GLWindow are involved in this. GLvisualize creates a renderable object with GLAbstraction, which will get pushed into a renderque in the screen from GLWindow. Everything that moves is handled via signals from Reactive.
+The scene graph is in the case of Romeo not a specialized data structure, but rather just a list of objects, which can be directly rendered with OpenGL. Functionality from Reactive, GLAbstraction, GLVisualize and GLWindow are involved in this. GLvisualize creates a renderable object with GLAbstraction, which will get pushed into a render queue in the screen from GLWindow. Everything that moves is handled via signals from Reactive.
 This is an extremely simple form of a scene graph, which does not allow to perform any optimizations.
 Optimizations usually include sorting in order to reduce OpenGL state changes and culling of invisible objects.
-As GLVisualize produces OpenGL code which relies only on very few calls to OpenGL, the first optimization is not as important.
+As GLVisualize produces OpenGL code which relies only on very few calls to OpenGL, the first optimization is currently not as important.
 But culling can make a large difference for big 3D scenes, as usually only a fraction needs to be rendered.
 As this is a more involved process, which would preferably be done completely on the GPU, this was not in the scope of this thesis.
 
 \subsection{3D Picking}
-3D picking is the process of infering, what object belongs to the pixel on the screen. It forms the basis for any mouse interaction with objects displayed on the screen.
-To make this as simple and fast as possible, a fairly simple approach has been chosen.
-GLVisualize prepares two framebuffer render targets. One for the color channel and one to represent the object id plus an additional number to store contextual information. The additional number is usually used for the instance index, which can be used to e.g. infer what text glyph is selected.
+
+3D picking is the process of inferring, what object belongs to the pixel on the screen. 
+It forms the basis for any mouse interaction with objects displayed on the screen.
+To make this as simple and fast as possible, a fairly simple approach has been chosen. 
+The approach is called color picking.
+For color picking, two frame-buffer render targets need to be created. 
+One for the color channel and one to represent the object id plus an additional number to store contextual information. The additional number is usually used for the instance index, which can be used to e.g. infer what text glyph is selected.
 When rendering, the fragment shader does not only write the color into the render target, but if the color is opaque also the current object id.
 This way transparency aware 3D picking can be achieved without an extra processing step. 
-The advantage of this methods is that one does not need an extra pass over the geometry. The disadvantage is higher space requirements and that OpenGL's native anti-aliasing does not work well together with the additional render target. Also, the OpenGL pipeline has to be flushed in order to read from the framebuffer.
-The anti-aliasing problem can be solved by implementing an extra anti-aliasing step. This is the way to go, as OpenGL's native anti-aliasing is not the state of the art. 
+The advantage of this methods is that one does not need an extra pass over the geometry. The disadvantage is higher space requirements and that OpenGL's native anti-aliasing does not work well together with the additional render target. Also, the OpenGL pipeline has to be flushed in order to read from the frame-buffer.
+The anti-aliasing problem can be solved by implementing an extra anti-aliasing post processing step. This is the way to go, as OpenGL's native anti-aliasing is not very efficient. 
 But as there was no time to do this, it means GLVisualize does not offer any anti-aliasing for mesh rendering in the current state.
 
 
-
 \subsection{Romeo}
+
 So far Romeo just consists of one file with 500 lines of code. It just defines some simple text field, a search field, and a visualize and edit window.
 The texts gets evaluated as Julia code as soon as it changes. Like this, the text field acts like a very simple \ac{REPL}.
 Via the search field, you can execute simple Julia statements and the results will be displayed in the visualize window, while all parameters can be edited via the edit window.

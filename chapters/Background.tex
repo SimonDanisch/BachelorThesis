@@ -48,10 +48,10 @@ As part of this thesis, it will be investigated if Julia's claims have been achi
 \subsubsection{\ac{LLVM}}
 
 \ac{LLVM} is an compiler infrastructure, which has front ends for different languages and compiles to different platforms like x86, ARM, \ac{OpenCL} and \ac{CUDA}. 
-A language designer must create an \ac{AST} which than \ac{LLVM} can convert into \ac{LLVM} \ac{IR}. This \ac{IR} can than be heavily optimized. 
-Every language that can be converted to \ac{LLVM} \ac{IR} can be combined at this level, going through the same optimizations in the end. This is yields superiour language interfacing, as inlining and other optimizations can be done over the boundary of one language.
+A language designer must create an \ac{AST} which \ac{LLVM} can convert into \ac{LLVM} \ac{IR}. This \ac{IR} forms a standardized basis for any optimization step. Every language that can be converted to \ac{LLVM} \ac{IR} can be combined at this level.\ac{LLVM} offers many optimizations, but third party optimization steps can be integrated as easily.
+This yields superiour language interfacing, as inlining and other optimizations can be done over the boundary of one language.
 
-\ac{LLVM}'s concept is effective, as you can accumulate state of the art optimizations in one place, making them accessible to many languages. Because of the many backends, the language can run on many architectures. While Julia does not support them all, it will hopefully be possible in the future. 
+\ac{LLVM}'s concept is effective, as you can accumulate state of the art optimizations in one place, making them accessible to many languages. Because of the many backends, languages that use \ac{LLVM} can run on many architectures. While Julia does not support all back-ends, support will be added in the future. 
 \ac{LLVM} is also used by Clang, the C/C++ front end for \ac{LLVM} rivaling \ac{gcc} and it is used by Apple's programming language Swift.
 This makes \ac{LLVM} a solid basis for a programming language, as these are highly successful projects guaranteeing \ac{LLVM} further prospering.
 
@@ -75,10 +75,10 @@ The current integration is just prototypical and limited to simple 3D meshes up 
 It was created in 1984 by Cleve Moler. He designed it to leverage the effort of accessing LINPACK and EISPACK for his students.
 Since then it grew to be a widely used tool for scientific computing in all areas, ranging from teaching to actual engineering uses in companies.
 It offers a broad range of functionality, including matrix manipulation, plotting of functions and data, creation of user interfaces and interfacing with a range of languages like C/C++, Java Fortran and Python. 
-Matlab has made itself quite the name with having print ready visualization tools deeply integrated into the standard library.
+Matlab is known for having print ready visualization tools deeply integrated into the standard library.
 
 \ac{Matlab} itself is written in C, C++, Java and MATLAB.
-It's proprietary software with a pricing of around \EUR{2000}\cite{MatlabPricing}, which can be extended via free, open source and proprietary modules like Simulink.
+It is a proprietary software with a pricing of around \EUR{2000}\cite{MatlabPricing}, which can be extended via free, open source and proprietary modules like Simulink.
 
 Romeo intends to lay out the ground work to provide a similar deep integration of visualizations in Julia. 
 It is quite far away in terms of functionality, but it builds upon a more modern architecture.
@@ -127,7 +127,7 @@ These include\cite{VispyGoals}:
 	\item OpenGL visualization demos.
 	\item Scientific GUIs with fast, scalable visualization widgets (Qt or IPython notebook with WebGL).
 \end{itemize}
-It is a fairly new library, promising to use modern OpenGL and state of the art performance.
+It is a fairly new library, promising to use modern OpenGL and being able to achieve state of the art performance.
 This is very similar to Romeo's goals, with the only difference being that Romeo is implented in Julia while Vispy is implemented in Python.
-So the biggest differenciation between Romeo and Vispy will be the performance and the concrete feature set.
+So the biggest differenciation between Romeo and Vispy will be found in the performance and the concrete feature set.
 
