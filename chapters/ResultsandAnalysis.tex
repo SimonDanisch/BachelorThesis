@@ -1,12 +1,12 @@
 \section{Results and Discussion}
 
 \subsection{Performance Analysis}
-This chapter supplies some benchmarks, to analyze how close this thesis comes to achieve the wanted performance, which should be on eye level with C.
+This chapter supplies some benchmarks, to analyze how close this thesis comes to achieve the wanted performance.
 
 If not stated otherwise, benchmarks are written for this thesis and executed on an Intel Core i5-4200U with an HD 4400 graphic and 8GB of RAM.
-Julia 0.4 has been used, C++ code hase been compiled with VS13 and for python the anaconda distribution with Python 2.7 was used.
+Julia 0.4 has been used, C++ code hase been compiled with Visual Studio Express 2013 and for python the anaconda distribution with Python 2.7 was used.
 Benchmarks were run on an idle computer with as little background processes running as possible.
-The sources of the benchmarks can be found on Github.
+The sources of the benchmarks can be found on Github (https://github.com/SimonDanisch/BachelorThesis/tree/master/data/benchmarks).
 
 \subsubsection{ModernGL}
 \vspace{1em}
@@ -280,6 +280,7 @@ There is only a method for visualizing a Mesh, but not for a vertex list plus a 
 So an API that offers a function like \texttt{visualize\_mesh(x::VertexList, y::FaceList)} will be more straightforward for a programmer.
 Especially, as this is the standard way of displaying a mesh in most scientific plotting packages. This has become one of the most occurring questions on github, even though that there are usage examples for displaying a mesh.
 
-But this functionality can be added in a simple way for GLVisualize by defining \texttt{visualize\_mesh(facelist, vertexlist) = visualize(Mesh(facelist, vertexlist))}.
+But this functionality can be added in a simple way for GLVisualize by defining 
+\texttt{visualize\_mesh(facelist, vertexlist) = visualize(Mesh(facelist, vertexlist))}.
 As GLVisulize should stay as close to the principle of only having one function name, this should be moved to other interface only packages, though.
 [more to come]
