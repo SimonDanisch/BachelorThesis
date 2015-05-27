@@ -1,4 +1,13 @@
 \section{Conclusion}
+In this work a fast 3D visualization for scientific computing has been presented. 
+The initial goals and requirements where to use simple interfaces, being fast for animated and static data, ready for interaction and written in a way that it is easy to extend.
+As can be seen in the benchmarks, in terms of speed the the goals have been reached. At least for the most basic tasks, Romeo does not show any weaknesses compared to other established libraries and is even often faster.
+More complicated benchmarks with complex scenes have not been benchmarked and it will be interesting to see if there will be large performance drops due to the simple scene graph that is not multi-threaded and does not do any higher level optimizations.
+The interface is as simple as it can be and seems to promise a steep learning curve. If that turns out to be true for Romeo's users could not be inferred empirically, as there is not a big enough user base yet. Some success has been achieved with creating the packages in a way, that they can be used by other people for their projects as well. Hopefully, this will give all developed packages a steady flow of bug-reports, fixes and feature additions.
 
 
 \subsection{Future Work}
+
+There is much to do as noted over the course of the thesis. The scene graph is very simple, there is no real multi-threading support, there is no anti-aliasing yet, a lot of important features are missing and the OpenGL version used is just mildly modern, compared to the features released recently. Staying state of the art will be a big challenge, especially while keeping downward compatibility for platforms that do not support the newest feature set.
+One of the most exciting possibilities is to make Julia compile to the GPU directly, which could than be used to eliminate the last pieces of code that are not written in Julia. As \ac{LLVM} supports to compile to GPU back-ends, this might be possible in the future.
+So things like ray picking, calculating normals, culling objects could in the future be done in Julia on the GPU, yielding superior performance.

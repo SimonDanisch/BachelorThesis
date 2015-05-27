@@ -257,7 +257,8 @@ There are different aspects which can be analyzed. For example, how many functio
 For this thesis, I will analyze the two main packages, namely GLVisualizes and GLAbstraction. 
 The named aspects will be analyzed and in addition feedback from Github will be used.
 
-GLVisulize has a very simple API, as it offers only five functions: visualize, visualizedefaults, edit and renderloop.
+\subsubsection{GLVisualize}
+GLVisulize has a very simple API, as it offers only four functions: \textit{visualize}, \textit{visualize\_defaults} and \textit{edit}.
 There are also the functions bounce and loop, which offers a simplification for creating periodic signals.
 These functions might get moved into Reactive, though.
 So for GLVisualize, only very few function names have to be remembered.
@@ -279,8 +280,12 @@ Lets examine an example, where GLVisualize often will not allow to directly call
 There is only a method for visualizing a Mesh, but not for a vertex list plus a face list. If you work with mesh data, you will often handle the face and vertex list isolated.
 So an API that offers a function like \texttt{visualize\_mesh(x::VertexList, y::FaceList)} will be more straightforward for a programmer.
 Especially, as this is the standard way of displaying a mesh in most scientific plotting packages. This has become one of the most occurring questions on github, even though that there are usage examples for displaying a mesh.
-
-But this functionality can be added in a simple way for GLVisualize by defining 
+So diverting from standard plotting interfaces might be the biggest usability issue for GLVisualize.
+It is quite easy to offer compatibility packages, which defines functions like
 \texttt{visualize\_mesh(facelist, vertexlist) = visualize(Mesh(facelist, vertexlist))}.
 As GLVisulize should stay as close to the principle of only having one function name, this should be moved to other interface only packages, though.
-[more to come]
+
+
+\subsubsection{GLAbstraction}
+GLAbstraction interface is quite a bit more complicated.
+

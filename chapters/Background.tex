@@ -45,15 +45,6 @@ A deeper analysis of this problem can be found in the first Julia paper\cite{201
 All in all, this makes Julia a very desirable scientific computing language, which promises to be also great for a visualization library.
 As part of this thesis, it will be investigated if Julia's claims have been achieved.
 
-\subsubsection{\ac{LLVM}}
-
-\ac{LLVM} is an compiler infrastructure, which has front ends for different languages and compiles to different platforms like x86, ARM, \ac{OpenCL} and \ac{CUDA}. 
-A language designer must create an \ac{AST} which \ac{LLVM} can convert into \ac{LLVM} \ac{IR}. This \ac{IR} forms a standardized basis for any optimization step. Every language that can be converted to \ac{LLVM} \ac{IR} can be combined at this level.\ac{LLVM} offers many optimizations, but third party optimization steps can be integrated as easily.
-This yields superiour language interfacing, as inlining and other optimizations can be done over the boundary of one language.
-
-\ac{LLVM}'s concept is effective, as you can accumulate state of the art optimizations in one place, making them accessible to many languages. Because of the many backends, languages that use \ac{LLVM} can run on many architectures. While Julia does not support all back-ends, support will be added in the future. 
-\ac{LLVM} is also used by Clang, the C/C++ front end for \ac{LLVM} rivaling \ac{gcc} and it is used by Apple's programming language Swift.
-This makes \ac{LLVM} a solid basis for a programming language, as these are highly successful projects guaranteeing \ac{LLVM} further prospering.
 
 
 \subsubsection{IJulia}
@@ -127,6 +118,7 @@ These include\cite{VispyGoals}:
 	\item OpenGL visualization demos.
 	\item Scientific GUIs with fast, scalable visualization widgets (Qt or IPython notebook with WebGL).
 \end{itemize}
+
 It is a fairly new library, promising to use modern OpenGL and being able to achieve state of the art performance.
 This is very similar to Romeo's goals, with the only difference being that Romeo is implented in Julia while Vispy is implemented in Python.
 So the biggest differenciation between Romeo and Vispy will be found in the performance and the concrete feature set.
