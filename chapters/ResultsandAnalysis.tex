@@ -243,9 +243,17 @@ It amounts to a total of 3.642.105 lines of code written in 29 languages.
 \subsubsection{Matlab}
 
 Matlab is closed source, which makes the core of Matlab impossible to extend by the user.
-This is why Matlab relays on a plug-in architecture, which enables developers to write closed or open source plug-ins for Matlab.
-[Analysis of the plug-in Architecture]
-[more to come]
+This is why Matlab relays on a plug-in architecture, which enables developers to write closed or open source plug-ins for Matlab. 
+Simple packages can be written in Matlab and imported into a project.
+This is not an option for performance critical plug-ins though, as matlab itself is too slow.
+So something like a 3D visualization library could not be written in pure matlab code. 
+For that a mex plug-in is needed, which is matlab's way of letting you write C/C++ plug-ins.
+It is a very simple process of including a matlab header file into the C/C++ source, which can then be compiled with matlab.
+The header file holds types, which can be used to make the C/C++ functions work with matlabs native types.
+It also holds the \textit{mexFunction} macro, which needs to be used in order to make the function callable from matlab.
+So it seems to be fairly easy to integrate C/C++ code, but it also defies the purpose of writing in a scientific programming language.
+But worst of all, the visualization core itself is not extendable. This means as soon as you want to do something more advanced, you need to start from scratch, or call out to some third party library.
+
 
 
 \subsection{Usability Analysis}
