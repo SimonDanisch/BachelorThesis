@@ -31,11 +31,11 @@ As only \ac{OpenGL} is truly cross-platform, this leaves \ac{OpenGL} as an optio
 So for the purpose of high speed visualizations, \ac{OpenGL} was wrapped with a high-level interface written in Julia. This leaves us with one binary dependency not written in Julia, namely the video driver, which implements \ac{OpenGL}.
 
 Measurement of success is pretty straight forward, but the devil is in the detail.
-It is easy to benchmark the code, but quite difficult to find a baseline, as one either has to implement the whole software with an alternative technologies, or one has to find similar software.
+It is easy to benchmark the code, but quite difficult to find a baseline, as one either has to implement the whole software with an alternative technology, or one has to find similar software.
 This thesis will follow a hybrid strategy, comparing some simple implementations with different technologies and choose some rivaling state of the art libraries as a baseline.
 
 \subsubsection{Extensibility}
-Extensibility is an important factor, which can decide, if a library is fit for scientific computing or not. 
+Extensibility is an important factor in scientific computing, as a lot of flexibility is needed. 
 It is not only that, but also a great factor determining growth of a software, as the more extensible the software is, the higher is the probability that someone else contributes to it.
 In order to write extensible software, we first have to clarify what extensibility is.
 Extensible foremost needs that the code is accessible. There are different levels of accessibility. The lowest level is closed source, where people purposely make the code inaccessible. While this is obvious, it is just a special case of not understanding the underlying language. Just shipping binaries without open sourcing the code, means that the source is only accessible in a language which is extremely hard to understand, namely the machine code of the binary. So another example for inaccessibility is to write in a language that is difficult to understand. Other barriers are obfuscated language constructs, missing documentations and cryptic highly optimized code.
@@ -78,8 +78,8 @@ Like this you can have a single function e.g. \textit{visualize}, that does crea
 Together with the event system which consists of signals, it is possible to edit and visualize rich data over a simple interface, which is perfect for visual debugging, as it is always the same function call applied to the data and no further user interaction is needed.
 It is also easy to extend, as the user just has to overload the function with a custom style and optional key word arguments.
 Finally, there are also graphical user interfaces developed for this thesis. As also optimizing them is out of the scope of this thesis, they are kept very simple.
-The measurement of success is again relatively difficult to do. (I need to think this over)
-
+The measurement of success is again relatively difficult to do.
+Best would be to make a user poll, to get actual feedback from people that use the software. This is a pretty demanding task, so instead the interface will just be evaluated analytically.
 
 
 
@@ -89,7 +89,7 @@ The measurement of success is again relatively difficult to do. (I need to think
 \subsection{The Julia Programming Language}
 
 The basic introduction of Julia has already been given in the Background chapter.
-This chapter is focused on how to write programs with Julia.
+This chapter is focused on how to write programs with Julia and if it satisfies the requirements.
 Most influential language construct are its hierarchical type system and multiple dispatch.
 Multiple dispatch is in its core function overloading at runtime. 
 To better understand multiple dispatch, one has to be familiar with Julia's type system.
@@ -220,7 +220,7 @@ Here is a summary of their exhaustive benchmarks:
     minimum & 0.39 & 0.88 \\
     \hline
   \end{tabular}
-    \captionof{table}[gcc vs llvm summary]{Summary of the Phoronix benchmark. Unit is speedup of LLVM, bigger is better. \cite{LLVM35vsLLVM36}\cite{LLVMvsGCC}\cite{Phoronix}}
+    \captionof{table}[gcc vs llvm summary]{Summary of the Phoronix benchmark. Unit is speedup of \ac{LLVM}, bigger is better. \cite{LLVM35vsLLVM36}\cite{LLVMvsGCC}\cite{Phoronix}}
     \label{table:gccvsllvm}
 \end{table}
 
@@ -545,8 +545,7 @@ One for the color channel and one to represent the object id plus an additional 
 When rendering, the fragment shader does not only write the color into the render target, but if the color is opaque also the current object id.
 This way transparency aware 3D picking can be achieved without an extra processing step. 
 The advantage of this methods is that one does not need an extra pass over the geometry. The disadvantage is higher space requirements and that OpenGL's native anti-aliasing does not work well together with the additional render target. Also, the OpenGL pipeline has to be flushed in order to read from the frame-buffer.
-The anti-aliasing problem can be solved by implementing an extra anti-aliasing post processing step. This is the way to go, as OpenGL's native anti-aliasing is not very efficient. 
-But as there was no time to do this, it means GLVisualize does not offer any anti-aliasing for mesh rendering in the current state.
+The anti-aliasing problem can be solved by implementing an extra anti-aliasing post processing step. A very simple FXAA algorithm has been implemented, which does not give perfect results but is fast and was easy to implement. The algorithm was taken from Matt DesLauriers\cite{FXAA} and was adjusted to fit into GLVisualiz's pipeline.
 
 
 \subsection{Romeo}
@@ -555,3 +554,10 @@ So far Romeo just consists of one file with 500 lines of code. It just defines s
 The texts gets evaluated as Julia code as soon as it changes. Like this, the text field acts like a very simple \ac{REPL}.
 Via the search field, you can execute simple Julia statements and the results will be displayed in the visualize window, while all parameters can be edited via the edit window.
 This means, if you type in a simple variable, the variable will be visualized. But you can also search and transform a variable via simple Julia terms.
+In \ref{app:screenshot} a screens shot of Romeo can be seen.
+On the left is a window for editing scripts. The middle is used to visualize bound variables, in this case the variable \textit{barplot} is visualized.
+On the bottom of the middle, the variables can be selected via a text field. The text field allows to execute code, so one can do things like filtering an array which then will displayed the filtered array.
+On the right all variables of the visualization can be edited interactively.
+If you click on the color circle for example, a color chooser will pop up which will let you chose the color.
+The numbers are sliders, so when one clicks and drags on them, the value can be adjusted. 
+While changing the values, the changes will be immediately displayed.

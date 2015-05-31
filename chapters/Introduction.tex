@@ -77,16 +77,16 @@ All in all, this makes it hard for the researcher to visualize and interact with
 \end{minipage}
 \vspace{1em}
 
-That a 3D visualization library was chosen as the field is also connected with the goal of making scientific computing more accessible.
-The computer is much better than us at understanding formulas, displaying them and helping us to understand them.
-So good visualizations can be the primer to understand problems better.
+3D visualization libraries play an integral role in scientific computing.
+The computer is much better than us at executing formulas, displaying them and helping us to understand them.
+A good visualization can be the primer to understand problems better.
 Consider the following function $f(x,y,z)=\sin(\frac{x}{15})+\sin(\frac{y}{15})+\sin(\frac{z}{15})$, which describes a 3D volume mathematically. 
-This is a simple function, which is already not that easy to interpret. In figure \ref{fig:volume}, you can see different visualizations of f.
+This is a simple function, which is already not that easy to interpret. In figure \ref{fig:volume}, you can see different visualizations of \textit{f}.
 If you can interact with this visualization, by moving through the iso values or coloring certain areas, it will make the function more understandable.
 This deeper understanding is crucial for identifying problems in the underlying math, extending the function, or explaining it to other people. Making problems more understandable like this further opens the gates of scientific computing to novel users.
 Also, a lot of debugging problems could be a lot easier to solve with good visualizations. If one writes an algorithm that calculate normals, errors in the math become obvious when visualizing the normals.
-But also performance bottlenecks in a call-graph could be easily seen if the graph is color coded for the execution times of a call. Making these tasks enjoyable can help a lot to get an easy start in scientific programming. 
-Romeo supplies basic visual debugging capabilities, as it offers a specialized default visualization for every Julia type and due to Julia's dynamic nature.
+Performance bottlenecks in a call-graph can be seen easily if the graph is color coded for the execution times of a call. Making these tasks enjoyable can help a lot to get an easy start in scientific programming.
+Romeo supplies basic visual debugging capabilities, as it offers a specialized default visualization for every Julia type.
 
 In summary, the software in this thesis focuses on research which involves writing short scripts, while playing around with some parameters and visualizing the results.
 An example would be a material researcher, who is investigating different 3D shapes and materials and their reaction to pressure.
@@ -96,14 +96,23 @@ There are quite a few libraries out there offering this, but Romeo offers a uniq
 \subsection{Contribution}
 The main contribution of this thesis is writing Romeo in Julia, which offers the following advantages.
 
-Julia is a high-level language and some effort was also put into creating a concise architecture, so one contribution is, that the development cycles can be very short and the library is easy to extend.
+Julia is a high-level language and effort has been put into creating a concise architecture. From this follows, that the development cycles can be very short and the library is easy to extend.
 
-The target group for Julia are researchers, which should be able to write their research completely in Julia.
-As Julia is fast and the library is also written in Julia, this will enable researchers to stay in the same language for their project. Due to Julia's speed, this makes it easy to create visualization pipelines in which every routine is as fast as it can be. Also, the researcher can extend the library in the same language he is already working in.
+Romeo targets researcher that want to write everything in one language.
+As Julia is fast and the library is also written in Julia, this will enable researchers to stay in the same language for their project. This makes it easy to create visualization pipelines in which every routine is as fast as it can be. 
+On top of that Romeo uses modern OpenGL, which allows to achieve fast, hardware accelerated 3D renderings. [do we need a reference to the OpenGL chapter?!]
+Also, the researcher can extend the library in the same language he is already working in. In the case of Julia and Romeo this is especially easy, as every projected involved is open source.
+This allows for the flexibility and transparency which is needed for big projects.
 
-On top of that, the library makes it simple to interact with complex algorithms via widgets and forms a basis for visual debugging. This comes with an ease of use, which would be hard to achieve if the library was not that deeply embedded in Julia.
+On top of that, the library makes it simple to interact with complex algorithms via widgets and forms a basis for visual debugging. 
+This comes with an ease of use, which would be hard to achieve if the library was not that deeply embedded in Julia.
 
 
 \subsection{Outlook}
 %Structure of BA and a few worts on the results 
-[short outlook, includes BA structure and some words about the results]
+This thesis will continue with a the chapter background, which gives the reader an overview over Julia and similar languages with their respective 3D visualization libraries.
+After this, the requirements for Romeo will be laid out and how to measure if the requirements were met.
+Then the used technologies will be introduced, which builds the basis for explaining the implementation.
+In the chapter Results and Discussion one will find out if the requirements were met.
+This chapter leads straight to the conclusion.
+[is this enough!?]

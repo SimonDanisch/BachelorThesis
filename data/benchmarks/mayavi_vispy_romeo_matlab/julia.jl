@@ -8,10 +8,10 @@ function xy(x,y,i)
 	Float32(sin(r)/r)
 end
 create(i, N) 	= Float32[xy(Float32(x),Float32(y),Float32(i)) for x=1:N, y=1:N]
-const N 		= 900
+const N 		= 1000
 
-#surface 		= lift(create, bounce(1f0:200f0), N)
-surface 		= create(20f0, N)
+surface 		= lift(create, bounce(1f0:200f0), N)
+#surface 		= create(20f0, N)
 const robj 		= visualize(surface, :surface, color_norm = Vec2(-0.5,1))
 
 push!(GLVisualize.ROOT_SCREEN.renderlist, robj)
