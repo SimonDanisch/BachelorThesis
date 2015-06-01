@@ -484,11 +484,13 @@ Up to now, there is an edit function available for strings, colors, numbers, vec
 
 
 \subsubsection{Mesh primitive Rendering}
+
 The rendering of meshes in OpenGL is pretty straight forward with a normal vertex and fragment stage.
 Vertex, Normal and UV data is supplied via Vertex Arrays, perspective transformations via uniform matrices.
 In the fragment shader, a Blinn-Phong lighting model is applied.
 
 \subsubsection{Particle Rendering}
+
 Most of the visualizations in GLVisualize are realized via instancing a mesh primitive.
 So the bar plot is nothing else than a cube placed in a grid, with scaling informations that get applied to every individual cube. The surface plot is a quad or any other 2D mesh spaced across a grid, while the vertexes are projected onto a height field. The vector field is a mesh placed regularly inside a cube, while the rotations from the vector field gets applied to this mesh. 
 Even text rendering functions in the same way. The difference is just, that the particle not only holds position information, but also indexes to a texture atlas in which renderings of the glyphs are cached. So when rendering the text particles, the exact scale and image of the glyph is queried, which will then be used to render a quad with the image of the particular glyph to the screen.
