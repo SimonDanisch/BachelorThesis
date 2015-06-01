@@ -376,13 +376,38 @@ Staged functions only work with the newest Julia build, which is why aaalexandro
 
 \subsection{GLAbstraction}
 GLAbstraction is the abstraction layer over ModernGL.
-It wraps \ac{OpenGL} primitives like Buffers and Textures in Julia objects and hooks them up to Julia's garbage collector.
-Additionally, it implements convenient functions to load shader code and it makes it easy to feed the shader with the correct data types. 
+It wraps \ac{OpenGL} primitives like Buffers and Textures in Julia objects and hooks them up to Julia's garbage collector. It also makes it easy to create them from Julia data types like arrays and images.
+Additionally, it implements convenient functions to load shader code and it makes it easy to feed the shader with the correct data types.
 Besides supplying an abstraction layer over \ac{OpenGL}, it also offers the linear algebra needed for the various 3D transformation and camera code.
-Building up on that, it defines a signal based perspective and orthographic camera type.
+Building upon that, it defines a signal based perspective and orthographic camera type.
 
-Besides that, signals are an important part 
-It also supports signals of shader source code. With every source code update the OpenGL program gets recompiled, making it possible to interactively develop OpenGL shader.
+Signals are an important part of the infrastructure not only for the camera, but for everything that changes.
+As an example, the function that creates a program also takes signals of shader source code. 
+With every source code update the OpenGL program gets recompiled, making it possible to interactively develop OpenGL shader. The signal can come from file updates, or from some text editing widget inside Julia.
+
+One of the main data types is the \texttt{RenderObject}.
+It combines uniforms, OpenGL buffers and textures and OpenGL programs. One can call \texttt{render(::RenderObject)}, which executes the program with the given uniforms and buffers loaded into the program. 
+Like this, making visualizations with GLAbstraction turns into writing the shader and then combining it with the needed data in form of OpenGL types.
+
+A lot of OpenGL functions are annoying to use from inside Julia, as the output has to be pre-allocated and gets then passed to the function.
+These functions have been overloaded in GLAbstraction to return the value.
+So only with ModernGL the code would look like this:
+\begin{lstlisting}
+#Without GLAbstraction
+result = Ref{GLint}(-1)
+glGetShaderiv(shaderID, GL_COMPILE_STATUS, result)
+result = result[] # dereferencing
+\end{lstlisting}
+With GLAbstraction this becomes possible:
+\begin{lstlisting}
+result = glGetShaderiv(shaderID, GL_COMPILE_STATUS)
+\end{lstlisting}
+
+Similarly, OpenGL does not overload functions, which means function that do the same for different types have a base name with different suffixes to indicate the type.
+The function with the most methods is glUniform, which has 34 functions for all the different uniform types. With GLAbstraction, glUniform has been overloaded for all different types, including arrays and signals. So one can simply call glUniform on the type, without the need of looking up the correct suffix.
+This has been achieved with a combination of simple overloading and staged functions. The staged function puts together the right function name and inlines it into the glUniform method specialized to the argument type.
+
+A lot more of these simplifications have been done in order to leverage the usage of OpenGL inside Julia.
 
 \subsection{GLWindow}
 GLWindow is a lightweight wrapper around GLFW.
