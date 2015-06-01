@@ -388,6 +388,7 @@ With every source code update the OpenGL program gets recompiled, making it poss
 One of the main data types is the \texttt{RenderObject}.
 It combines uniforms, OpenGL buffers and textures and OpenGL programs. One can call \texttt{render(::RenderObject)}, which executes the program with the given uniforms and buffers loaded into the program. 
 Like this, making visualizations with GLAbstraction turns into writing the shader and then combining it with the needed data in form of OpenGL types.
+When the program includes a fragment stage, this means calling \texttt{render} results in the object being displayed on the screen. But its also possible to use compute shaders with \texttt{RenderObjects}, which then just writes into the supplied buffers without displaying anything.
 
 A lot of OpenGL functions are annoying to use from inside Julia, as the output has to be pre-allocated and gets then passed to the function.
 These functions have been overloaded in GLAbstraction to return the value.
@@ -449,7 +450,7 @@ Depending on the complexity of the visualization, this means the visualization c
 
 The interface to create visualizations is very simple and only consists of three functions:
 \begin{lstlisting}
-Dict{Symbol, Any}     = visualization_defaults(data::Union(Signal{T}, T), style::Style) # returns a dictionary of parameters
+Dict{Symbol, Any}     = visualization_defaults(data::Union(Signal{T}, T), style::Style) # returns a dictionary of default parameters
 RenderObject 		  = visualize(data::Union(Signal{T}, T), style=Style{:default}; parameters...) # returns an object which can be directly rendered
 RenderObject, Signal  = edit(data::Union(Signal{T}, T), style=Style{:default}; parameters...) # returns an RenderObject and signal which outputs the changed values
 
