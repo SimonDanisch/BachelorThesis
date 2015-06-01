@@ -1,10 +1,7 @@
-using GLVisualize, AbstractGPUArray, GLAbstraction, GeometryTypes, Reactive, ColorTypes, Meshes, MeshIO
+using GLVisualize, GLAbstraction, GeometryTypes, Reactive, ColorTypes, Meshes, MeshIO
 importall Base
 
 typealias Point3f Point3{Float32}
-
-translate{T <: Pyramid}(a::T, offset::Point3) = T(a.middle+offset, a.length, a.width)
-scale{T <: Pyramid}(a::T, scale::Point3) 	  = T(a.middle.*scale, a.length*scale.z, a.width*scale.x)
 
 function sierpinski(n, positions=Point3{Float32}[])
     if n == 0
@@ -29,10 +26,9 @@ const n 	= 9
 positions 	= sierpinski(n)
 
 len         = length(positions)
-println(len)
 estimate    = sqrt(len)
 pstride     = 2048
-if len % pstride != 0
+if len % pstride != 0 # this is needed right now, because 1D arrays are quickly to big for OpenGL (will be done automatically at some point)
     append!(positions, fill(Point3f(typemax(Float32)), pstride-(len%pstride))) # append if can't be reshaped with 1024
 end
 positions = reshape(positions, (pstride, div(length(positions), pstride)))
