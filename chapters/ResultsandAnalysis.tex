@@ -212,7 +212,7 @@ The language usage statistics and necessary tools needed in order to extend the 
 One needs to note, that the usage statistic of languages is just a weak indicator for the extendability of a software.
 Using different languages for one project can make sense if the project has different domains where domain specific languages give an advantage. As this means one needs to know all used languages, this still introduces complexity, but it is at least justified complexity.
 This chapter will only discuss the complexity introduced by languages, which are only needed for compatibility with other libraries or because the main language is too slow. This is something, which should ideally be avoided.
-
+%Also, there is already one github user who is extending Romeo for his own work. 
 
 \subsubsection{IJulia}
 
@@ -287,13 +287,17 @@ The difference is in the end, how easy it is to do the data transformations.
 Lets examine an example, where GLVisualize often will not allow to directly call visualize on the data.
 There is only a method for visualizing a Mesh, but not for a vertex list plus a face list. If you work with mesh data, you will often handle the face and vertex list isolated.
 So an API that offers a function like \texttt{visualize\_mesh(x::VertexList, y::FaceList)} will be more straightforward for a programmer.
-Especially, as this is the standard way of displaying a mesh in most scientific plotting packages. This has become one of the most occurring questions on github, even though that there are usage examples for displaying a mesh.
+Especially, as this is the standard way of displaying a mesh in most scientific plotting packages. This has become one of the most occurring questions on Github, even though that there are usage examples for displaying a mesh.
 So diverting from standard plotting interfaces might be the biggest usability issue for GLVisualize.
 It is quite easy to offer compatibility packages, which defines functions like
 \texttt{visualize\_mesh(facelist, vertexlist) = visualize(Mesh(facelist, vertexlist))}.
 As GLVisulize should stay as close to the principle of only having one function name, this should be moved to other interface only packages, though.
 
+The functionality of GLVisualize is easy to explore. As there are only three function to be remembered, one can remember then very quickly. From there it is easy to find out how they work. First, you can just call visualize on your data and see if the default is already sufficient. If not, you can call visualize_defaults on the data, to find out what kind of defaults there are, which can then be tweaked. As an alternative, one can edit every parameter of the visualization on the spot via the widgets. If that is not enough, a list of the data types that can be visualized can be queried with Julia in builds.
+
+
 
 \subsubsection{GLAbstraction}
 GLAbstraction interface is quite a bit more complicated.
-
+There are 57 exported functions in GLAbstraction, with each of them having having between one to five methods.
+When possible, OpenGL names where used to keep the naming as easy to remember as possible.
