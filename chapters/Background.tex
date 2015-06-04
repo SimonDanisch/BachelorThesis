@@ -1,6 +1,6 @@
 \section{Background}
 
-In this chapter, a short overview will be given over the current state of the art for visualization inside the field of scientific computing and a short intro to Julia will be given.
+In this chapter, a short overview will be given over the current state of the art for visualization inside the field of scientific computing and a short introduction to Julia will be given.
 
 \subsection{Related Work}
 
@@ -11,13 +11,12 @@ So Julia plays a crucial role in this thesis.
 It is the most important previous work, as much as Julia is the main used technology.
 This chapter gives a short introduction to the Julia Programming Language.
 
-Julia was published in 2012, which makes it a very new language. It is currently at version 0.3.7 stable and 0.4 pre-release.
+Julia was published in 2012 which makes it a very new language. It is currently at version 0.3.7 stable and 0.4 pre-release.
 Following common versioning conventions this means Julia is still in an early release phase with the core features and names suspicable to change.
-Julia is using the compiler infrastructure \ac{LLVM} to generate fast assembly code.
+Julia is a multi paradigma language for scientific computing and it is using the compiler infrastructure \ac{LLVM} to generate fast assembly code.
 
-Julia is a multi paradigma language for scientific computing. 
 Some of its most important features are multiple dispatch, a dynamic type system, macros, good performance and an interface to C and Python.
-The focus on scientific computing means, that Julia's standard library is equipped with a lot of functions, data structures and specialized syntax for implementing complex math like linear algebra and statistics.
+The focus on scientific computing means, that Julia's standard library is equipped with a lot of functions, data structures and specialized syntax for implementing complex math.
 It promises to approach C speed, while being a dynamic language which is easy to use.
 This is made possible by the compile process which can be described as statically compiled at runtime.
 Julia uses a garbage collector, taking the task of memory management away from the programmer.
@@ -33,7 +32,8 @@ There are quite a few things Julia promises to the developer which includes the 
 \end{itemize}
 
 Another interesting feature of Julia is, that all user defined types are as fast and compact as build in types.
-This allowes Julia to write all arithmetic types in Julia itself, allowing anyone to extend and rewrite them without diving into the compiler. This means that you can write your own floating point type, with the same performance and characteristics as the build in floating point type.
+This allows Julia to write all arithmetic types in Julia itself, allowing anyone to extend and rewrite them without diving into the compiler. 
+So one can write customized floating point type with the same performance and characteristics as the build in floating point types.
 
 Julia claims to take an approach at scientific computing which is more modern than other programming languages.
 They justify this by pointing out the performance characteristics of Julia and the possibilities that come from this. 
