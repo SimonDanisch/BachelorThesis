@@ -1,6 +1,6 @@
 \section{Background}
 
-In this chapter, a short overview will be given over the current state of the art for visualization inside the field of scientific computing and a short introduction to Julia will be given.
+In this chapter, a short overview over the current state of the art for visualizations inside the field of scientific computing and a short introduction to Julia will be given.
 
 \subsection{Related Work}
 
@@ -13,7 +13,7 @@ This chapter gives a short introduction to the Julia Programming Language.
 
 Julia was published in 2012 which makes it a very new language. It is currently at version 0.3.7 stable and 0.4 pre-release.
 Following common versioning conventions this means Julia is still in an early release phase with the core features and names suspicable to change.
-Julia is a multi paradigma language for scientific computing and it is using the compiler infrastructure \ac{LLVM} to generate fast assembly code.
+Julia is a multi-paradigm language for scientific computing and it is using the compiler infrastructure \ac{LLVM} to generate fast assembly code.
 
 Some of its most important features are multiple dispatch, a dynamic type system, macros, good performance and an interface to C and Python.
 The focus on scientific computing means, that Julia's standard library is equipped with a lot of functions, data structures and specialized syntax for implementing complex math.
@@ -38,8 +38,8 @@ So one can write customized floating point type with the same performance and ch
 Julia claims to take an approach at scientific computing which is more modern than other programming languages.
 They justify this by pointing out the performance characteristics of Julia and the possibilities that come from this. 
 Julia allows to write even the performance critical core in Julia itself. This means Julia does not need to call out to C and most of the standard library is implemented in Julia. 
-In contrast, Matlab, Python and R need to implement any perfomance criticial code in another language, which has lead to a programming pattern which is known by the name of vectorization. This pattern has evolved, as the vector operations that are build into the language are much faster than self written vector operation.
-This means, if one needs performance, the code needs to be rewriten to only use functions implemented in some module that relies on another, faster language.
+In contrast, Matlab, Python and R need to implement any performance critical code in another language, which has lead to a programming pattern which is known by the name of vectorization. This pattern has evolved, as the vector operations that are build into the language are much faster than self written vector operation.
+This means, if one needs performance, the code needs to be rewritten to only use functions implemented in some module that relies on another, faster language.
 A deeper analysis of this problem can be found in the first Julia paper\cite{2012arXiv1209.5145B}.
 
 All in all, this makes Julia a very desirable scientific computing language, which promises to be also great for a visualization library.
@@ -51,7 +51,7 @@ As part of this thesis, it will be investigated if Julia's claims have been achi
 IJulia is the Julia language back-end for IPython.
 IPython is a software stack, which was created to allow for interactive computing in Python.
 It offers an interactive shell to execute python scripts, \ac{GUI} toolkits, tab completion and rich media visualizations.
-It comes with a web based notebook, which enables you to write formated documentations together with data, inlined plots and executable program snippets. You can also formulate mathematical formulas in latex, which will get rendered and inlined nicely into an IJulia Notebook.
+It comes with a web based notebook, which enables you to write formatted documentations together with data, inlined plots and executable program snippets. You can also formulate mathematical formulas in latex, which will get rendered and inlined nicely into an IJulia Notebook.
 See figure \ref{fig:ijulianotebook} for an example.
 
 IJulia has some similar goals compared to Romeo, but it has a different focus.
@@ -120,6 +120,7 @@ These include\cite{VispyGoals}:
 \end{itemize}
 
 It is a fairly new library, promising to use modern OpenGL and being able to achieve state of the art performance.
-This is very similar to Romeo's goals, with the only difference being that Romeo is implented in Julia while Vispy is implemented in Python.
-So the biggest differenciation between Romeo and Vispy will be found in the performance and the concrete feature set.
+This is very similar to Romeo's goals, with the only difference being that Romeo is implemented in Julia while Vispy is implemented in Python.
+So the biggest differentiation between Romeo and Vispy will be found in the performance and the concrete feature set.
+
 
