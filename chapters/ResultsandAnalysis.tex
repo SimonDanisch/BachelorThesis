@@ -1,10 +1,10 @@
 \section{Results and Discussion}
 
 \subsection{Performance Analysis}
-This chapter supplies some benchmarks, to analyze how close this thesis comes to achieve the wanted performance.
+This chapter supplies some benchmarks in order to analyze how close this thesis comes to achieve the wanted performance.
 
 If not stated otherwise, benchmarks are written for this thesis and executed on an Intel Core i5-4200U with an HD 4400 graphic and 8GB of RAM.
-Julia 0.4 has been used, C++ code hase been compiled with Visual Studio Express 2013 and for python the anaconda distribution with Python 2.7 was used.
+Julia 0.4 has been used, C++ code has been compiled with Visual Studio Express 2013 and for python the anaconda distribution with Python 2.7 was used.
 Benchmarks were run on an idle computer with as little background processes running as possible.
 The sources of the benchmarks can be found on Github (https://github.com/SimonDanisch/BachelorThesis/tree/master/data/benchmarks).
 
@@ -31,15 +31,15 @@ The sources of the benchmarks can be found on Github (https://github.com/SimonDa
 \end{table}
 
 In this chapter, ModernGL, GLEW and PyOpenGL will get benchmarked.
-The procedure was, to call an OpenGL function $10^7$ times in a tight loop. Execution time of the loop gets measured.
+The procedure was, to call an OpenGL function $10^7$ times in a tight loop. The execution time of the loop got measured.
 The results are plotted in figure \ref{fig:openglwrapper}.
-ModernGL seems to do pretty well compared to C++ and python does very badly, with being up to 470 times slower in the case of glClearColor.
-Julia in contrast offers nearly the same speed as calling OpenGL functions from C++ as can be seen in the table \ref{table:relativespeedoglw}.
+ModernGL does pretty well compared to C++. Python comes out very slow, with being up to 470 times slower in the case of glClearColor.
+
+In contrast, Julia offers nearly the same speed as calling an OpenGL functions from C++ as can be seen in the table \ref{table:relativespeedoglw}.
 As all the OpenGL wrappers are pretty mature by now and bind to the same C library (the video driver), this should mainly be a C function call benchmark.
 Python performs badly here, but it must be noted that there are a lot of different Python distributions and some promise to have better C interoperability.
-As this benchmarks goal is to show that Julia’s ccall interface is comparable to a C function call from inside C++, the python options have not been researched that thoroughly.
+As this benchmarks goal is to show that Julia’s \textit{ccall} interface is comparable to a C function call from inside C++, the python options have not been researched that thoroughly.
 From this benchmark can be concluded, that Julia offers a solid basis for an OpenGL wrapper library.
-
 
 \subsubsection{Reactive}
 
@@ -59,17 +59,16 @@ From this benchmark can be concluded, that Julia offers a solid basis for an Ope
     \end{minipage}
 \end{figure}
 
-It is relatively hard to benchmark the used event system in real world scenarious as it is hard to find a baseline.
-One would have to rewrite Romeo with another Event system. 
-Using other visulization libraries as a baseline is also difficult, as it is hard to isolate the performance of the event system.
+It is relatively hard to benchmark the used event system in real world scenarios. To compare Rome's performance with different event systems, one would have to reimplement Romeo for every benchmark.
+Using other visualization libraries as a baseline is also difficult, as it is hard to isolate the performance of the event system.
 This is why we will compare an event graph from Reactive with its unrolled version.
-For the unrolled version the functions from the callback graph have been executed in the same order as the event graph would have without introducing any event system related overhead.
+For the unrolled version the functions from the callback-graph have been executed in the same order as the event graph would have without introducing any event system related overhead.
 This way we can measure the overhead introduced by the event system.
 Two code samples have been benchmarked, one simulating the operation needed for the camera and the other simulates animating a large array.
 The first has low memory usage with a more complex event graph. The second has a straight forward event graph, but it must pass on a large array and needs to execute the callbacks on the array.
 
-As can be seen in figure \ref{fig:reactive1}, small operations with a complex event graph has some noticable overhead. Reactive is in this scenario about 1.45 times slower than the optimal version.
-This does not come as a surprise as sorting and managing the graph structure obviously adds some overhead.
+As can be seen in figure \ref{fig:reactive1}, small operations with a complex event graph have some noticeable overhead. Reactive is in this scenario about 1.45 times slower than the optimal version.
+This does not come as a surprise as sorting and managing the graph structure adds some overhead.
 
 The second scenario looks much better for Reactive. The performance difference is neglectable, making Reactive a good choice for creating signals with high memory throughput.
 
@@ -84,12 +83,12 @@ The second scenario looks much better for Reactive. The performance difference i
 
 The biggest problem with benchmarking the 3D rendering speed is, that there is no library which will allow to exactly reproduce similar conditions and measures. 
 Additionally, without extensive knowledge of the library, it is difficult to foresee what gets benchmarked. 
-As an example of why it is difficult to measure the frame rate we can look at Vispy. When you enable to measure the frame rate, it will show very low frame rates, as it only creates a new frame on demand.
-On the other side Romeo has a fixed render loop, which renders as much frames as possible, leading to totally different amount of rendered frames per second. 
+Vispy shows, why it is difficult to rely on measurements like the frame rate. When you enable to measure the frame rate, it will show very low frame rates, as it only creates a new frame whenever the camera changes.
+On the other side, Romeo has a fixed render loop, which renders as many frames as possible, leading to an entirely different amount of rendered frames per second. 
 This is why it was decided, to use the threshold at which a similar 3D scene is still conceived as enjoyable and interactive. Usually the minimal amount of frames per second for perceiving movements as smooth is around 25.
-So the benchmark was executed in the way, that the number regulating the complexity of the 3D scene was increased until one could not move the camera without stutters. The recorded threshold is than the result of the Benchmark.
+So the benchmark was executed in the way, that the number regulating the complexity of the 3D scene was increased until one could not move the camera without stutters anymore. The last recorded pleasant threshold is then the result of the Benchmark.
 
-First benchmark is an animated and still 3D surface plot. The libraries offering this functionality where Vispy, Mayavi and Matlab.
+The first benchmark is an animated and a still 3D surface plot. The libraries offering this functionality where Vispy, Mayavi and Matlab.
 
 \begin{table}[htbp]
     \centering
@@ -111,8 +110,8 @@ First benchmark is an animated and still 3D surface plot. The libraries offering
     \label{table:relativespeedoglw}
 \end{table}
 Vispy had some issues, as the camera was never really smooth for the surface example. Also the normals were missing and there was no option to colorize the surface depending on the height.
-It was decided to use the threshold of going from a little stutter to unpleasant stutters, making vispy not completely fail this benchmark.
-For Vispy it was found out, that the normals where calculated on the CPU resulting in a major slow down\cite{VispyGithub}. The same can be expected for Mayavi, but Mayavi seems to be faster at calculating the normals.
+It was decided to use the threshold of going from a little stutter to unpleasant stutters, making Vispy not completely fail this benchmark.
+For Vispy, it was found that the normals were calculated on the CPU resulting in a major slow down\cite{VispyGithub}. The same can be expected from Mayavi, but Mayavi seems to be faster at calculating the normals.
 There is not much information available on how Matlab renders their visualization, as it is closed source.
 
 \begin{minipage}{\linewidth}
@@ -122,7 +121,7 @@ There is not much information available on how Matlab renders their visualizatio
     \label{fig:reactive1}
 \end{minipage}
 
-The next benchmark is only between Romeo and Mayavi, as the other libraries did not offer a comparable solution. Matlab does not allow to use cubes as particle primitives and Vispy only had an example, where you needed to write your own shader, which can not be seen as a serious option. This is a benchmark for easy to use and high level plotting libraries. It is always possible to write an optimal version yourself in some framework, but what really interesting is, how well you can solve a problem with the tools the library has readily available.
+The next benchmark is only between Romeo and Mayavi, as the other libraries did not offer a comparable solution. Matlab does not allow to use cubes as particle primitives and Vispy only had an example, where you needed to write your own shader, which can not be seen as a serious option. This is a benchmark for easy to use and high-level plotting libraries. We want to find out how well one can solve a problem with the tools the library has readily available.
 
 \begin{table}[htbp]
     \centering
@@ -139,8 +138,9 @@ The next benchmark is only between Romeo and Mayavi, as the other libraries did 
     \captionof{table}[3D Benchmark]{Maximum number of particles that could be displayed without stutter.}
     \label{table:relativespeedoglw}
 \end{table}
-Romeo is an order of magnitude faster in this specific benchmark. This is most likely due to the fact that Romeo uses OpenGL's native instance rendering.
 
+Romeo is an order of magnitude faster in this specific benchmark. This is most likely due to the fact that GLVisualize uses OpenGL's native instance rendering.
+It can not get much faster than that. The next level of optimizations can be culling, which would only give an advantage at certain zoom levels.
 
 \subsubsection{IJulia}
 
@@ -149,21 +149,22 @@ It was not possible to compare IJulia directly with Romeo, as the feature set fo
 But there are certain factors, which indicate, that is hard to reach optimal performance with IJulia.
 First of all, IJulia uses ZMQ to bridge the web interface with the Julia kernel.
 ZMQ is a messaging system using different sockets for communication like inproc, IPC, TCP, TIPC and multicas.
-While it is very fast at it's task of sending messages, it can not compete with the native performance of staying inside one language.
-This is not very important as long as there does not have to be much communication between Julia and the IPython kernel. This changes drastically for animations, where big memory chunks have to be streamed to the rendering engine of the browser. It can be expected, that this will always be a weakness of IJulia.
-On the other hand, GPU accelerated rendering in a web browser is also limited.
-It relies on WebGL, which offers only a subset of the OpenGL's functionality. So while the execution speed of OpenGL can be expected to be similar, there are a lot of new techniques missing, which can speed up rendering.
+While it is very fast at its task of sending messages, it can not compete with the native performance of staying inside one language.
+This is not very important as long as there is not a lot of communication between Julia and the IPython kernel. This changes dramatically for animations, where big memory chunks have to be streamed to the rendering engine of the browser. It can be expected, that this will always be a weakness of IJulia.
+On the other hand, GPU-accelerated rendering in a web browser is also limited.
+It relies on WebGL, which offers only a subset of the OpenGL's functionality. While the execution speed of OpenGL can be expected to be similar, there are a lot of new techniques missing, which can speed up rendering. Also interoperability with  OpenCL and CUDA backends ranges from difficult to impossible. 
+This makes it impossible to further accelerate massive parallel tasks.
 
-To investigate this another benchmark has been created.
-It is between Romeo and Compse3D, which was the only library found to be able to display 3D models created with Julia directly from the IJulia notebook.
+Another benchmark was created to get a sense of what the current state of 3D rendering in IJulia is.
+It is between Romeo and Compse3D, which was the only library found to be able to display 3D models created with Julia directly inside the IJulia notebook.
 This benchmark is not entirely fair, as Compose3D is just a very rough prototype so far. 
-But there seems to be no other library with which you can easily create and display interactive 3D graphics in the IJulia or IPython notebook. 
-This benchmark creates a sierpinsky gasket and Compose3D displays it in the IJulia notebook while Romeo displays it natively in a window.
+But there seem to be no other library in which you can easily create and display interactive 3D graphics in the IJulia or IPython notebook. 
+This benchmark creates a Sierpinski gasket and Compose3D displays it in the IJulia notebook while Romeo displays it natively in a window.
 
 \begin{minipage}{\linewidth}
     \centering
     \includegraphics[width=\linewidth]{graphics/sierpinsky.jpg}
-    \captionof{figure}[Sierpinsky]{Sierpinsky pyramid in 3D}
+    \captionof{figure}[Sierpinski]{Sierpinski pyramid in 3D}
     \label{fig:reactive1}
 \end{minipage}
 \begin{table}[htbp]
@@ -182,42 +183,44 @@ This benchmark creates a sierpinsky gasket and Compose3D displays it in the IJul
     \label{table:relativespeedoglw}
 \end{table}
 
-Again, Romeo is an order of magnitude faster. This can change in the future when Compose3D matures.
+Romeo is an order of magnitude faster. This can change in the future when Compose3D matures.
 But one needs to notice, that Romeo utilizes OpenGL's instancing to gain this speed. Native instancing is not yet available in WebGL, which means that this optimization will not be available for the IPython notebook in the near future.
 
 \subsection{Extensibility Analysis}
 
-The modular design of Romeo has proven to be effective and the goal of re-usability has already proven itself.
+The modular design of Romeo has proven to be effective and the goal of reusability has already proven itself.
 Most of the created modules are used independently by different people.
-GLVisualize is used by myself for two packages, namely GLPlot, a scientific plotting package for Julia and for a prototype of a file explorer.
+GLVisualize is used by myself for two packages, namely GLPlot, a scientific plotting package for Julia and a 3D printing startup uses it for rendering their 3D models. [sources]
 It got forked by several users to create their own dynamic visualization packages.
 The same applies for ModernGL and GLAbstraction. Most other used packages are at least used by one other project.
-This indicates, that the abstraction and modularity is well designed, so that all the modules can function on their own.
+This indicates, that the abstraction and modularity is well designed, so that all the modules can be used alone.
 
 The only exception is GLWindow, which has been used just indirectly through the other packages. 
 This can mean three things.
-First, it is badly abstracted and does not cleanly wrap one use case.
+Firstly, it is badly abstracted and does not cleanly wrap one use case.
 Secondly, it can be that the use case is not entirely clear to other people, which would not be a big surprise considering the minimal amount of documentation for GLWindow.
 And finally, considering the small group of people developing graphics for Julia, it could be that they simply do not need the lower level functionality of GLWindow and instead rely on the other written packages that use GLWindow.
 
-Modularity guarantees a broad user and developer base, which in turn results in rich functionality and stability.
 From further analyzing the Github repository written for this thesis, one can find out that there is a general lack of documentation.
-This hinders people from contributing and using the packages.
+This hinders people from contributing and using the packages. This definitely needs to improve in the future to fully unfold the potential of the packages.
 
-The implementation in just one language has been achieved by choice. There are only a few exceptions, like the kernel code for OpenGL shaders, which currently can not be written in Julia. 
+The implementation in just one language has been achieved by choice. 
+There are only a few exceptions, like the kernel code for OpenGL shaders, which currently can not be written in Julia. 
 Julia programmers that use Romeo can extend Romeo with Julia and immediately see their results without complicated compilations.
 This together with the speed is one of the main achievements compared to other libraries offering similar functionality, like IJulia, Mayavi and Matlab.
 To further proof this point I will analyze the mentioned software in more detail.
 The language usage statistics and necessary tools needed in order to extend the software will be the main focus of the analysis.
 One needs to note, that the usage statistic of languages is just a weak indicator for the extendability of a software.
-Using different languages for one project can make sense if the project has different domains where domain specific languages give an advantage. As this means one needs to know all used languages, this still introduces complexity, but it is at least justified complexity.
-This chapter will only discuss the complexity introduced by languages, which are only needed for compatibility with other libraries or because the main language is too slow. This is something, which should ideally be avoided.
-%Also, there is already one github user who is extending Romeo for his own work. 
+Using different languages for one project can make sense if the project has different domains where domain specific languages give an advantage. 
+As this still means that one needs to be fluent in all used languages, this still introduces complexity, but it is at least justified complexity.
+This chapter will only discuss the complexity introduced by languages, which are only needed for compatibility with other libraries or because the main language is too slow. 
+This is something, which should ideally be avoided.
+
 
 \subsubsection{IJulia}
 
 IJUlia is written in Julia and relies on ZMQ(C++) and IPython. 
-IPython uses multiple JavaScript rendering back ends like Three.js and D3.
+IPython uses multiple JavaScript rendering backends like Three.js and D3.
 \begin{table}[htbp]
     \centering
     \begin{tabular}{l|l}
@@ -243,17 +246,16 @@ It amounts to a total of 3.642.105 lines of code written in 29 languages.
 \subsubsection{Matlab}
 
 Matlab is closed source, which makes the core of Matlab impossible to extend by the user.
-This is why Matlab relays on a plug-in architecture, which enables developers to write closed or open source plug-ins for Matlab. 
-Simple packages can be written in Matlab and imported into a project.
-This is not an option for performance critical plug-ins though, as matlab itself is too slow.
-So something like a 3D visualization library could not be written in pure matlab code. 
-For that a mex plug-in is needed, which is matlab's way of letting you write C/C++ plug-ins.
-It is a very simple process of including a matlab header file into the C/C++ source, which can then be compiled with matlab.
-The header file holds types, which can be used to make the C/C++ functions work with matlabs native types.
-It also holds the \textit{mexFunction} macro, which needs to be used in order to make the function callable from matlab.
+This is why Matlab relies on a plug-in architecture which enables developers to write closed or open source plug-ins for Matlab. 
+Simple packages can be written in Matlab itself and imported into a project.
+This is not an option for performance critical plug-ins though, as Matlab is too slow.
+So something like a 3D visualization library should not be written in pure Matlab code. 
+For that a mex plug-in is best fitted, which is Matlab's way of letting you write C/C++ plug-ins.
+It is a very simple process of including a Matlab header file into the C/C++ source, which can then be compiled with Matlab.
+The header file holds types, which can be used to make the C/C++ functions work with Matlab's native types.
+It also holds the \textit{mexFunction} macro, which needs to be used in order to make the function callable from Matlab.
 So it seems to be fairly easy to integrate C/C++ code, but it also defies the purpose of writing in a scientific programming language.
 But worst of all, the visualization core itself is not extendable. This means as soon as you want to do something more advanced, you need to start from scratch, or call out to some third party library.
-
 
 
 \subsection{Usability Analysis}
@@ -284,7 +286,7 @@ So for Romeo one can achieve anything by bringing the data into the right format
 Problems arise, if this can not be done easily or the format is not intuitive for the programmer.
 To be fair, you will have this problem with every kind of visualization API. 
 The difference is in the end, how easy it is to do the data transformations. 
-Lets examine an example, where GLVisualize often will not allow to directly call visualize on the data.
+Let us examine an example, where GLVisualize often will not allow to directly call visualize on the data.
 There is only a method for visualizing a Mesh, but not for a vertex list plus a face list. If you work with mesh data, you will often handle the face and vertex list isolated.
 So an API that offers a function like \texttt{visualize\_mesh(x::VertexList, y::FaceList)} will be more straightforward for a programmer.
 Especially, as this is the standard way of displaying a mesh in most scientific plotting packages. This has become one of the most occurring questions on Github, even though that there are usage examples for displaying a mesh.
@@ -300,4 +302,4 @@ The functionality of GLVisualize is easy to explore. As there are only three fun
 \subsubsection{GLAbstraction}
 GLAbstraction interface is quite a bit more complicated.
 There are 57 exported functions in GLAbstraction, with each of them having having between one to five methods.
-When possible, OpenGL names where used to keep the naming as easy to remember as possible.
+When possible, OpenGL names were used to keep the naming as easy to remember as possible.
