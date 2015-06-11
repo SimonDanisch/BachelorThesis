@@ -262,9 +262,9 @@ But worst of all, the visualization core itself is not extendable. This means as
 %Consistency and ease of use of programming API in GLVisualize+GLAbstraction and Romeo.
 %Short comment about the \ac{GUI}
 Doing a broad user survey or similar methods was out of scope for this thesis.
-As a result from this, the usability study has to be done analytically.
+This is why the usability study has to be done analytically.
 There are different aspects which can be analyzed. For example, how many function names need to be remembered, how easy they are memorized, if they expose the wanted functionality and how difficult it is to look up unknown functionality.
-For this thesis, I will analyze the two main packages, namely GLVisualizes and GLAbstraction. 
+For this thesis, I will analyze the main exposed visualization interface, namely GLVisualizes. 
 The named aspects will be analyzed and in addition feedback from Github will be used.
 
 \subsubsection{GLVisualize}
@@ -287,15 +287,14 @@ Problems arise, if this can not be done easily or the format is not intuitive fo
 To be fair, you will have this problem with every kind of visualization API. 
 The difference is in the end, how easy it is to do the data transformations. 
 Let us examine an example, where GLVisualize often will not allow to directly call visualize on the data.
-There is only a method for visualizing a Mesh, but not for a vertex list plus a face list. If you work with mesh data, you will often handle the face and vertex list isolated.
+There is only a method for visualizing a Mesh, but not for a vertex list plus a face list. If you work with mesh data, you will often handle the face and vertex list in isolation.
 So an API that offers a function like \texttt{visualize\_mesh(x::VertexList, y::FaceList)} will be more straightforward for a programmer.
-Especially, as this is the standard way of displaying a mesh in most scientific plotting packages. This has become one of the most occurring questions on Github, even though that there are usage examples for displaying a mesh.
+This is actually the standard way of displaying a mesh in most scientific plotting packages. This has become one of the most occurring questions on Github, even though that there are usage examples for displaying a mesh.
 So diverting from standard plotting interfaces might be the biggest usability issue for GLVisualize.
-It is quite easy to offer compatibility packages, which defines functions like
-\texttt{visualize\_mesh(facelist, vertexlist) = visualize(Mesh(facelist, vertexlist))}.
+This is not necessarily an issue. It is quite easy to offer compatibility packages, which defines functions like \texttt{visualize\_mesh(facelist, vertexlist) = visualize(Mesh(facelist, vertexlist))}.
 As GLVisulize should stay as close to the principle of only having one function name, this should be moved to other interface only packages, though.
 
-The functionality of GLVisualize is easy to explore. As there are only three function to be remembered, one can remember then very quickly. From there it is easy to find out how they work. First, you can just call visualize on your data and see if the default is already sufficient. If not, you can call visualize_defaults on the data, to find out what kind of defaults there are, which can then be tweaked. As an alternative, one can edit every parameter of the visualization on the spot via the widgets. If that is not enough, a list of the data types that can be visualized can be queried with Julia in builds.
+The functionality of GLVisualize is easy to explore. There are only three function to be remembered. From there it is easy to find out how they work. First, you can just call visualize on your data and see if the default is already sufficient. If not, you can call visualize_defaults on the data, to find out what kind of defaults there are, which can then be tweaked. As an alternative, one can edit every parameter of the visualization on the spot via the widgets. If that is not enough, a list of the data types that can be visualized can be queried with Julia in builds. In the same way you could also query help for the visualization type.
 
 
 
