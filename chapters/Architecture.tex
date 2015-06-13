@@ -452,7 +452,6 @@ The interface to create visualizations is very simple and only consists of three
 Dict{Symbol, Any}     = visualization_defaults(data::Union(Signal{T}, T), style::Style) # returns a dictionary of default parameters
 RenderObject          = visualize(data::Union(Signal{T}, T), style=Style{:default}; parameters...) # returns an object which can be directly rendered
 RenderObject, Signal  = edit(data::Union(Signal{T}, T), style=Style{:default}; parameters...) # returns an RenderObject and signal which outputs the changed values
-
 \end{lstlisting}
 
 With this simple interface, the following data can be visualized:
@@ -469,17 +468,13 @@ With this simple interface, the following data can be visualized:
     \item Colors (Single Color values)
 \end{itemize}
 
-All of these can be integrated into the same scene and it is possible to change their parameters interactively.
+All of these can be integrated into the same scene and it is possible to change their parameters interactively by passing signals.
 These interactions can be purely programmatically, or via the widgets from the edit function.
-It calls the visualize function to render the data type and then registers appropriate events to update the data.
-Take a look at the text edit function.
-It first uploads the text to video memory and sets up the functionality to visualize it, and than updates the text data on the GPU according to the cursor position and keyboard input.
+Most of the visualize functions that take Julia objects transform them into GPU objects, which will then transfered to the actual visualize function. This function than takes GPU objects as its arguments, making it easy to visualize objects which already exist on the GPU, or which are shared between visualizations.
 
 Up to now, there is an edit function available for strings, colors, numbers, vectors and matrices.
 
-\subsubsection{API}
 
-[more to come]
 \subsubsection{Mesh primitive Rendering}
 
 The rendering of meshes in OpenGL is pretty straight forward with a normal vertex and fragment stage.
