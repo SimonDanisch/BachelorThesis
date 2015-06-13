@@ -1,6 +1,6 @@
 \section{Background}
 
-In this chapter, a short overview will be given over the current state of the art for visualization inside the field of scientific computing and a short introduction to Julia will be given.
+In this chapter, a short overview will over the current state of the art for visualization inside the field of scientific computing is given. The chapter will start out with a first look at Julia.
 
 \subsection{Related Work}
 
@@ -23,7 +23,7 @@ Julia uses a garbage collector, taking the task of memory management away from t
 There are quite a few things Julia promises to the developer which includes the following items\cite{WhyJulia}:
 
 \begin{itemize}
-	\item C like performance
+	\item C-like performance
 	\item native C interface
 	\item macros like in Lisp
 	\item mathematical notations like Matlab
@@ -32,14 +32,12 @@ There are quite a few things Julia promises to the developer which includes the 
 \end{itemize}
 
 Another interesting feature of Julia is, that all user-defined types are as fast and compact as build in types.
-This allows Julia to write all arithmetic types in Julia itself, allowing anyone to extend and rewrite them without diving into the compiler. 
-So one can write customized floating point type with the same performance and characteristics as the built-in floating point types.
-
+This allows Julia to implement all arithmetic types in Julia itself, allowing anyone to extend and rewrite them without diving into the compiler.
 Julia claims to take an approach at scientific computing which is more modern than other programming languages.
 They justify this by pointing out the performance characteristics of Julia and the possibilities that come from this. 
-Julia allows to write even the performance critical core in Julia itself. This means Julia does not need to call out to C and most of the standard library is implemented in Julia. 
-In contrast, Matlab, Python, and R need to implement any performance criticial code in another language, which has lead to a programming pattern which is known by the name of vectorization. This pattern has evolved, as the vector operations that are build into the language are much faster than self-written vector operation.
-This means, if one needs performance, the code needs to be rewritten to only use functions implemented in some module that relies on another, faster language.
+Julia allows to write even the performance critical core in Julia itself. This means Julia does not need to call out to C and like this most of the standard library is implemented in Julia. 
+In contrast, Matlab, Python, and R need to implement any performance-critical code in another language, which has lead to a programming pattern which is known by the name of vectorization. This pattern has evolved, as the vector operations that are build into the language are much faster than vector operation written in the language itself.
+This means, if one needs performance, the code needs to be rewritten to only use functions implemented which are implemented in another, faster language.
 A deeper analysis of this problem can be found in the first Julia paper\cite{2012arXiv1209.5145B}.
 
 All in all, this makes Julia a very desirable scientific computing language, which promises to be also great for a visualization library.
@@ -51,11 +49,11 @@ As part of this thesis, it will be investigated if Julia's claims have been achi
 IJulia is the Julia language back-end for IPython.
 IPython is a software stack, which was created to allow for interactive computing in Python.
 It offers an interactive shell to execute python scripts, \ac{GUI} toolkits, tab completion and rich media visualizations.
-It comes with a web-based notebook, which enables you to write formatted documentation together with data, inlined plots and executable program snippets. You can also formulate mathematical formulas in latex, which will get rendered and inlined nicely into an IJulia Notebook.
-See figure \ref{fig:ijulianotebook} for an example.
+It comes with a web-based notebook, which enables you to write formatted documentation together with data, inlined plots and executable program snippets. You can also formulate mathematical formulas in latex, which will get rendered and inlined nicely into an IJulia Notebook. By implementing a language backend for Julia, all this functionality is accessible from Julia-
+See figure \ref{fig:ijulianotebook} for an example notebook.
 
 IJulia has some similar goals compared to Romeo, but it has a different focus.
-The notebook is completely web based, concentrates on 2D visualizations and interactivity are mostly limited to the programming and not the graphics.
+The notebook is completely web based, concentrates on 2D visualizations and interactivity is mostly limited to the programming and not the graphics.
 3D graphics are possible via Three.js, which is a powerful 3D visualization library based on WebGL.
 The current integration is just prototypical and limited to simple 3D meshes up to now.
 
@@ -64,10 +62,11 @@ The current integration is just prototypical and limited to simple 3D meshes up 
 
 \ac{Matlab} is a numerical computing environment that comes with its own programming language.
 It was created in 1984 by Cleve Moler. He designed it to leverage the effort of accessing LINPACK and EISPACK for his students.
-Since then it grew to be a widely used tool for scientific computing in all areas, ranging from teaching to actual engineering uses in companies.
-It offers a broad range of functionality, including matrix manipulation, plotting of functions and data, the creation of user interfaces and interfacing with a range of languages like C/C++, Java, Fortran and Python. 
-Matlab is known for having print ready visualization tools deeply integrated into the standard library.
+Since then it grew to be a widely used tool for scientific computing in all areas, ranging from teaching to actual engineering uses in companies. It is currently developped by the company Mathworks, which was founded in order to keep improving Matlab.
 
+Matlab offers a broad range of functionality, including matrix manipulation, plotting of functions and data, the creation of user interfaces and interfacing with a range of languages like C/C++, Java, Fortran and Python. 
+Matlab is known for having print ready visualization tools deeply integrated into the standard library.
+Also, when relying on vectorized code it can be very fast while programs written in pure Matlab code tend to be slow.
 \ac{Matlab} itself is written in C, C++, Java and MATLAB.
 It is a proprietary software with a pricing of around \EUR{2000}\cite{MatlabPricing}, which can be extended via free, open source and proprietary modules like Simulink.
 
@@ -85,9 +84,11 @@ Overall, the biggest difference is that Romeo and Julia are open-source, making 
     \captionof{figure}[VTK Capabilities]{Different visualizations done with VTK.}
     \label{fig:vtkgallery}
 \end{minipage}
-Mayavi is probably one of the biggest, open source library for interactive 3D visualizations in Python.
+
+Mayavi is probably one of the biggest, open source libraries for interactive 3D visualizations in Python.
 It is written 99.9\% in Python, but relies on \ac{VTK} for rendering.
-\ac{VTK} is one of the most advanced scientific visualization library, with a huge amount of visualization types. In figure \ref{fig:vtkgallery} you can see some of the visualization taken from the \ac{VTK} gallery\cite{VTKGallery}.
+\ac{VTK} is one of the most advanced scientific visualization library, with a huge amount of visualization types. 
+In figure \ref{fig:vtkgallery} one can see some of the visualization taken from the \ac{VTK} gallery\cite{VTKGallery}.
 
 Mayavi shares some of its goals with Romeo, namely\cite{MayaviGoals}
 \begin{itemize}
@@ -95,7 +96,6 @@ Mayavi shares some of its goals with Romeo, namely\cite{MayaviGoals}
 	\item A simple and clean scripting interface in Python, including one-liners, or an object-oriented programming interface. Mayavi integrates seamlessly with Numpy and Scipy for 3D plotting and can even be used in IPython interactively, similarly to Matplotlib.
 	\item The power of the VTK toolkit, harnessed through these interfaces, without forcing you to learn it.
 \end{itemize}
-
 
 Obviously, the python part is not a shared goal, but creating an interactive 3D visualization library deeply embedded into a language is.
 Mayavi together with VTK is a very big project and in this sense not really comparable to Romeo.
@@ -122,5 +122,5 @@ These include\cite{VispyGoals}:
 \end{itemize}
 
 It is a fairly new library, promising to use modern OpenGL and being able to achieve state of the art performance.
-This is very similar to Romeo's goals, with the only difference being that Romeo is implemented in Julia while Vispy is implemented in Python.
+These goals are very similar to Romeo's, with the only difference being that Romeo is completely implemented in Julia while Vispy is implemented in Python.
 So the biggest differentiation between Romeo and Vispy will be found in the performance and the concrete feature set.
