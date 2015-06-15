@@ -1,10 +1,10 @@
 \section{Results and Discussion}
 
 \subsection{Performance Analysis}
-This chapter supplies some benchmarks in order to analyze how close this thesis comes to achieve the wanted performance.
+This chapter supplies some benchmarks in order to analyze how close this thesis comes to achieve the desired performance.
 
 If not stated otherwise, benchmarks are written for this thesis and executed on an Intel Core i5-4200U with an HD 4400 graphic and 8GB of RAM.
-Julia 0.4 has been used, C++ code has been compiled with Visual Studio Express 2013 and for python the anaconda distribution with Python 2.7 was used.
+Julia 0.4 has been used, C++ code has been compiled with Visual Studio Express 2013 and for Python the Anaconda distribution with Python 2.7 was used.
 Benchmarks were run on an idle computer with as little background processes running as possible.
 The sources of the benchmarks can be found on Github (https://github.com/SimonDanisch/BachelorThesis/tree/master/data/benchmarks).
 
@@ -38,7 +38,7 @@ ModernGL does pretty well compared to C++. Python comes out very slow, with bein
 In contrast, Julia offers nearly the same speed as calling an OpenGL functions from C++ as can be seen in the table \ref{table:relativespeedoglw}.
 As all the OpenGL wrappers are pretty mature by now and bind to the same C library (the video driver), this should mainly be a C function call benchmark.
 Python performs badly here, but it must be noted that there are a lot of different Python distributions and some promise to have better C interoperability.
-As this benchmarks goal is to show that Julia’s \textit{ccall} interface is comparable to a C function call from inside C++, the python options have not been researched that thoroughly.
+As this benchmarks goal is to show that Julia’s \textit{ccall} interface is comparable to a C function call from inside C++, the Python options have not been researched that thoroughly.
 From this benchmark can be concluded, that Julia offers a solid basis for an OpenGL wrapper library.
 
 \subsubsection{Reactive}
@@ -59,7 +59,7 @@ From this benchmark can be concluded, that Julia offers a solid basis for an Ope
     \end{minipage}
 \end{figure}
 
-It is relatively hard to benchmark the used event system in real world scenarios. To compare Rome's performance with different event systems, one would have to reimplement Romeo for every benchmark.
+It is relatively hard to benchmark the used event system in real world scenarios. To compare Romeo's performance with different event systems, one would have to reimplement Romeo for every benchmark.
 Using other visualization libraries as a baseline is also difficult, as it is hard to isolate the performance of the event system.
 This is why we will compare an event graph from Reactive with its unrolled version.
 For the unrolled version the functions from the callback-graph have been executed in the same order as the event graph would have without introducing any event system related overhead.
@@ -304,7 +304,7 @@ All in all, from within Julia there are little options to implement completely n
 \end{table}
 
 Mayavi itself is mostly written in Python, which amounts to an impressive 49,894 lines of code. This is quite a lot, considering that this does not include rendering code, which is done in VTK.
-As can be seen in table \ref{table:VTKStatistic}, VTK alone amounts to a total of 2,812,005 lines of code written in approximately 27 languages. 
+As can be seen in Table \ref{table:VTKStatistic}, VTK alone amounts to a total of 2,812,005 lines of code written in approximately 27 languages. 
 So the main problem for extending VTK and Mayavi's core will be its complexity. If you're willing to switch to C++, VTK will allow you to implement any advanced feature. From inside Mayavi and Python, one will have problems with the accessing the underlying rendering core of VTK and probably also performance problems with Python.
 
 
@@ -364,7 +364,7 @@ It is quite easy to offer a compatibility package, which defines functions like 
 visualize\_mesh(facelist, vertexlist) = visualize(Mesh(facelist, vertexlist))}.
 As GLVisulize should stay as close to the principle of only having one function name, this should be moved to other interface only packages, though.
 
-The functionality of GLVisualize is easy to explore. There are only three function to be remembered. From there it is easy to find out how they work. First, you can just call visualize on your data and see if the default is already sufficient. If not, you can call visualize_defaults on the data, to find out what kind of default parameters there are, which can then be tweaked. As an alternative, one can edit every parameter of the visualization on the spot via the widgets. 
+The functionality of GLVisualize is easy to explore. There are only three function to be remembered. From there it is easy to find out how they work. First, you can just call visualize on your data and see if the default is already sufficient. If not, you can call \texttt{visualize\_defaults} on the data, to find out what kind of default parameters there are, which can then be tweaked. As an alternative, one can edit every parameter of the visualization on the spot via the widgets. 
 If that is not enough, a list of the data types that can be visualized can be queried with Julia in builds. 
 In the same way one could also query help for the visualization type.
 

@@ -18,7 +18,7 @@ Speed is mainly a usability factor. It is a factor, that can make a software unu
 As general coding productivity is also a concern, this thesis is set on using a high-level language.
 Historically, these two demands can not be satisfied at the same time.
 How to achieve state of the art speed with a high-level language is an ongoing research and basically the holy grail of language design. 
-Julia promises to do exactly this, which is illustrated in figure \ref{fig:juliabench}. 
+Julia promises to do exactly this, which is illustrated in Figure \ref{fig:juliabench}. 
 The code length is an ambiguous measure for conciseness, but if the code is similarly refactored and implements the same algorithm, it is a good indicator of how many lines of code are needed to achieve the same goal.
 From this figure, we can conclude, that Julia at least comes close to its promises, which is why it has been chosen as the programming language.
 
@@ -40,15 +40,15 @@ This thesis will follow a hybrid strategy, comparing some simple implementations
 Extensibility is an important factor in scientific computing, as a lot of flexibility is needed when exploring new horizons. 
 It is not only that, but also a great factor determining the growth of a library. The more extensible the software is, the higher is the probability that someone else contributes to it.
 In order to write extensible software, we first have to clarify what extensibility is.
-Extensible foremost needs that the code is accessible. There are different levels of accessibility. 
+Extensible foremost requires that the code is accessible. There are different levels of accessibility. 
 The lowest level is closed source, where people purposely make the code inaccessible. While this is obvious, it is just a special case of not understanding the underlying language. 
 Shipping binaries without open sourcing the code means that the source is only accessible in a language which is extremely hard to understand, namely the machine code of the binary. So another example for inaccessibility is to write in a language that is difficult to understand. 
 Other barriers are obfuscated language constructs, difficult compilation procedures, missing documentation and cryptic highly optimized code.
-Furthermore, the design of the library in the whole is an important factor for extensibility. It is not only important, that all parts are understandable, but also, that every independent unit in the code solves only one problem. 
+Furthermore, the design of the library in the whole is an important factor for extensibility. It is not only important that all parts are understandable, but also that every independent unit in the code solves only one problem. 
 This guarantees that one can quickly exchange it, or use it somewhere else where the same problem needs to be solved.
 If this is guaranteed, re-usability in different contexts becomes much simpler. 
 This allows for a broader user base, which in turn results in higher contributions and bug reports.
-Short concise code is also important, as it will take considerably less time to rewrite something, as the amount of code that has to be touched is shorter and less time is spent on understanding and rewriting the code.
+Short and concise code is also important, as it will take considerably less time to rewrite something, as the amount of code that has to be touched is shorter and less time is spent on understanding and rewriting the code.
 
 So the code written for this thesis will be open source, modular, written in a high-level language and concise.
 
@@ -72,9 +72,10 @@ This chapter is about the API design choices that have been made.
 The first \ac{API} is the \ac{OpenGL} layer. 
 The chosen philosophy was to make the wrapper for native libraries as thin and reusable as possible and a one-to-one mapping of the underlying C-library.
 This guarantees reusability for others, who want to work with the low-level library. Also, they might disagree with some higher-level abstractions and prefer to write their own.
+The developped libary is called ModernGL[cite].
 
-Over this sits an abstraction layer needed to simplify the work with \ac{OpenGL}.
-With this abstraction, the actual visualization library is implemented.
+Over this sits an abstraction layer needed to simplify the work with \ac{OpenGL}, namely GLAbstraction[cite].
+With this abstraction GLVisualize[cite] was implemented, which renders the \ac{OpenGL} accelerated visualizations.
 
 \ac{API}s for visualization libraries are very difficult to realize, as there are endless ways of visualizing the same data.
 The design choice here was to use Julia's rich type system to better describe the data. 
@@ -104,7 +105,7 @@ Most influential language construct are its hierarchical type system and multipl
 Multiple dispatch is in its core function overloading at runtime. 
 To better understand multiple dispatch, one has to be familiar with Julia's type system.
 The type system builds upon four basic types. 
-Composite types, which are comparable to C-Structs, parametric composite types, bits types, abstract and parametric abstract types.
+Composite types, which are comparable to C's structs and can be mutable or immutable, parametric composite types, bits types, abstract and parametric abstract types.
 While the first three are all concrete types, abstract types can not be instantiated but are used to build a type hierarchy.
 Every concrete type can only inherit from one abstract type, while abstract types can also inherit from abstract types.
 Bit types are just immutable, stack allocated memory chunks, usable for implementing numbers.
@@ -131,7 +132,7 @@ end
 What will happen at runtime is, that Julia compiles a method specialized on the arguments which result in overloading the function with a method with the concretely typed arguments.
 
 In the case of \textit{foo}, it is initially overloaded with two methods.
-Now, if you call \textit{foo} with one \textit{Float32} argument, a new method will be added at run time specialized to the\textit{Float32} argument.
+Now, if you call \textit{foo} with one \textit{Float32} argument, a new method will be added at run time, specialized to the\textit{Float32} argument.
 Like this, if the function does not access non constant global values, all types inside the function will be known at call time.
 This allows Julia to statically compile the function body, while propagating the type information down the call tree.
 
@@ -140,7 +141,7 @@ Functions are first-class, so they are easy to pass around.
 They can be bound to variables and can then be called like normal functions via the variable name. This implies that functions can also be bound to objects.
 There is no self-reference available in Julia so the object still needs to be passed to the function via the arguments
 
-Another of the most crucial features is the very simple, overhead less C-Interface. 
+Another crucial feature is the very simple, overhead free C interface. 
 Thanks to the binary compatibility of \ac{LLVM}'s emitted assembly, a C function call to a shared library inside Julia has the same overhead as it would be from inside C\cite{CCALL}. 
 This is perfect for integrating low-level libraries like \ac{OpenGL} and \ac{OpenCL}.
 
@@ -161,11 +162,11 @@ In addition, the general compiler structure of Julia will be analyzed to find in
     \label{fig:juliabench}
 \end{minipage}
 
-In the first benchmark from figure \ref{fig:juliabench}, we can see that Julia stays well within the range of C Speed. 
+In the first benchmark from figure \ref{fig:juliabench}, we can see that Julia stays well within the range of C speed. 
 Actually, it even comes second to C-speed with no other language being that close.
 This is a very promising first look at Julia, but it should be noted, that these benchmarks are written by the Julia core team and the performance of a language is a moving target.
 So it is not guaranteed, that there is no bias favoring Julia in these benchmarks.
-Another benchmark was found, which compares C++, Julia and F\#. It was created by Palladium Consulting which should not have any interest in favoring any of the languages.
+Another benchmark was found, which compares C++, Julia and F\#. It was created by Palladium Consulting[link] which should not have any interest in favoring any of the languages.
 They compare the performance of C++, Julia and F\# for an IBM/370 floating point to IEEE floating point conversion algorithm.
 The results\cite{JuliaFSCpp} have been, that F\# comes out last with 748.275 ms, than Julia with 483.769 ms and finally C++ with 463.474 ms. 
 At the citation time, the Author had updated the C++ version to achieve 388.668 ms. 
@@ -196,6 +197,7 @@ These are remarkable results, considering that the author states it was not a bi
 This list could go on, but it is more constructive to find out Julia's limits analytically.
 As already mentioned, Julia is statically compiled at runtime. This means, as long as all types can be inferred at runtime, Julia will have in the most cases identical performance to C++.
 The biggest remaining difference in this case is the garbage collection. Julia 0.3 has a mark and sweep garbage collector, while Julia 0.4 has an incremental garbage collector.
+[explanation of the difference, or unnecessary because its not important!?]
 As seen in the benchmarks, it does not necessarily introduce big slowdowns.
 But there are issues, where garbage collection introduces a significant slow down\cite{ReadDlmGC}.
 Analyzing this further is not in the scope of this thesis, though. 
@@ -211,7 +213,7 @@ A language designer must create an \ac{AST} which \ac{LLVM} can convert into \ac
 This yields superior language interfacing, as inlining and other optimizations can be done over the boundary of one language.
 
 \ac{LLVM}'s concept is effective, as you can accumulate state of the art optimizations in one place, making them accessible to many languages. Because of the many back-ends, languages that use \ac{LLVM} can run on many architectures. While Julia does not support all back-ends yet, support will be added in the future. 
-\ac{LLVM} is also used by Clang, the C/C++ front end for \ac{LLVM} rivaling \ac{gcc} and it is used by Apple's programming language Swift and for Mozilla's language Rust.
+\ac{LLVM} is also used by Clang[cite], the C/C++ front end for \ac{LLVM} rivaling \ac{gcc}[cite] and it is used by Apple's programming language Swift and for Mozilla's language Rust.
 This makes \ac{LLVM} a solid basis for a programming language, as these are highly successful projects guaranteeing \ac{LLVM} further prospering.
 To see where \ac{LLVM} stands considering performance, one can compare it with \ac{gcc}, which is one of the most successful open source compilers for C++.
 If C++ code that is compiled with \ac{gcc} is much faster than the same code compiled with \ac{LLVM}, the \ac{gcc} version will also be faster as a comparable Julia program.
@@ -260,7 +262,7 @@ For Romeo, it was decided to support \ac{OpenGL} 3.3 as the lowest bound, as it 
 All features that help to call less OpenGL functions can be considered as modern, as they take away the load from the CPU.
 The modern features used in this thesis include instance rendering, vertex arrays and \ac{GLSL} shader.
 
-In figure \ref{fig:opengl} you can see the basic architecture of an OpenGL program pipeline.
+In Figure \ref{fig:opengl} you can see the basic architecture of an OpenGL program pipeline.
 As the description states, the blue boxes are programmable shaders, while the dotted boxes are optional parts of the pipeline.
 The yellow boxes describe stages which are not directly accessible. They are part of the global OpenGL state, which can be set via OpenGL commands.
 
@@ -357,7 +359,7 @@ ModernGL can be used by any OpenGL project which strives to build a low-level Op
 GLWindow and GLAbstraction can be used to build slightly higher level OpenGL visualizations. 
 GLVisualize can be used to build other interactive visualization packages besides Romeo.
 
-As you can see in figure \ref{fig:architecture}, Romeo uses GLVisualize for creating \ac{GUI} elements and the visualizations. Romeo's code evaluation is done via Julia build-in functions and text fields are displayed with GLVisualize.
+As you can see in Figure \ref{fig:architecture}, Romeo uses GLVisualize for creating \ac{GUI} elements and the visualizations. Romeo's code evaluation is done via Julia built-in functions and text fields displayed with GLVisualize.
 Windows are managed with GLWindow. 
 GLWindow creates an OpenGL window with the help of GLFW and converts all window events into Reactive's signals. 
 It also offers a very simple render queue, for rendering graphics attached to a window.
@@ -377,11 +379,11 @@ This problem is solved by initializing a function pointer cache with null and as
 
 The OpenGL function loader from ModernGL has undergone some changes over the time.
 Starting with a very simple solution, there have been pull requests to improve it.
-The current approach in ModernGL master was not written by myself, but by the Github user aaalexandrov.
-Before aaalexandrov’s approach, the fastest approach would have used a pretty new Julia feature, named staged functions.
-It should in principle yield the best performance as it compiles a specialized version of the function when it gets called for the first time. This is perfect for \ac{OpenGL} function loading. When the staged function gets called the pointer can be queried and gets inlined into the just in time compiled function.
+The current approach in ModernGL master was not written by myself, but by the Github user aaalexandrov[link - probably rather his real name?!].
+Before aaalexandrov’s approach, the fastest approach would have used a pretty new Julia feature, named generated functions.
+It should in principle yield the best performance as it compiles a specialized version of the function when it gets called for the first time. This is perfect for \ac{OpenGL} function loading. When the generated function gets called the pointer can be queried and gets inlined into the just in time compiled function.
 
-Staged functions only work with the newest Julia build, which is why aaalexandrov’s approach was favored.
+Generated functions only work with the newest Julia build, which is why aaalexandrov’s approach was favored.
 
 
 \subsection{GLAbstraction}
@@ -415,7 +417,7 @@ result = glGetShaderiv(shaderID, GL_COMPILE_STATUS)
 
 Similarly, OpenGL does not overload functions, which means function that do the same for different types have a base name with different suffixes to indicate the type.
 The function with the most methods is \textit{glUniform}, which has 34 functions for all the different uniform types. With GLAbstraction, \textit{glUniform} has been overloaded for all different types, including arrays and signals. So one can simply call \textit{glUniform} on the type without the need of looking up the correct suffix.
-This has been achieved with a combination of simple overloading and staged functions. The staged function puts together the right function name and inlines it into the \textit{glUniform} method specialized to the argument type.
+This has been achieved with a combination of simple overloading and generated functions. The generated function puts together the right function name and inlines it into the \textit{glUniform} method specialized to the argument type.
 
 A lot more of these simplifications have been done in order to leverage the usage of OpenGL inside Julia.
 
