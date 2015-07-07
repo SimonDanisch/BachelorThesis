@@ -146,7 +146,7 @@ It can not get much faster than that. The next level of optimizations can be cul
 
 It was not possible to compare IJulia directly with Romeo, as the feature set for plotting is too different.
 
-But there are certain factors, which indicate, that is hard to reach optimal performance with IJulia.
+But there are certain factors which indicate that it is hard to reach optimal performance with IJulia.
 First of all, IJulia uses ZMQ to bridge the web interface with the Julia kernel.
 ZMQ is a messaging system using different sockets for communication like inproc, IPC, TCP, TIPC and multicas.
 While it is very fast at its task of sending messages, it can not compete with the native performance of staying inside one language.

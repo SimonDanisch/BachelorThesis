@@ -72,10 +72,10 @@ This chapter is about the API design choices that have been made.
 The first \ac{API} is the \ac{OpenGL} layer. 
 The chosen philosophy was to make the wrapper for native libraries as thin and reusable as possible and a one-to-one mapping of the underlying C-library.
 This guarantees reusability for others, who want to work with the low-level library. Also, they might disagree with some higher-level abstractions and prefer to write their own.
-The developped libary is called ModernGL[cite].
+The developped libary is called ModernGL\cite{ModernGL}.
 
-Over this sits an abstraction layer needed to simplify the work with \ac{OpenGL}, namely GLAbstraction[cite].
-With this abstraction GLVisualize[cite] was implemented, which renders the \ac{OpenGL} accelerated visualizations.
+Over this sits an abstraction layer needed to simplify the work with \ac{OpenGL}, namely GLAbstraction\cite{GLAbstraction}.
+With this abstraction GLVisualize\cite{GLVisualize} was implemented, which renders the \ac{OpenGL} accelerated visualizations.
 
 \ac{API}s for visualization libraries are very difficult to realize, as there are endless ways of visualizing the same data.
 The design choice here was to use Julia's rich type system to better describe the data. 
@@ -99,7 +99,7 @@ Best would be to make a user poll to get actual feedback from people that use th
 
 \subsection{The Julia Programming Language}
 
-The basic introduction of Julia has already been given in the Background chapter.
+The basic introduction to Julia has already been given in the Background chapter.
 This chapter is focused on how to write programs with Julia and if it satisfies the requirements.
 Most influential language construct are its hierarchical type system and multiple dispatch.
 Multiple dispatch is in its core function overloading at runtime. 
@@ -129,7 +129,7 @@ function foo(x)
 end
 \end{lstlisting}
 
-What will happen at runtime is, that Julia compiles a method specialized on the arguments which result in overloading the function with a method with the concretely typed arguments.
+What will happen at runtime is, that Julia compiles a method specialized on the arguments which result in overloading the function with a method with concretely typed arguments.
 
 In the case of \textit{foo}, it is initially overloaded with two methods.
 Now, if you call \textit{foo} with one \textit{Float32} argument, a new method will be added at run time, specialized to the\textit{Float32} argument.
@@ -166,7 +166,7 @@ In the first benchmark from figure \ref{fig:juliabench}, we can see that Julia s
 Actually, it even comes second to C-speed with no other language being that close.
 This is a very promising first look at Julia, but it should be noted, that these benchmarks are written by the Julia core team and the performance of a language is a moving target.
 So it is not guaranteed, that there is no bias favoring Julia in these benchmarks.
-Another benchmark was found, which compares C++, Julia and F\#. It was created by Palladium Consulting[link] which should not have any interest in favoring any of the languages.
+Another benchmark was found, which compares C++, Julia and F\#. It was created by Palladium Consulting\cite{PalladiumConsulting} which should not have any interest in favoring any of the languages.
 They compare the performance of C++, Julia and F\# for an IBM/370 floating point to IEEE floating point conversion algorithm.
 The results\cite{JuliaFSCpp} have been, that F\# comes out last with 748.275 ms, than Julia with 483.769 ms and finally C++ with 463.474 ms. 
 At the citation time, the Author had updated the C++ version to achieve 388.668 ms. 
@@ -209,11 +209,12 @@ In order to further understand Julia's potential, a further look at LLVM is take
 \subsubsection{\ac{LLVM}}
 
 \ac{LLVM} is a compiler infrastructure, which has front ends for different languages and compiles to different platforms like x86, ARM, \ac{OpenCL} (SPIR) and \ac{CUDA} (NVPTX). 
-A language designer must create an \ac{AST} which \ac{LLVM} can convert into \ac{LLVM} \ac{IR}. This \ac{IR} forms a standardized basis for any optimization step. Every language that can be converted to \ac{LLVM} \ac{IR} can be combined at this level.\ac{LLVM} offers many optimizations, but also third party optimization steps can be integrated.
+A language designer must create an \ac{AST} which \ac{LLVM} can convert into \ac{LLVM} \ac{IR}. This \ac{IR} forms a standardized basis for any optimization step. Every language that can be converted to \ac{LLVM} \ac{IR} can be combined at this level. \ac{LLVM} itself offers many optimizations, but also third party optimization can be integrated.
 This yields superior language interfacing, as inlining and other optimizations can be done over the boundary of one language.
+This is why Julia can look forward to having one of the best C++ \ac{FFI}\cite{Cxx}.
 
-\ac{LLVM}'s concept is effective, as you can accumulate state of the art optimizations in one place, making them accessible to many languages. Because of the many back-ends, languages that use \ac{LLVM} can run on many architectures. While Julia does not support all back-ends yet, support will be added in the future. 
-\ac{LLVM} is also used by Clang[cite], the C/C++ front end for \ac{LLVM} rivaling \ac{gcc}[cite] and it is used by Apple's programming language Swift and for Mozilla's language Rust.
+\ac{LLVM}'s concept is effective, as you can accumulate state of the art optimizations in one place, making them accessible to many languages. Because of the many back-ends, languages that use \ac{LLVM} can run on many architectures. While Julia does not support all back-ends yet support will be added in the future.
+\ac{LLVM} is also used by Clang\cite{Clang}, the C/C++ front end for \ac{LLVM} rivaling \ac{gcc}\ac{gcc} and it is used by Apple's programming language Swift\cite{SWIFT} and for Mozilla's language Rust\cite{Rust}.
 This makes \ac{LLVM} a solid basis for a programming language, as these are highly successful projects guaranteeing \ac{LLVM} further prospering.
 To see where \ac{LLVM} stands considering performance, one can compare it with \ac{gcc}, which is one of the most successful open source compilers for C++.
 If C++ code that is compiled with \ac{gcc} is much faster than the same code compiled with \ac{LLVM}, the \ac{gcc} version will also be faster as a comparable Julia program.
@@ -253,14 +254,14 @@ With big companies like Apple\cite{GoogleAppleLLVM}, Google\cite{GoogleAppleLLVM
 \end{minipage}
 
 
-\ac{OpenGL} is a low-level graphics API implemented by the video card vendor via the video driver. 
+\ac{OpenGL} is a low-level graphics API worked out by the Khronos Group \ac{Khronos} and implemented by the video card vendor via the video driver. 
 As such it does not offer much abstraction over the actual \ac{GPU}, but instead offers high flexibility and performance.
 \ac{OpenGL} 1.0 was released in 1992 and the current version is 4.5.
 A critical element when developing \ac{OpenGL} applications is, that not all video drivers implement the newest \ac{OpenGL} standards.
 As a result, one has to decide which \ac{OpenGL} version to target, trading between modernity and platform support.
-For Romeo, it was decided to support \ac{OpenGL} 3.3 as the lowest bound, as it is sufficiently available, while still having most of the modern features.
+For Romeo, it was decided to support \ac{OpenGL} 3.1 as the lowest bound, as it is sufficiently available, while still having most of the modern features.
 All features that help to call less OpenGL functions can be considered as modern, as they take away the load from the CPU.
-The modern features used in this thesis include instance rendering, vertex arrays and \ac{GLSL} shader.
+The modern features used in this thesis include instance rendering, vertex arrays and shader programs written in \ac{GLSL}.
 
 In Figure \ref{fig:opengl} you can see the basic architecture of an OpenGL program pipeline.
 As the description states, the blue boxes are programmable shaders, while the dotted boxes are optional parts of the pipeline.
@@ -268,7 +269,7 @@ The yellow boxes describe stages which are not directly accessible. They are par
 
 So in order to have a working OpenGL rendering pipeline one needs to write at least a vertex shader and a fragment shader.
 All shaders are compiled and linked into a program object, which can be executed on the \ac{GPU}.
-Shaders are written in a C dialect specialized for vector operations.
+Shaders are written in \ac{GLSL}, which is a C dialect specialized for vector operations.
 You feed shaders with data via buffers, textures and uniforms. Buffers are 1D arrays, textures 1D/2D/3D arrays with both having their own memory, while uniforms live in the program object.
 
 The different shaders are usually used to apply geometric and perspective transformations and calculating the light.
@@ -316,13 +317,13 @@ c = lift(+, a,b)    # creates a new signal with the callback plus. Equal to c = 
 lift(println, c)    # executes println, every time that c is updated. 
 push!(a, 20)        # updates a, resulting in c being 22
 #prints: 22
-push!(b, 5)         # updates a, resulting in c being 22
+push!(b, 5)         # updates b, resulting in c being 25
 #prints: 25
 \end{lstlisting}
 
 Lifting a signal creates a callback, which gets called whenever the signal changes.
 There are more operations than lifting, like folding, merging, filtering and so on.
-With this, one can build up a complex tree of operators which will get applied to the origin signal.
+With this, one can build up a complex tree of operators which will get applied to the original signal.
 For the concrete case of Reactive, every signal carries around a list of children and parents.
 Each signal has a rank, in order to build up a sorted heap with these information.
 So every time a signal is updated, the heap can be traversed and the functions get applied in the right order, updating all the values of the children.
@@ -359,13 +360,13 @@ ModernGL can be used by any OpenGL project which strives to build a low-level Op
 GLWindow and GLAbstraction can be used to build slightly higher level OpenGL visualizations. 
 GLVisualize can be used to build other interactive visualization packages besides Romeo.
 
-As you can see in Figure \ref{fig:architecture}, Romeo uses GLVisualize for creating \ac{GUI} elements and the visualizations. Romeo's code evaluation is done via Julia built-in functions and text fields displayed with GLVisualize.
+As you can see in Figure \ref{fig:architecture}, Romeo uses GLVisualize for creating \ac{GUI} elements and the visualizations. Romeo's code evaluation is done via Julia built-in functions and text fields are created with GLVisualize.
 Windows are managed with GLWindow. 
 GLWindow creates an OpenGL window with the help of GLFW and converts all window events into Reactive's signals. 
 It also offers a very simple render queue, for rendering graphics attached to a window.
 Signals are not only used as the event sources, but are also the main abstraction for time varying values in GLVisualize.
 GLVisualize is the main package offering the rendering functionality and the editor widgets like text fields and sliders.
-For rendering GLVisualize relies on GLAbstraction, which defines a high-level interface for ModernGL.
+For rendering, GLVisualize relies on GLAbstraction, which defines a high-level interface for ModernGL.
 ModernGL does the \ac{OpenGL} function loading and exposes all the function and Enums definitions from \ac{OpenGL} with version higher than 3.0.
 
 
@@ -379,7 +380,7 @@ This problem is solved by initializing a function pointer cache with null and as
 
 The OpenGL function loader from ModernGL has undergone some changes over the time.
 Starting with a very simple solution, there have been pull requests to improve it.
-The current approach in ModernGL master was not written by myself, but by the Github user aaalexandrov[link - probably rather his real name?!].
+The current approach in ModernGL master was not written by myself, but by the Github user aaalexandrov\cite{Aaalexandrov}.
 Before aaalexandrov’s approach, the fastest approach would have used a pretty new Julia feature, named generated functions.
 It should in principle yield the best performance as it compiles a specialized version of the function when it gets called for the first time. This is perfect for \ac{OpenGL} function loading. When the generated function gets called the pointer can be queried and gets inlined into the just in time compiled function.
 
@@ -400,11 +401,11 @@ With every source code update the OpenGL program gets recompiled, making it poss
 One of the main data types is the \textit{RenderObject}.
 It combines uniforms, OpenGL buffers and textures and OpenGL programs. One can call \textit{render(::RenderObject)}, which executes the program with the given uniforms and buffers loaded into the program. 
 Like this, making visualizations with GLAbstraction turns into writing the shader and then combining it with the needed data in form of OpenGL types.
-When the program includes a fragment stage, this means calling \textit{render} results in the object being displayed on the screen. But its also possible to use compute shaders with \textit{RenderObjects}, which then just writes into the supplied buffers without displaying anything.
+When the program includes a fragment stage, this means calling \textit{render} results in the object being displayed on the screen. But its also possible to use compute shaders with \textit{RenderObjects}, which then just write into the supplied buffers without displaying anything.
 
-A lot of OpenGL functions are bothersome to use from inside Julia, as the output has to be pre-allocated and gets then passed to the function.
-These functions have been overloaded in GLAbstraction to return the value.
-So with only ModernGL the code would look like this:
+A lot of OpenGL functions are bothersome to use from within Julia, as the output has to be pre-allocated and gets then passed to the function.
+These functions have been overloaded in GLAbstraction to return the value instead.
+With only ModernGL the code would typically look like this:
 \begin{lstlisting}
 result = Ref{GLint}(-1) #using Julia's reference type
 glGetShaderiv(shaderID, GL_COMPILE_STATUS, result)
@@ -415,11 +416,11 @@ With GLAbstraction this becomes possible:
 result = glGetShaderiv(shaderID, GL_COMPILE_STATUS)
 \end{lstlisting}
 
-Similarly, OpenGL does not overload functions, which means function that do the same for different types have a base name with different suffixes to indicate the type.
-The function with the most methods is \textit{glUniform}, which has 34 functions for all the different uniform types. With GLAbstraction, \textit{glUniform} has been overloaded for all different types, including arrays and signals. So one can simply call \textit{glUniform} on the type without the need of looking up the correct suffix.
+Similarly, OpenGL does not overload functions, which means that a function that does the same for different types have a base name with different suffixes to indicate the type.
+The function with the most methods is \textit{glUniform}, which has around 34 functions for all the different uniform types. With GLAbstraction, \textit{glUniform} has been overloaded for all different types, including arrays and signals. So one can simply call \textit{glUniform} on the type without the need of looking up the correct suffix.
 This has been achieved with a combination of simple overloading and generated functions. The generated function puts together the right function name and inlines it into the \textit{glUniform} method specialized to the argument type.
 
-A lot more of these simplifications have been done in order to leverage the usage of OpenGL inside Julia.
+A lot more of these simplifications have been done in order to leverage the usage of OpenGL with Julia.
 
 \subsection{GLWindow}
 GLWindow is a lightweight wrapper around GLFW.
@@ -456,7 +457,7 @@ So instead of offering differently named functions for different visualizations,
 This has two advantages.
 First, it makes it very easy to use for visual debugging, as any value can be displayed immediately without any user interaction.
 Secondly, the user does not have to remember or lookup the function name, as long as there is a default visualization for the type he is working with.
-The next design goal was to make this fit for dynamic data, which resulted in relying on as little transformation of the data as possible and directly transferring it to the GPU.
+The next design goal was to make this fit for dynamic data, which resulted in relying on as little transformation of the data as possible and directly transferring the data to the GPU.
 Depending on the complexity of the visualization, this means the visualization can be updated with as little overhead as possible.
 
 The interface to create visualizations is very simple and only consists of three functions:
@@ -482,7 +483,7 @@ With this simple interface, the following data can be visualized:
 
 All of these can be integrated into the same scene and it is possible to change their parameters interactively by passing signals.
 These interactions can be purely programmatically, or via the widgets from the edit function.
-Most of the visualize functions that take Julia objects transform them into GPU objects, which will then transfered to the actual visualize function. This function than takes GPU objects as its arguments, making it easy to visualize objects which already exist on the GPU, or which are shared between visualizations.
+Most of the visualize functions that take Julia objects transform them into GPU objects, which will then get transfered to the actual visualize function. This function takes GPU objects as its arguments, making it easy to visualize objects which already exist on the GPU, or which are shared between visualizations.
 
 Up to now, there is an edit function available for strings, colors, numbers, vectors and matrices.
 
@@ -496,13 +497,12 @@ In the fragment shader, a Blinn-Phong lighting model is applied.
 \subsubsection{Particle Rendering}
 
 Most of the visualizations in GLVisualize are realized via instancing a mesh primitive.
-So the bar plot is nothing else than a cube placed in a grid, with scaling informations that get applied to every individual cube. The surface plot is a quad or any other 2D mesh spaced across a grid, while the vertexes are projected onto a height field. The vector field is a mesh placed regularly inside a cube, while the rotations from the vector field gets applied to this mesh. 
-Even text rendering functions in the same way. The difference is just, that the particle not only holds position information, but also indexes to a texture atlas in which renderings of the glyphs are cached. So when rendering the text particles, the exact scale and image of the glyph is queried, which will then be used to render a quad with the image of the particular glyph to the screen.
-The texture atlas approach was chosen, because rendering a high quality vector graphic is very time consuming, especially if the description of the font is only available as a Bézier spline. A more detailed description can be found in \ref{vector rendering}.
-All particles are rendered via OpenGL's instanced rendering API, which allows to render millions of particles with only one draw call and very little memory usage, as the geometry of the particle just needs to be uploaded one time.
+So the bar plot is nothing else than a cube placed in a grid, with scaling informations that get applied to every individual cube. The surface plot is a quad or any other 2D mesh spaced across a grid, while the vertexes are projected onto a height field. The vector field is a mesh placed on a 3D grid inside a cube, while the rotations from the direction vector gets applied to each individual mesh. 
+Even text rendering functions in the same way. The difference is just, that the particle not only holds position information, but also indexes into a texture atlas in which renderings of the glyphs are cached. So when rendering the text particles, the exact scale and image of the glyph is queried, which will then be used to render a quad with the image of the particular glyph to the screen.
+The texture atlas approach was chosen, because rendering a high quality vector graphic is very time consuming, especially if the description of the font is only available as a Bézier spline. A more detailed description can be found in chapter \ref{vector rendering}.
+All particles are rendered via \ac{OpenGL}'s instanced rendering API, which allows to render millions of particles with only one draw call and very little memory usage, as the geometry of the particle just needs to be uploaded one time.
 For every individual particle, additional information like color, position, scale and so forth can be queried from within the fragment or vertex shader stage.
-This additional information can be stored in uniform buffers, uniform arrays or textures. Textures have been chosen for this thesis, as they offer the greatest support among devices and are easy to use. In the future, other approaches can be implemented, gaining more performance or flexibility.
-The texture approach has the disadvantage that 1D textures only offer a maximum sizes between 1024 and 8192 elements, so for greater amounts of particles a 1D vector has to be transformed to a 2D texture.
+This additional information can be stored in uniform buffers, uniform arrays or textures. Textures and texture buffers have been chosen for this thesis, as they offer the greatest support among devices and are easy to use. In the future, other approaches can be implemented, gaining more performance or flexibility.
 
 
 \subsubsection{Vector Graphics Rendering}\label{vector rendering}
@@ -537,9 +537,9 @@ Volumes in 3D computer graphics are usually represented as voxels, which can be 
 They represent values on a 3D grid. The name stems from the marriage of volume and pixel.
 There are sparse and dense storage options for voxels and different informations can be represented, like speed, rotation, color, intensities and so forth.
 Volume renderings are no trivial task. Not only from a computational point of view, but it is also difficult to make a visualization which lets you peek inside a volume without discarding important information. This is illustrated in figure \ref{fig:volumes}.
-This is why different forms of visualizations are needed to get a good representation of a volume.
+This is why different forms of visualizations and interactivity are needed to get a good representation of a volume.
 GLVisualize is able to render iso-surfaces, maximum intensity projections and an absorption based visualization form. 
-On top of this, the particle systems can be used to give further insights into the volume by rendering particles for each voxel. This is especially helpful for sparse volumes, as these are not yet supported natively by GLVisualize.
+On top of this, the particle systems can be used to give further insights into the volume by rendering particles for each voxel. This is especially helpful for sparse volumes.
 
 For the Volume rendering two techniques are being used. 
 Marching tetrahedra and ray casting\cite{marques2009gpu}. 
@@ -552,15 +552,15 @@ When all values are combined via an absorption function, the volume will be disp
 The ray casting rendering method was explicitly implemented for this thesis on the GPU. For the marching tetrahedra algorithm there was already a Julia implementation available in the package Meshes.jl\cite{Tedrahedra}. The resulting mesh can be displayed with GLVisualizes mesh rendering capabilities.
 Both techniques have their advantages and disadvantages. 
 While marching tetrahedra is relatively slow, it can be used to generate a mesh which is very fast to display. 
-Ray casting on the other hands allows for a wide range of visualization forms and is rather fast as it runs on the GPU. The downside is, that the calculation can not be cached camera position independent. But it allows to interactively change the iso values and all the other parameters, making it ideal to explore a volume.
+Ray casting on the other hands allows for a wide range of visualization forms and is fast enough to calculate it for every frame. The downside is, that the calculation can not be cached camera position independent. But it allows to interactively change the iso values and all the other parameters, making it ideal to explore a volume.
  
 
 \subsection{Scene Graph}
-The scene graph is in the case of Romeo not a specialized data structure, but rather just a list of objects, which can be directly rendered with OpenGL. Functionality from Reactive, GLAbstraction, GLVisualize and GLWindow are involved in this. GLvisualize creates a renderable object with GLAbstraction, which will get pushed into a render queue in the screen from GLWindow. Everything that moves is handled via signals from Reactive.
-Asynchronously updating the signals and iterating over the render object list is achieved with Julia's simple asynchronous API. It is not truly multi-threaded, but rather creates a producer-consumer structure. It can be multithreaded, but this is more difficult due to \ac{OpenGL} not being thread safe.
+The scene graph is not a specialized data structure, but rather a list of objects, which can be directly rendered with OpenGL. Functionality from Reactive, GLAbstraction, GLVisualize and GLWindow are involved in this. GLvisualize creates a renderable object with GLAbstraction, which will get pushed into a render queue in the screen from GLWindow. Everything that moves is handled via signals from Reactive.
+Asynchronously updating the signals and iterating over the render object list is achieved with Julia's simple asynchronous API. It is not truly multi-threaded, but rather creates a producer-consumer structure. It can be multithreaded, but this is more difficult as \ac{OpenGL} is not thread safe.
 This is an extremely simple form of a scene graph, which does not allow to perform any optimizations.
 Optimizations usually include sorting in order to reduce OpenGL state changes and culling of invisible objects.
-As GLVisualize produces OpenGL code which relies only on very few calls to OpenGL, the first optimization is currently not as important.
+As GLVisualize produces OpenGL code which relies on very few calls to OpenGL, the first optimization is currently not as important.
 But culling can make a large difference for big 3D scenes, as usually only a fraction needs to be rendered.
 As this is a more involved process, which would preferably be done completely on the GPU, this was not in the scope of this thesis.
 
@@ -586,7 +586,7 @@ So far Romeo just consists of one file with 500 lines of code. It just defines s
 The texts gets evaluated as Julia code as soon as it changes. Like this, the text field acts like a very simple \ac{REPL}.
 Via the search field, you can execute simple Julia statements and the results will be displayed in the visualize window, while all parameters can be edited via the edit window.
 This means, if you type in a simple variable, the variable will be visualized. But you can also search and transform a variable via simple Julia terms.
-In \ref{app:screenshot} a screens shot of Romeo can be seen.
+In figure \ref{app:screenshot} a screens shot of Romeo can be seen.
 On the left is a window for editing scripts. The middle is used to visualize bound variables, in this case the variable \textit{barplot} is visualized.
 On the bottom of the middle, the variables can be selected via a text field. The text field allows to execute code, so one can do things like filtering an array which then will displayed the filtered array.
 On the right all variables of the visualization can be edited interactively.

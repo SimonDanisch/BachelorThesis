@@ -18,7 +18,7 @@ Julia is a multi-paradigma language for scientific computing and it is using the
 Some of its most important features are multiple dispatch, a dynamic type system, macros, good performance and an interface to C/C++ and Python.
 The focus on scientific computing means that Julia's standard library is equipped with a lot of functions, data structures and specialized syntax for implementing complex math.
 It promises to approach C speed while being a dynamic language which is easy to use.
-This is made possible by the compile process which can be described as statically compiled at run-time, which is known as \ac{JIT} compilation.
+This is made possible by the compile process which can be described as statically compiled at run-time. A special form of \ac{JIT} compilation is used to achieve this.
 Julia uses a garbage collector, taking the task of memory management away from the programmer.
 There are quite a few things Julia promises to the developer which includes the following items\cite{WhyJulia}:
 
@@ -37,7 +37,7 @@ Julia claims to take an approach at scientific computing which is more modern th
 They justify this by pointing out the performance characteristics of Julia and the possibilities that come from this. 
 Julia allows to write even the performance critical core in Julia itself. This means Julia does not need to call out to C and like this most of the standard library is implemented in Julia. 
 In contrast, Matlab, Python, and R need to implement any performance-critical code in another language, which has lead to a programming pattern which is known by the name of vectorization. This pattern has evolved, as the vector operations that are built into the language are much faster than vector operation written in the language itself.
-This means, if one needs performance, the code needs to be rewritten to only use functions implemented which are implemented in another, faster language.
+This means, if one needs performance, the code needs to be rewritten to only use functions which are implemented in another, faster language.
 A deeper analysis of this problem can be found in the first Julia paper\cite{2012arXiv1209.5145B}.
 
 All in all, this makes Julia a very desirable scientific computing language, which promises to be also great for a visualization library.
@@ -49,13 +49,13 @@ As part of this thesis, it will be investigated if Julia's claims have been achi
 IJulia is the Julia language back-end for IPython.
 IPython is a software stack, which was created to allow for interactive computing in Python.
 It offers an interactive shell to execute python scripts, \ac{GUI} toolkits, tab completion and rich media visualizations.
-It comes with a web-based notebook, which enables you to write formatted documentation together with data, inlined plots and executable program snippets. You can also formulate mathematical formulas in latex, which will get rendered and inlined nicely into an IJulia Notebook. By implementing a language backend for Julia, all this functionality is accessible from Julia-
-See Figure \ref{fig:ijulianotebook}, for an example notebook.
+It comes with a web-based notebook, which enables you to write formatted documentation together with data, inlined plots and executable program snippets. You can also formulate mathematical formulas in latex, which will get rendered and inlined nicely into an IJulia Notebook. By implementing a language backend for Julia, all this functionality is accessible from Julia.
+See Figure \ref{fig:ijulianotebook} for an example notebook.
 
 IJulia has some similar goals compared to Romeo, but it has a different focus.
 The notebook is completely web based, concentrates on 2D visualizations, and interactivity is mostly limited to the programming and not the graphics.
 3D graphics are possible via Three.js, which is a powerful 3D visualization library based on WebGL.
-The current integration is just prototypical and limited to simple 3D meshes up to now.[-citation]
+The current integration is just prototypical and limited to simple 3D meshes up to now\cite{Meshes}\cite{Compose3D}.
 
 
 \subsubsection{Matlab}

@@ -23,7 +23,7 @@ In a lot of other areas, speed is not that important, but it may be that the alg
 So the more comprehensible an algorithm can be written in a programming language, the easier it will be to implement the algorithm without errors.
 In any case, programming itself is secondary to the researcher.
 It can be expected that a researcher only has rudimentary programming skills. 
-Even if they area professional programmers, it is often inefficient to implement complex algorithmic programming problems.
+Even if they are professional programmers, it is often inefficient to implement a complex algorithm while dealing with a lot of programming problems.
 
 So things like manual memory management and difficult design patterns with a lot of unnecessary code should be avoided in scientific computing.
 This has led to the rise of programming languages and tools specifically tailored to scientific computing.
@@ -43,7 +43,7 @@ In a slow high-level programming language like Matlab, one needs to switch to a 
 In this case, one is losing all the advantages of the high-level scientific computing language.
 A pattern which has evolved out of this dilemma is to prototype in a nice high-level language and as soon as the algorithm has been confirmed to work, it gets rewritten in a fast language.
 
-This introduces great development costs and makes it harder to further develop the algorithm.
+This increases development costs and makes it harder to improve the algorithm in the future.
 
 One of the first languages promising to solve this dilemma for scientific computing is Julia. 
 It is designed to be high-level and optimized for the work of scientific computing while approaching the speed of statically compiled languages like C.
@@ -91,7 +91,7 @@ A good visualization can be the primer to understanding problems better.
 Consider the following function: $f(x,y,z)=\sin(\frac{x}{15})+\sin(\frac{y}{15})+\sin(\frac{z}{15})$. 
 It describes a 3D volume mathematically. 
 This is a simple function, which is already not that easy to interpret. In Figure \ref{fig:volume} one can see different visualizations of \textit{f}.
-If you can interact with this visualization by moving through the iso-values or coloring certain areas, which will make the function more understandable.
+If one can interact with this visualization by moving through the iso-values or coloring certain areas, it will make the function more understandable.
 This deeper understanding is crucial for identifying problems in the underlying math, extending the function, or explaining it to other people. 
 Making problems more understandable further opens the gates of scientific computing to novel users.
 

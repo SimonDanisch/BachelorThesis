@@ -1,6 +1,5 @@
 using GLVisualize, AbstractGPUArray, GLAbstraction, GeometryTypes, Reactive, Meshes
 
-
 function xy(x,y,i)
 	x = ((x/N)-0.5f0)*i
 	y = ((y/N)-0.5f0)*i
