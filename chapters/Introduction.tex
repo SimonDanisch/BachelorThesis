@@ -1,5 +1,4 @@
 \section{Introduction}
-% percent sign is for comments!
 This Bachelor Thesis is about writing a fast and interactive 3D visualization environment for scientific computing.
 The name of the library is Romeo and other libraries have been developed in order to implement Romeo. 
 The focus is on usability, applied to all the different interfaces, ranging from abstract \ac{API} interfaces to graphical user interfaces. 
@@ -9,7 +8,7 @@ The ultimate goal is to make scientific computing more accessible to the user.
 The system offers a default visualization for every data type. This together with the widgets forms a basis for visual debugging.
 
 The introduction is structured in the following way:
-an introduction to the general field of research and its challenges and problems relevant to this thesis will be extracted.
+An introduction to the general field of research and its challenges and problems relevant to this thesis will be extracted.
 Finally, this chapter will conclude with a solution to the problem, how to measure the success and give an outlook on the structure of the entire Bachelor Thesis.
 
 
@@ -64,7 +63,7 @@ In this thesis, the field is scientific computing, which still has quite a lot o
 Scientific computing is usually about implementing mathematical equations, complex algorithms and manipulating and analyzing data.
 Most research is done in some specialized, high-level scientific computing language.
 Besides the previously discussed performance problems, the lack of easily usable, extendable and fast visualization libraries also poses a problem.
-Most state of the art visualization libraries use C++ at their performance critical core, they are closed source or they are simple toy libraries, which can not be used for projects with higher demands.
+Most state of the art visualization libraries use C++ at their performance critical core, they are closed source or they are simple toy libraries, which cannot be used for projects with higher demands.
 
 Using C++ introduces complexity and performance bottlenecks when interfacing with other languages. This is especially true for languages that are not binary compatible to C++. 
 The next problem occurs, when the library does not offer the needed functionality and the programmer has to step in and extend the library. If it is closed source or one has to switch the language for that, this will either be not possible or introduce additional work. 
@@ -103,7 +102,7 @@ Making these tasks enjoyable can help to get an easy start in scientific computi
 In summary, the software in this thesis focuses on research which involves writing short scripts while playing around with some parameters and visualizing the results via built-in, or user defined, visualization routines.
 An example would be a materials researcher, who is investigating different 3D shapes and materials and their reaction to pressure.
 The researcher would need to read in the 3D object they want to analyze, have an easy way to tweak the material parameters and it would be preferable to get instant feedback on how the pressure waves propagate through the object. Also while doing all this, they may want to modify the script that calculates the pressure.
-There are quite a few libraries out there offering this, but In the next chapter, the contributions will be listed, which make Romeo ideal for this task.
+There are quite a few libraries out there offering this. In the next chapter the contributions will be listed, which make Romeo ideal for this task.
 
 
 \subsection{Contribution}
@@ -115,7 +114,7 @@ Julia is a high-level language and effort has been put into creating a concise a
 Romeo targets researchers that want to write everything in one language.
 As Julia is fast and the library is also written in Julia, this will enable researchers to stay in the same language for their project. 
 This makes it easy to create visualization pipelines in which every routine is as fast as it can get. 
-On top of that Romeo uses modern OpenGL, which allows to achieve fast, hardware accelerated 3D renderings. [do I need a reference to the OpenGL chapter here?!]
+On top of that Romeo uses modern OpenGL, which allows to achieve fast, hardware accelerated 3D renderings.
 Also, the researcher can extend the library in the same language they are already working in. 
 In the case of Julia and Romeo, this is especially easy, as every project involved is open source and directly accessible.
 This allows for the flexibility and transparency which is needed for big projects.
@@ -125,10 +124,8 @@ This comes with an ease of use, which would be hard to achieve if the library wa
 
 
 \subsection{Outlook}
-%Structure of BA and a few worts on the results 
 This thesis will continue with the chapter \textbf{Background}, which gives the reader an overview over Julia and similar languages with their respective 3D visualization libraries.
 After this, the requirements for Romeo will be laid out and how to measure if the requirements were met.
 Then the technologies used will be explained, which builds the basis for discussing the implementation.
 In the chapter \textbf{Results and Discussion}, one will find if the requirements were met and how Romeo compares to similar software.
 This chapter leads straight to the conclusion which will summarize this thesis.
-[is this enough!?]

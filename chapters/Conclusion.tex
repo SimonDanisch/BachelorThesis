@@ -1,25 +1,38 @@
 \section{Conclusion}
 
-In this work, a fast 3D visualization for scientific computing has been presented. 
-The initial goals and requirements were to use simple interfaces, being fast for animated and static data, ready for interaction and written in a way that it is easy to extend.
-Many different visualization types have been realized with all parameters being animatable.
-As can be seen in the benchmarks, in terms of speed the goals have been reached. 
-At least for the most basic tasks, Romeo does not show any weakness compared to other established libraries and is even faster in many cases.
-More complicated benchmarks with complex scenes have not been benchmarked and it will be interesting to see if there will be large performance drops due to the simple scene graph that is not multi-threaded and does not do any higher level optimizations yet.
-The visualization API is very simple and seems to promise a steep learning curve.
-If that turns out to be true for Romeo's users is an open question, which could not be answered as there are not that many users yet.
-Some success has been achieved with creating the packages in a way, that they can be used by other people for their own projects. This has been proven valuable, as users reported and fixed bugs and added features to the packages.
-It is very promising, that there are already people extending Romeo even in this early stage.
-
-All in all, it has been shown that Julia and Romeo build a steady foundation for any project which involves scientific computing, high-performance needs and a heavy use of visualizations. 
+In this work, a fast 3D visualization library for scientific computing has been presented. 
+The library's focus is not only speed but also usability and reusability. 
+This is why some drastic design choices were made.
+One of the most important ones was to write the library in Julia. 
+This is a risky decision as Julia is a very young language, which is still in alpha release. 
+Because of this, there are not as many IDE's readily available, the language is still in flux, debugging is harder and the packages are not that mature and stable as in older languages.
+Beside these problems, Julia turned out to be surprisingly stable and well suited for the task.
+Using Julia brought the huge advantage of writing in a high-level language without sacrificing speed. 
+That the advantages of Julia play out can be seen in the analysis chapter. It turns out that the developed packages offer state of the art speed, while being easy to use and extendable. 
+This is mostly thanks to Julia and a modular design, which made it possible to write the whole visualization library with very little code, making it easy to overlook and reducing complexity. 
+A simple interface for creating animated and interactive visualizations has been created by relying on signals for all data involved in the visualization.
+It makes it very easy to animate every parameter of the visualization while keeping a concise code base.
+Together with the edit widgets, GLVisualize enables users to change all parameters of a visualization interactively. 
+This is used by Romeo to create an interactive scripting environment which enables people to execute scripts and visualize and interact with the variables.
+The fact that it was possible to also implement other software packages like the chat client Osmosis along Romeo with only little effort are proof that the chosen abstractions and interfaces function well.
+To enable more people to extend Romeo or create other libraries building upon GLVisualize a lot more work has to be done. 
+One important first step is to improve the documentation. 
+Also, the dependencies are difficult to install on some platforms. This indicates that a lot more testing and bug fixing needs to be done to create a pleasing user experience.
+The rendering speed turned out to be very competitive compared to other established packages, but there is still more room for improvement.
+More complicated benchmarks with complex scenes have not been benchmarked and it will be interesting to see if there will be large performance drops due to the simple scene graph that does not do any higher level optimizations yet.
+As multithreading is not yet implemented, severe issues turn up when a task is computational heavy. This scenario will currently result in a freeze of the whole application. This is definitely not acceptable for a serious visualization library.
+ 
+All in all, it has been shown that Julia and Romeo build a steady foundation for scientific projects with the need for highly performant and interactive 3D graphics.
 
 \subsection{Future Work}
 
-There is much to do as noted over the course of the thesis. 
+As already mentioned, there is a lot to do in order to make all packages more pleasant to use.
 The scene graph is very simple, there is no real multithreading support, the anti-aliasing is sub-optimal, a lot of important features are missing and the OpenGL version used is just mildly modern, compared to the features recently released. 
 Staying state of the art will be a big challenge, especially while keeping downward compatibility for platforms that do not support the newest feature set.
-One of the most exciting possibilities is to make Julia compile to the GPU directly. As \ac{LLVM} supports to compile to GPU backends this is a valid possibility.
-Like this, the last pieces of code that are not written in Julia could be elimated. 
-This would further unify the platform and will lower the complexity of the library. 
-
-So things like ray picking, calculating normals, culling objects could in the future be done in Julia on the GPU, yielding superior performance while keeping a concise code base.
+One of the most exciting possibilities though is to make parts of Julia compile to the GPU directly. 
+This becomes possible, as the Khronos Group recently released \ac{SPIR-V}, an intermediate representation which \ac{OpenGL} and \ac{OpenCL} can compile to in the future. The Khronos Group plans to release a converter from \ac{LLVM} \ac{IR} to \ac{SPIR-V}, which would make it possible to program \ac{OpenGL} and \ac{OpenCL} alike functionality in any \ac{LLVM} based language\cite{SpirV}.
+This means, that all the code that is currently written in \ac{GLSL} could be rewritten in Julia. 
+On top of that, some functionality that is currently written in Julia and runs on \ac{CPU} could in the future be run on the \ac{GPU}. This includes functionality which would profit from highly parallel execution, like ray picking, calculating normals and culling objects.
+This would further unify the platform, improve speed and will lower the complexity of the library. 
+Such a unique feature is currently not implemented in any other language and could be a game changer for high performance libraries.
+With possibilities like these, one can look forward to a bright future for high performance graphics in Julia.

@@ -1,6 +1,10 @@
-This bachelor thesis is about writing a simple scripting environment for scientific computing, with focus on visualizations and interaction.
-Focus on visualization means that every variable can be inspected and visualized at runtime, ranging from a textual representation to complex 3D scenes.
-Interaction is achieved by offering simple GUI elements for all parts of the program and the visualizations.
-All libraries are implemented in Julia and modern OpenGL, to offer high performance, opening the world to scientists who have to work with large datasets.
-Julia is a novel high-level programming language for scientific computing, promising to match C speed, making it the optimal match for this project.
--This section needs more work, and should probably be written in the end
+This bachelor thesis is about writing a fast and interactive 3D visualization library for Julia.
+Special care was taken to make all libraries easy to use and to extend.
+A crucial choice to achieve this was the choice of the programming language, which needs to be fast and high-level at the same time.
+Julia is a novel programming language for scientific computing which promises to match C speed while offering a concise coding style. 
+This makes Julia a great fit for implementing a scientific visualization library, as speed is crucial for smooth animated visualizations.
+All parameters and also the data of the visualizations can be animated via Signals, which makes it easy to create interactive visualizations.
+Simple \ac{GUI} elements were implemented as well, including text fields, sliders and color pickers. 
+With these elements, Romeo was implemented. It is a simple scripting environment that allows you to execute Julia code and visualize and interact with all variables of the script.
+All libraries are implemented in Julia and modern \ac{OpenGL}. 
+Like this state of the art speed was achieved opening the world to scientists who have to work with large datasets.
