@@ -20,7 +20,7 @@ Historically, these two demands cannot be satisfied at the same time.
 How to achieve state of the art speed with a high-level language is an ongoing research and basically the holy grail of language design. 
 Julia promises to do exactly this, which is illustrated in Figure \ref{fig:juliabench}. 
 The code length is an ambiguous measure for conciseness, but if the code is similarly refactored and implements the same algorithm, it is a good indicator of how many lines of code are needed to achieve the same goal.
-From this figure, we can conclude, that Julia at least comes close to its promises, which is why it has been chosen as the programming language.
+From this figure we can conclude, that Julia at least comes close to its promises. This is one of the reasons why it has been chosen as the programming language.
 
 There are a lot of libraries out there which can be used as a basis for implementing a 3D visualization library.
 If you start to take the previous demands into account, the options shrink down considerably.
@@ -79,19 +79,19 @@ With this abstraction GLVisualize\cite{GLVisualize} was implemented, which rende
 
 \ac{API}s for visualization libraries are very difficult to realize, as there are endless ways of visualizing the same data.
 The design choice here was to use Julia's rich type system to better describe the data. 
-Julia makes this possible, as you can create different types for the same data without losing performance.
-So you can have a unit like meters represented as a native floating point type and have the visualization specialize to this.
+Julia makes this possible, as you one create different types for the same data without losing performance.
+One can create a type representing a unit like meters which has the same performance footprint as a native floating point type, but the visualization function can specialize to this.
 Like this you can have a single function, e.g. \textit{visualize}, that does create a default visualization for different data types. 
-Instead of manually passing additional information to the visualization function all information is coded into the type itself.
-Together with the event system which consists of signals, it is possible to edit and visualize rich data over a simple interface. This is perfect for visual debugging, as it is always the same function call applied to the data. 
-With this, variables can be visualized without further user interaction.
-Default visualizations can be created like this, but for a more fine grained control of the visualization this will not suffice.
+Instead of manually passing additional information to the visualization function most information is already coded into the type itself.
+Together with the event system which consists of signals, it is possible to edit and visualize rich data with a simple interface. This is perfect for visual debugging, as it is always the same function call applied to the data. 
+It makes it possible to visualize variables without further user interaction.
+For a more fine grained control of the visualization more information is needed.
 
-To pass addition information, key word arguments are used together with a style type, which control the chosen defaults and the visualization.
+To pass addition information, key word arguments are used. An optional argument to the function is a style type, which controls the chosen defaults and the type of the visualization.
 So for a float matrix, the default visualization may be a height-field, but passing the style \texttt{text} to the function might change the default to render a textual representation of the matrix.
 This makes it easy to extend the visualize function, as the user just has to overload the function with a custom style together with optional key word arguments.
 Finally, there are also graphical user interfaces developed for this thesis. As also optimizing them is out of the scope of this thesis, they are kept very simple.
-The measurement of success is again relatively difficult to achieve.
+The measurement of success is again relatively difficult to evaluate.
 Best would be to make a user poll to get actual feedback from people that use the software. This is a pretty demanding task, so instead the interface will just be evaluated analytically.
 
 
@@ -136,7 +136,7 @@ Now, if you call \textit{foo} with one \textit{Float32} argument, a new method w
 Like this, if the function does not access non constant global values, all types inside the function will be known at call time.
 This allows Julia to statically compile the function body, while propagating the type information down the call tree.
 
-With multiple dispatch, Julia is a functional oriented language. But there are also ways to give Julia a more object oriented feel.
+With multiple dispatch, Julia is more of a functional oriented language. But there are also ways to give Julia a more object oriented feel.
 Functions are first-class, so they are easy to pass around. 
 They can be bound to variables and can then be called like normal functions via the variable name. This implies that functions can also be bound to objects.
 There is no self-reference available in Julia so the object still needs to be passed to the function via the arguments
@@ -196,12 +196,13 @@ These are remarkable results, considering that the author states it was not a bi
 
 This list could go on, but it is more constructive to find out Julia's limits analytically.
 As already mentioned, Julia is statically compiled at runtime. This means, as long as all types can be inferred at runtime, Julia will have in the most cases identical performance to C++.
-The biggest remaining difference in this case is the garbage collection. Julia 0.3 has a mark and sweep garbage collector, while Julia 0.4 has an incremental garbage collector.
+The biggest remaining difference in this case is the garbage collection. 
+Julia 0.3 has a mark and sweep garbage collector, while Julia 0.4 has an incremental garbage collector.
 As seen in the benchmarks, it does not necessarily introduce big slowdowns.
 But there are issues, where garbage collection introduces a significant slowdown\cite{ReadDlmGC}.
 Analyzing this further is not in the scope of this thesis, though. 
-But it can be said that Julia's garbage collector is very young and only the future will show how big the actual differences will be.
-Another big difference is the difference in between different compiler technologies.
+But it can be said that Julia's garbage collector is very young and only the future will tell how big the actual differences will be.
+Another big difference is between different compiler technologies.
 Julia uses \ac{LLVM} for compilation.
 In order to further understand Julia's potential, a further look at LLVM is taken in the next section.
 
@@ -209,14 +210,14 @@ In order to further understand Julia's potential, a further look at LLVM is take
 
 \ac{LLVM} is a compiler infrastructure, which has front ends for different languages and compiles to different platforms like x86, ARM, \ac{OpenCL} (SPIR) and \ac{CUDA} (NVPTX). 
 A language designer must create an \ac{AST} which \ac{LLVM} can convert into \ac{LLVM} \ac{IR}. This \ac{IR} forms a standardized basis for any optimization step. Every language that can be converted to \ac{LLVM} \ac{IR} can be combined at this level. \ac{LLVM} itself offers many optimizations, but also third party optimization can be integrated.
-This yields superior language interfacing, as inlining and other optimizations can be done over the boundary of one language.
+This yields superior language interfacing for \ac{LLVM} based languages, as inlining and other optimizations can be done over the boundary of one language.
 This is why Julia can look forward to having one of the best C++ \ac{FFI}\cite{Cxx}.
 
 \ac{LLVM}'s concept is effective, as you can accumulate state of the art optimizations in one place, making them accessible to many languages. Because of the many back-ends, languages that use \ac{LLVM} can run on many architectures. While Julia does not support all back-ends yet support will be added in the future.
-\ac{LLVM} is also used by Clang\cite{Clang}, the C/C++ front end for \ac{LLVM} rivaling \ac{gcc}\ac{gcc} and it is used by Apple's programming language Swift\cite{SWIFT} and for Mozilla's language Rust\cite{Rust}.
+\ac{LLVM} is also used by Clang\cite{Clang}, the C/C++ front end for \ac{LLVM} rivaling \ac{gcc}\ac{gcc}, it is used by Apple's programming language Swift\cite{SWIFT} and for Mozilla's language Rust\cite{Rust}.
 This makes \ac{LLVM} a solid basis for a programming language, as these are highly successful projects guaranteeing \ac{LLVM} further prospering.
 To see where \ac{LLVM} stands considering performance, one can compare it with \ac{gcc}, which is one of the most successful open source compilers for C++.
-If C++ code that is compiled with \ac{gcc} is much faster than the same code compiled with \ac{LLVM}, the \ac{gcc} version will also be faster as a comparable Julia program.
+If C++ code that is compiled with \ac{gcc} is much faster than the same code compiled with \ac{LLVM}, the \ac{gcc} version will also be faster than a comparable Julia program.
 In order to investigate the impact of this, a benchmark series written by Phoronix will be analyzed.
 They benchmarked \ac{gcc} 4.92 against \ac{LLVM} 3.5 and \ac{LLVM} 3.5 against \ac{LLVM} 3.6.
 Here is a summary of their exhaustive benchmarks:
@@ -281,7 +282,7 @@ This restriction exists to allow for the massive parallel execution model that O
 
 The usual set of render targets includes a depth channel, stencil buffer and of course the color buffer.
 The depth channel is usually used to discard all fragments that are behind another fragment (known as depth test), while the stencil buffer can be used to discard arbitrary fragments based on the stencil mask. 
-Custom render targets can be created in newer OpenGL versions which can be directly addressed via the fragment shader.
+Custom render targets can be created in newer OpenGL versions which can be written to via the fragment shader.
 Here is a simple minimal example for a program rendering some vertex data with a flat color to the screen.
 
 \begin{lstlisting}
@@ -294,7 +295,7 @@ void main()
     gl_position = projection*view*vec4(vertex, 1); // apply transformations to vertex and output to fragment shader
 }
 //Fragment shader
-out vec4 framebuffer_color; //color render target, which will get written into the display framebuffer
+out vec4 framebuffer_color; //color render target, which will get written to the display
 void main()
 {
     framebuffer_color = vec4(1,0,0,1); // write a red pixel at gl_position from the vertex shader.
@@ -333,7 +334,7 @@ GLFW\cite{GLFW} is a cross platform \ac{OpenGL} context and window creation libr
 GLFW allows to register callbacks for a multitude of events like keyboard, mouse and window events.
 Every operating system exposes this functionality in a slightly different way, making it very hard to create a window and to retrieve window events.
 So a library like GLFW is crucial if one does not want to waste a lot of time just to implement all the corner cases for all the different operating systems out there.
-In addition, GLFW exposes low level features like the operating systems context handle.
+In addition, GLFW exposes low level features like the operating systems \ac{OpenGL} context handle.
 This can be used for creating advanced contexts that share memory with another context.
 Romeo does not use this feature yet, but it makes GLFW a future proof choice.
 
@@ -349,7 +350,7 @@ Romeo does not use this feature yet, but it makes GLFW a future proof choice.
 \end{minipage}
 
 
-This chapter is about the implementation of Romeo.
+This chapter is about the implementation of Romeo and GLVisualize.
 The Romeo package itself is small and just defines the high-level functionality of the editor.
 This includes window layout and connecting all the different event sources to create the wanted behavior.
 To do this, Romeo relies on a multitude of packages, which step for step abstract away the underlying low-level code that is used to do the window creation and rendering. 
