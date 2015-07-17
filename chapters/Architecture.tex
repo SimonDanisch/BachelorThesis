@@ -388,17 +388,19 @@ Generated functions only work with the newest Julia build, which is why aaalexan
 
 \subsection{GLAbstraction}
 GLAbstraction is the abstraction layer over ModernGL.
-It wraps \ac{OpenGL} primitives like Buffers and Textures in Julia objects and hooks them up to Julia's garbage collector. It also makes it easy to create them from Julia data types like arrays and images.
+It wraps \ac{OpenGL} primitives like Buffers and Textures in Julia objects and hooks them up to Julia's garbage collector. 
+It also makes it easy to create them from Julia data types like arrays and images.
 Additionally, it implements convenient functions to load shader code and it makes it easy to feed the shader with the correct data types.
 Besides supplying an abstraction layer over \ac{OpenGL}, it also offers the linear algebra needed for the various 3D transformation and camera code.
 Building upon that, it defines a signal based perspective and orthographic camera type.
 
 Signals are an important part of the infrastructure not only for the camera, but for everything that changes.
-As an example, the function that creates a program also takes signals of shader source code. 
-With every source code update the OpenGL program gets recompiled, making it possible to interactively develop OpenGL shader. The signal can come from file updates, or from some text editing widget inside Julia.
+As an example, the function that creates an \ac{OpenGL} program also takes signals of shader source code. 
+With every source code update the \ac{OpenGL} program gets recompiled, making it possible to interactively develop OpenGL shader. The signal can come from file updates, or from some text editing widget inside Julia.
 
 One of the main data types is the \textit{RenderObject}.
-It combines uniforms, OpenGL buffers and textures and OpenGL programs. One can call \textit{render(::RenderObject)}, which executes the program with the given uniforms and buffers loaded into the program. 
+It combines uniforms, OpenGL buffers and textures and OpenGL programs. 
+One can call \textit{render(::RenderObject)}, which executes the program with the given uniforms and buffers loaded into the program. 
 Like this, making visualizations with GLAbstraction turns into writing the shader and then combining it with the needed data in form of OpenGL types.
 When the program includes a fragment stage, this means calling \textit{render} results in the object being displayed on the screen. But it is also possible to use compute shaders with \textit{RenderObjects}, which then just write into the supplied buffers without displaying anything.
 
@@ -416,10 +418,13 @@ result = glGetShaderiv(shaderID, GL_COMPILE_STATUS)
 \end{lstlisting}
 
 Similarly, OpenGL does not overload functions, which means that a function that does the same for different types have a base name with different suffixes to indicate the type.
-The function with the most methods is \textit{glUniform}, which has around 34 functions for all the different uniform types. With GLAbstraction, \textit{glUniform} has been overloaded for all different types, including arrays and signals. So one can simply call \textit{glUniform} on the type without the need of looking up the correct suffix.
-This has been achieved with a combination of simple overloading and generated functions. The generated function puts together the right function name and inlines it into the \textit{glUniform} method specialized to the argument type.
+The function with the most methods is \textit{glUniform}, which has around 34 functions for all the different uniform types. It is used to change the value of an \ac{OpenGL} program uniform.
+With GLAbstraction, \textit{glUniform} has been overloaded for all different types, including arrays and signals. So one can simply call \textit{glUniform} on the type without the need of looking up the correct suffix.
+This has been achieved with a combination of overloading and generated functions.
+The generated function puts together the right function name and inlines it into the \textit{glUniform} method specialized to the argument type.
 
 A lot more of these simplifications have been done in order to leverage the usage of OpenGL with Julia.
+This guarantees that the code in GLVisualize is very short and concise, making it easy to extend and maintain.
 
 \subsection{GLWindow}
 GLWindow is a lightweight wrapper around GLFW.
@@ -427,6 +432,7 @@ It mainly offers a screen type, which contains signals for all the different GLF
 It also offers a hierarchical structure for nesting screens.
 All the screen areas are signals, which makes it easy to change the screen area. 
 This makes it simple to implement windows that react to changing the size of the windows or resized objects.
+
 
 \subsection{Event System}
 
@@ -534,7 +540,7 @@ In the future, distance fields can be used to reduce the resolution dependence\c
 
 Volumes in 3D computer graphics are usually represented as voxels, which can be understood as 3D pixels. 
 They represent values on a 3D grid. The name stems from the marriage of volume and pixel.
-There are sparse and dense storage options for voxels and different informations can be represented, like speed, rotation, color, intensities and so forth.
+There are sparse and dense storage options for voxels and different information can be represented, like speed, rotation, color, intensities and so forth.
 Volume renderings are no trivial task. Not only from a computational point of view, but it is also difficult to make a visualization which lets you peek inside a volume without discarding important information. This is illustrated in figure \ref{fig:volumes}.
 This is why different forms of visualizations and interactivity are needed to get a good representation of a volume.
 GLVisualize is able to render iso-surfaces, maximum intensity projections and an absorption based visualization form. 
@@ -588,9 +594,9 @@ Via the search field, you can execute simple Julia statements and the results wi
 This means, if you type in a simple variable, the variable will be visualized. But you can also search and transform a variable via simple Julia terms.
 In figure \ref{app:screenshot} a screens shot of Romeo can be seen.
 On the left is a window for editing scripts. The middle is used to visualize bound variables, in this case the variable \textit{barplot} is visualized.
-On the bottom of the middle, the variables can be selected via a text field. The text field allows to execute code, so one can do things like filtering an array which then will displayed the filtered array.
+On the bottom of the middle, the variables can be selected via a text field. The text field allows to execute code, so one can do things like filtering an array which then will display the filtered array.
 On the right all variables of the visualization can be edited interactively.
 If you click on the color circle for example, a color chooser will pop up which will let you chose the color.
-The numbers are sliders, so when one clicks and drags on them, the value can be adjusted. 
+The numbers are sliders, so when one clicks and drags them, the value can be adjusted. 
 While changing the values, the changes will be immediately displayed.
 
