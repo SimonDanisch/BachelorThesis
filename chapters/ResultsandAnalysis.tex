@@ -87,7 +87,8 @@ The second scenario looks much better for Reactive. The performance difference i
 
 The biggest problem with benchmarking the 3D rendering speed is, that there is no library which will allow one to exactly reproduce similar conditions and measures. 
 Additionally, without extensive knowledge of the library, it is difficult to foresee what gets benchmarked. 
-Vispy shows, why it is difficult to rely on measurements like the frame rate. When you enable to measure the frame rate, it will show very low frame rates, as it only creates a new frame whenever the camera changes.
+Vispy shows, why it is difficult to rely on measurements like the frame rate. 
+When measuring the framerate, it will show very low frame rates, as it only creates a new frame whenever the camera changes.
 Romeo on the other hand, has a fixed render loop, which renders as many frames as possible, leading to an entirely different amount of rendered frames per second. 
 This is why it was decided, to use the threshold at which a similar 3D scene is still conceived as enjoyable and interactive. Usually the minimal amount of frames per second to perceive movements as smooth is around 25.
 So the benchmark was executed in the way that the number regulating the complexity of the 3D scene was increased until one could not move the camera without stutters anymore. The last recorded pleasant threshold is then the result of the Benchmark.
@@ -110,7 +111,7 @@ The first benchmark is an animated and a still 3D surface plot. The libraries of
         Speed up Mayavi  & 1.26x         & 16x   \\
         Speed up Matlab  & 1.26x         & 1.7x  \\
     \end{tabular}
-    \captionof{table}[3D Benchmark]{3D surface created from a NxN matrix.}
+    \captionof{table}[3D Benchmark]{3D surface created from a NxN matrix. Unit is the dimension of the Matrix (N).}
     \label{table:relativespeedoglw}
 \end{table}
 Vispy had some issues, as the camera was never really smooth for the surface example. Also the normals were missing and there was no option to colorize the surface depending on the height.
@@ -125,7 +126,7 @@ There is not much information available on how Matlab renders their visualizatio
     \label{fig:reactive1}
 \end{minipage}
 
-The next benchmark is only between Romeo and Mayavi, as the other libraries did not offer a comparable solution. Matlab does not allow to use cubes as a particle primitives and Vispy only had an example, where you needed to write your own shader, which cannot be seen as a serious option. This is a benchmark for easy to use and high-level plotting libraries. We want to find out how well one can solve a problem with the tools that the library has readily available.
+The next benchmark is only between Romeo and Mayavi, as the other libraries did not offer a comparable solution. Matlab does not allow to use cubes as a particle primitives and Vispy only had an example, where one needs to write your own shader, which cannot be seen as a serious option. This is a benchmark for easy to use and high-level plotting libraries. We want to find out how well one can solve a problem with the tools that the library has readily available.
 
 \begin{table}[htbp]
     \centering
@@ -162,7 +163,7 @@ This makes it impossible to further accelerate massivively parallel tasks.
 A benchmark was created to get a sense of what the current state of 3D rendering in IJulia is.
 It is between Romeo and Compose3D\cite{Compose3D}, which was the only library found to be able to display 3D models created with Julia directly inside the IJulia notebook.
 This benchmark is not entirely fair, as Compose3D is just a very rough prototype so far. 
-But there seem to be no other library in which you can easily create and display interactive 3D graphics in the IJulia or IPython notebook. 
+But there seem to be no other library in which one can easily create and display interactive 3D graphics in the IJulia or IPython notebook. 
 This benchmark creates a Sierpinski gasket and Compose3D displays it in the IJulia notebook while Romeo displays it natively in a window.
 
 \begin{minipage}{\linewidth}
@@ -194,7 +195,7 @@ But one needs to notice, that Romeo utilizes OpenGL's instancing to gain this sp
 
 The modular design of Romeo has proven to be effective and the goal of reusability has already proven itself.
 Most of the created modules are used independently by different people.
-GLVisualize is used by us for two other packages besides Romeo. 
+GLVisualize is used at least for two other packages besides Romeo. 
 One is GLPlot\cite{GLPlot}, a scientific plotting package for Julia and Osmosis\cite{Osmosis}, which is a chat client using GLVisualize for rich media display.
 See figure \cref{osmosis} to get an idea of how Osmosis looks like.
 
@@ -247,7 +248,7 @@ This is a crucial feature for a 3D visualization library, as it makes it easier 
 
 In GLVisualize every customization can be done from within Julia.
 Everything like native \ac{OpenGL} context handles and \ac{OpenGL} memory objects are directly accessible.
-One can implement even advanced features like \ac{OpenCL} context sharing with GLvisualize\cite{OCLInterop}.
+One can implement even advanced features like \ac{OpenCL} context sharing with GLVisualize\cite{OCLInterop}.
 This enables the users to do e.g. physics simulations in \ac{OpenCL} on the \ac{GPU} and visualize the data directly without going through the \ac{CPU} which would introduce severe bottlenecks.
 This is made especially easy, as all visualization functions are defined on the \ac{GPU} memory objects. 
 So if one already has a \ac{GPU} array from some other function, it can be directly visualized without additional memory transfers.
@@ -280,7 +281,7 @@ IPython uses multiple JavaScript rendering backends like Three.js and D3.
 The graphical notebooks are running inside a browser, which adds another complex technology stack.
 One the plus side, most technologies used are open source, which in theory would allow for customizations of the entire stack.
 
-IPython is written in Python, so using IPython from Julia forces you to already use two similar languages.
+IPython is written in Python, so using IPython from Julia forces the implementation to already use two similar languages.
 JavaScript, CSS and HTML are only needed to layout graphics inside the browser. CSS and HTML can be seen as a domain specific languages for creating \ac{GUI}s, so while introducing yet another language, they bring the value of easy \ac{GUI} creation.
 C++ offers similar functionality to JavaScript and Python, so it can be assumed it was used for speed and interoperability with other C++ libraries.
 So IJulia builds upon a very heterogeneous technology stack, making it difficult to add advanced features.
@@ -314,7 +315,7 @@ All in all, from within Julia there are little options to implement completely n
 
 Mayavi itself is mostly written in Python, which amounts to an impressive 49,894 lines of code. This is quite a lot, considering that this does not include rendering code, which is done in VTK.
 As can be seen in Table \cref{table:VTKStatistic}, VTK amounts to a total of 2,812,005 lines of code written in approximately 27 languages. 
-So the main problem for extending VTK and Mayavi's core will be its complexity. If you're willing to switch to C++, VTK will allow you to implement any advanced feature. From inside Mayavi and Python, one will have problems with accessing the underlying rendering core of VTK and one will also run into performance problems with Python.
+So the main problem for extending VTK and Mayavi's core will be its complexity. If one willing to switch to C++, VTK will allow to implement any advanced feature. From inside Mayavi and Python, one will have problems with accessing the underlying rendering core of VTK and one will also run into performance problems with Python.
 But if performance is not a problem, one can extend Mayavi by writing filters and new sources\cite{MayaviExtension}.
 
 
@@ -331,7 +332,8 @@ It is a very simple process of including a Matlab header file into the C/C++ sou
 The header file holds types, which can be used to make the C/C++ functions work with Matlab's native types.
 It also holds the \textit{mexFunction} macro, which needs to be used in order to make the function callable from Matlab.
 So it seems to be fairly easy to integrate C/C++ code, but it also defies the purpose of writing in a scientific programming language.
-Also, Matlab's visualization core itself is not extendable. This means as soon as you want to do something more advanced, you need to start from scratch, or call out to some third party library.
+Also, Matlab's visualization core itself is not extendable. 
+This means that for advanced task, one needs to start from scratch, or call out to some third party library.
 
 
 \subsection{Usability Analysis}
@@ -353,13 +355,14 @@ These can introduce drastic changes. The particle visualization for example can 
 Also, most of the functions take either a data type, or a signal of that data type.
 This makes it very intuitive to animate your data. 
 In contrast, in order to setup the animation for the other packages, it took quite some time to find out how to update values of an existing visualization. This is acceptable, as it might take some time to find out that Romeo uses signals and how to work with signals.
-But when this is found out, Romeo functions in the same, consistent way. Signals add a fourth dimension to any parameter or data you would like to visualize, making the usage principle consistent across the different visualizations.
+But when this is found out, Romeo functions in the same, consistent way. 
+Signals add a fourth dimension to any parameter or data one would like to visualize, making the usage principle consistent across the different visualizations.
 
 For the other packages though, one needs to find out the names of the data for every visualization type in order to access and update them. Some attributes cannot be animated, making the API even less consistent.
 
 So for Romeo one can achieve anything by bringing the data into the right format.
 Problems arise, if this cannot be done easily or the format is not intuitive for the programmer.
-To be fair, you will have this problem with every kind of visualization API. 
+To be fair, this problem exists for every kind of visualization API.
 In the end the only difference is, how easy it was to do the data transformations. 
 Let us examine an example, where GLVisualize often will not allow to directly call visualize on the data.
 There is only a method for visualizing a Mesh, but not for a vertex list plus a face list. 
@@ -372,7 +375,9 @@ It is quite easy to offer a compatibility package, which defines functions like 
 visualize\_mesh(facelist, vertexlist) = visualize(Mesh(facelist, vertexlist))}.
 As GLVisulize should stay as close to the principle of only having one function name, this should be moved to other interface only packages, though.
 
-The functionality of GLVisualize is easy to explore. There are only three functions to be remembered. From there it is easy to find out how they work. First, you can just call visualize on your data and see if the default is already sufficient. If not, you can call \texttt{visualize\_defaults} on the data, to find out what kind of default parameters there are, which can then be tweaked. As an alternative, one can edit every parameter of the visualization on the spot via the widgets.
+The functionality of GLVisualize is easy to explore. There are only three functions to be remembered. 
+From there it is easy to find out how they work. 
+First, the user can just call visualize on your data and see if the default is already sufficient. If not, \texttt{visualize\_defaults} can be called on the data, to find out what kind of default parameters there are, which can then be tweaked. As an alternative, one can edit every parameter of the visualization on the spot via the widgets.
 If that is not enough, a list of the data types that can be visualized can be queried with Julia in builds.
 
 

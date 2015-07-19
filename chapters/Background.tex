@@ -1,6 +1,6 @@
 \section{Background}
 
-In this chapter, a short overview over the current state of the art for visualization inside the field of scientific computing is given. The chapter will start out with a first look at Julia.
+In this chapter, a short overview over the current state of the art for visualization in the field of scientific computing is given. The chapter will start out with a look at Julia.
 
 \subsection{Related Work}
 
@@ -8,15 +8,15 @@ In this chapter, a short overview over the current state of the art for visualiz
 
 Bringing Julia's ease of use and speed to a dynamic visualization library is one of the main goals.
 So Julia plays a crucial role in this thesis. 
-It is the most important previous work, as much as Julia is the main used technology.
-This chapter gives a short introduction to the Julia Programming Language.
+As the main technology used, it follows a short introduction to the Julia programming language.
 
-Julia was published in 2012 which makes it a very new language. It is currently at version 0.3.7 for stable and 0.4 development.
-Following common versioning conventions this means Julia is still in an early release phase with the core features and names anticipated to change.
-Julia is a multi-paradigm language for scientific computing and it is using the compiler infrastructure \ac{LLVM} to generate fast assembly code.
+Julia was published first in 2012 which makes it a very new language. 
+As of July 2015 it is at version 0.3.10 and 0.4 is in development.
+Following semantic verioning, this means Julia is still in an early release phase with the core features and names anticipated to change\cite{semver}.
+Julia is a multi-paradigm language for scientific computing and uses the compiler infrastructure \ac{LLVM} to generate fast assembly code.
 
-Some of its most important features are multiple dispatch, a dynamic type system, macros, good performance and an interface to C/C++ and Python.
-The focus on scientific computing means that Julia's standard library is equipped with a lot of functions, data structures and specialized syntax for implementing complex math.
+Some of its most important features are multiple dispatch, a dynamic type system, macros, good performance and an interface to C/C++, R, Java and Python.
+The focus on scientific computing means that Julia's standard library is equipped with a lot of functions, data structures and specialized syntax for implementing numerical problems.
 It promises to approach C speed while being a dynamic language which is easy to use.
 This is made possible by the compile process which can be described as statically compiled at run-time. A special form of \ac{JIT} compilation is used to achieve this.
 Julia uses a garbage collector, taking the task of memory management away from the programmer.
@@ -32,16 +32,17 @@ There are quite a few things Julia promises to the developer which includes the 
 \end{itemize}
 
 Another interesting feature of Julia is, that all user-defined types are as fast and compact as built in types.
-This allows Julia to implement all arithmetic types in Julia itself, allowing anyone to extend and rewrite them without the need of modifying the compiler.
+This allows Julia to implement all arithmetic types in Julia itself, allowing anyone to extend and rewrite them without the need to modify the compiler.
 Julia claims to take an approach at scientific computing which is more modern than other programming languages.
-They justify this by pointing out the performance characteristics of Julia and the possibilities that come from this. 
-Julia allows to write even the performance critical core in Julia itself. This means Julia does not need to call out to C and because of this most of the standard library is implemented in Julia. 
+They justify this by pointing out the performance characteristics of Julia and the possibilities that come from this\cite{2013arXiv1312.1431L}\cite{2012arXiv1209.5145B}. 
+It allows to write even the performance critical libraries in Julia. 
+This means Julia does not need to call out to C for perfromance and because of this most of the standard library is implemented in Julia.
 In contrast, Matlab, Python, and R need to implement any performance-critical code in another language, which has led to a programming pattern which is best known by the name of vectorization. This pattern has evolved, as the vector operations that are built into the language are much faster than vector operation written in the language itself.
 This means, if one needs performance, the code needs to be rewritten to only use functions which are implemented in another, faster language.
 A deeper analysis of this problem can be found in the first Julia paper\cite{2012arXiv1209.5145B}.
 
 All in all, this makes Julia a very desirable scientific computing language, which promises to be also great for a visualization library.
-As part of this thesis, it will be investigated if Julia's claims have been achieved.
+As part of this thesis, it will be investigated if Julia's claims\cite{WhyJulia} have been achieved.
 
 
 
