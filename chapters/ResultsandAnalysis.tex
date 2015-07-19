@@ -36,10 +36,10 @@ The sources of the benchmarks can be found on Github\cite{Benchmarks}.
 
 In this chapter, ModernGL, GLEW and PyOpenGL will get benchmarked.
 The procedure was, to call an OpenGL function $10^7$ times in a tight loop. The execution time of the loop got measured.
-The results are plotted in figure \ref{fig:openglwrapper}.
+The results are plotted in figure \cref{openglwrapper}.
 ModernGL does pretty well compared to C++. Python comes out very slow, with being up to 470 times slower in the case of glClearColor.
 
-In contrast, Julia offers nearly the same speed as calling an OpenGL functions from C++ as can be seen in the table \ref{table:relativespeedoglw}.
+In contrast, Julia offers nearly the same speed as calling an OpenGL functions from C++ as can be seen in the table \cref{relativespeedoglw}.
 As all the OpenGL wrappers are pretty mature by now and bind to the same C library (the video driver), this should mainly be a C function call benchmark.
 Python performs badly here, but it must be noted that there are a lot of different Python distributions and some promise to have better C interoperability.
 As this benchmarks goal is to show that Julia’s \textit{ccall} interface is comparable to a C function call from inside C++, the Python options have not been researched that thoroughly.
@@ -71,7 +71,7 @@ This way we can measure the overhead introduced by the event system.
 Two code samples have been benchmarked, one simulating the operation needed for the camera and the other simulates animating a large array.
 The first has low memory usage with a more complex event graph. The second has a straight forward event graph, but it must pass on a large array and needs to execute the callbacks on the array.
 
-As can be seen in figure \ref{fig:reactive1}, small mathematical operations with a complex event graph have some noticeable overhead. Reactive is in this scenario about 1.45 times slower than the optimal version.
+As can be seen in figure \cref{reactive1}, small mathematical operations with a complex event graph have some noticeable overhead. Reactive is in this scenario about 1.45 times slower than the optimal version.
 This does not come as a surprise as sorting and managing the graph structure adds some overhead.
 
 The second scenario looks much better for Reactive. The performance difference is negligible, making Reactive a good choice for creating signals with high memory throughput.
@@ -196,7 +196,7 @@ The modular design of Romeo has proven to be effective and the goal of reusabili
 Most of the created modules are used independently by different people.
 GLVisualize is used by us for two other packages besides Romeo. 
 One is GLPlot\cite{GLPlot}, a scientific plotting package for Julia and Osmosis\cite{Osmosis}, which is a chat client using GLVisualize for rich media display.
-See figure \ref{app:osmosis} to get an idea of how Osmosis looks like.
+See figure \cref{osmosis} to get an idea of how Osmosis looks like.
 
 GLVisualize is also used by a 3D printing startup\cite{AddSub} to do animated renderings of distance fields.
 They use it for stereolithographic 3D printing. 
@@ -251,9 +251,9 @@ One can implement even advanced features like \ac{OpenCL} context sharing with G
 This enables the users to do e.g. physics simulations in \ac{OpenCL} on the \ac{GPU} and visualize the data directly without going through the \ac{CPU} which would introduce severe bottlenecks.
 This is made especially easy, as all visualization functions are defined on the \ac{GPU} memory objects. 
 So if one already has a \ac{GPU} array from some other function, it can be directly visualized without additional memory transfers.
-But even in the worst case, if the whole architecture is not well fitted for the task, reimplementing large parts would not be difficult as there are only 6641 lines of code which are mostly written in Julia as can be seen table \ref{romeo_loc}.
+But even in the worst case, if the whole architecture is not well fitted for the task, reimplementing large parts would not be difficult as there are only 6641 lines of code which are mostly written in Julia as can be seen table \cref{romeo_loc}.
 If it comes even worse and the language itself has to be modified for more advanced features, this will pose no problem as Julia is open source.
-This allows to implement even advanced features like running Julia code directly on the \ac{GPU}\cite{OpenCL}, which may be possible in the next years.
+This allows to implement even advanced features like running Julia code directly on the \ac{GPU}\cite{OpenCL}\cite{{JuliaCuda}, which may be possible in the next years.
 
 
 \subsubsection{IJulia}
@@ -313,7 +313,7 @@ All in all, from within Julia there are little options to implement completely n
 \end{table}
 
 Mayavi itself is mostly written in Python, which amounts to an impressive 49,894 lines of code. This is quite a lot, considering that this does not include rendering code, which is done in VTK.
-As can be seen in Table \ref{table:VTKStatistic}, VTK amounts to a total of 2,812,005 lines of code written in approximately 27 languages. 
+As can be seen in Table \cref{table:VTKStatistic}, VTK amounts to a total of 2,812,005 lines of code written in approximately 27 languages. 
 So the main problem for extending VTK and Mayavi's core will be its complexity. If you're willing to switch to C++, VTK will allow you to implement any advanced feature. From inside Mayavi and Python, one will have problems with accessing the underlying rendering core of VTK and one will also run into performance problems with Python.
 But if performance is not a problem, one can extend Mayavi by writing filters and new sources\cite{MayaviExtension}.
 
