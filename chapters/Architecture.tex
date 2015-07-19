@@ -18,14 +18,14 @@ Speed is mainly a usability factor. It is a factor that can make a software unus
 As general coding productivity is also a concern, this thesis is set on using a high-level language.
 Historically, these two demands cannot be satisfied at the same time.
 How to achieve state of the art speed with a high-level language is an ongoing research and basically the holy grail of language design. 
-Julia promises to do exactly this, which is illustrated in Figure \ref{fig:juliabench}. 
+Julia promises to do exactly this, which is illustrated in Figure \cref{juliabench}. 
 The code length is an ambiguous measure for conciseness, but if the code is similarly refactored and implements the same algorithm, it is a good indicator of how many lines of code are needed to achieve the same goal.
 From this figure we can conclude, that Julia at least comes close to its promises. This is one of the reasons why it has been chosen as the programming language.
 
 There are a lot of libraries out there which can be used as a basis for implementing a 3D visualization library.
 If you start to take the previous demands into account, the options shrink down considerably.
 The visualization library should be implemented in one high-level language, which can be used for scientific computing and has state of the art speed. 
-At this point, there are close to zero libraries left. As you can see in figure \ref{fig:juliabench}, Matlab, Python, and R disqualify, as they are too slow. JavaScript, Java, Go, and Lua are missing a scientific background and the others are too low level for the described goals.
+At this point, there are close to zero libraries left. As you can see in figure \cref{juliabench}, Matlab, Python, and R disqualify, as they are too slow. JavaScript, Java, Go, and Lua are missing a scientific background and the others are too low level for the described goals.
 This leaves only Julia, but in Julia there were no 3D libraries available, which means that one has to start from scratch.
 There are only a couple of GPU accelerated low-level libraries available, namely Khronos's \ac{OpenGL}, Microsoft's DirectX, Apple's Metal and AMD's Mantel, which are offering essentially the same functionality. 
 Only \ac{OpenGL} is truly cross-platform, which is why \ac{OpenGL} has been chosen.
@@ -162,7 +162,7 @@ In addition, the general compiler structure of Julia will be analyzed to find in
     \label{fig:juliabench}
 \end{minipage}
 
-In the first benchmark from figure \ref{fig:juliabench}, we can see that Julia stays well within the range of C speed. 
+In the first benchmark from figure \cref{juliabench}, we can see that Julia stays well within the range of C speed. 
 Actually, it even comes second to C-speed with no other language being that close.
 This is a very promising first look at Julia, but it should be noted, that these benchmarks are written by the Julia core team and the performance of a language is a moving target.
 So it is not guaranteed, that there is no bias favoring Julia in these benchmarks.
@@ -237,7 +237,7 @@ Here is a summary of their exhaustive benchmarks:
     \label{table:gccvsllvm}
 \end{table}
 
-The full tables can be found in the appendix under the table \ref{table:llvm35vsllvm36} and \ref{table:llvmvsgcc}.
+The full tables can be found in the appendix under the table \cref{llvm35vsllvm36} and \cref{llvmvsgcc}.
 The results suggest, that \ac{LLVM} is well in the range of \ac{gcc}, even though that there can be big differences between the two.
 These are promising results, especially if you consider that \ac{LLVM} is much younger than \ac{gcc}. 
 With big companies like Apple\cite{GoogleAppleLLVM}, Google\cite{GoogleAppleLLVM}, Mozilla\cite{Rust}, AMD\cite{LLVMAMD}, NVidia\cite{LLVMNvidia} and Microsoft\cite{MicrosoftLLVM} being invested in LLVM, it is to be expected that \ac{LLVM} will stay competitive, which means Julia should in theory stay competitive as well.
@@ -263,7 +263,7 @@ For Romeo, it was decided to support \ac{OpenGL} 3.1 as the lowest bound, as it 
 All features that help to call less OpenGL functions can be considered as modern, as they take away the load from the CPU.
 The modern features used in this thesis include instance rendering, vertex arrays and shader programs written in \ac{GLSL}.
 
-In Figure \ref{fig:opengl} you can see the basic architecture of an OpenGL program pipeline.
+In Figure \cref{opengl} you can see the basic architecture of an OpenGL program pipeline.
 As the description states, the blue boxes are programmable shaders, while the dotted boxes are optional parts of the pipeline.
 The yellow boxes describe stages which are not directly accessible. They are part of the global OpenGL state, which can be set via OpenGL commands.
 
@@ -360,7 +360,7 @@ ModernGL can be used by any OpenGL project which strives to build a low-level Op
 GLWindow and GLAbstraction can be used to build slightly higher level OpenGL visualizations. 
 GLVisualize can be used to build other interactive visualization packages besides Romeo.
 
-As you can see in Figure \ref{fig:architecture}, Romeo uses GLVisualize for creating \ac{GUI} elements and the visualizations. Romeo's code evaluation is done via Julia built-in functions and text fields are created with GLVisualize.
+As you can see in Figure \cref{architecture}, Romeo uses GLVisualize for creating \ac{GUI} elements and the visualizations. Romeo's code evaluation is done via Julia built-in functions and text fields are created with GLVisualize.
 Windows are managed with GLWindow. 
 GLWindow creates an OpenGL window with the help of GLFW and converts all window events into Reactive's signals. 
 It also offers a very simple render queue, for rendering graphics attached to a window.
@@ -504,7 +504,7 @@ In the fragment shader, a Blinn-Phong lighting model is applied.
 Most of the visualizations in GLVisualize are realized via instancing a mesh primitive.
 So the bar plot is nothing else than a cube placed in a grid, with scaling information that get applied to every individual cube. The surface plot is a quad or any other 2D mesh spaced across a grid, while the vertexes are projected onto a height field. The vector field is a mesh placed on a 3D grid inside a cube, while the rotations from the direction vector gets applied to each individual mesh. 
 Even text rendering functions in the same way. The difference is just, that the particle not only holds position information, but also indexes into a texture atlas in which renderings of the glyphs are cached. So when rendering the text particles, the exact scale and image of the glyph is queried, which will then be used to render a quad with the image of the particular glyph to the screen.
-The texture atlas approach was chosen, because rendering a high quality vector graphic is very time consuming, especially if the description of the font is only available as a Bézier spline. A more detailed description can be found in chapter \ref{vector rendering}.
+The texture atlas approach was chosen, because rendering a high quality vector graphic is very time consuming, especially if the description of the font is only available as a Bézier spline. A more detailed description can be found in chapter \cref{vector rendering}.
 All particles are rendered via \ac{OpenGL}'s instanced rendering API, which allows to render millions of particles with only one draw call and very little memory usage, as the geometry of the particle just needs to be uploaded one time.
 For every individual particle, additional information like color, position, scale and so forth can be queried from within the fragment or vertex shader stage.
 This additional information can be stored in uniform buffers, uniform arrays or textures. Textures and texture buffers have been chosen for this thesis, as they offer the greatest support among devices and are easy to use. In the future, other approaches can be implemented, gaining more performance or flexibility.
@@ -541,7 +541,7 @@ In the future, distance fields can be used to reduce the resolution dependence\c
 Volumes in 3D computer graphics are usually represented as voxels, which can be understood as 3D pixels. 
 They represent values on a 3D grid. The name stems from the marriage of volume and pixel.
 There are sparse and dense storage options for voxels and different information can be represented, like speed, rotation, color, intensities and so forth.
-Volume renderings are no trivial task. Not only from a computational point of view, but it is also difficult to make a visualization which lets you peek inside a volume without discarding important information. This is illustrated in figure \ref{fig:volumes}.
+Volume renderings are no trivial task. Not only from a computational point of view, but it is also difficult to make a visualization which lets you peek inside a volume without discarding important information. This is illustrated in figure \cref{volumes}.
 This is why different forms of visualizations and interactivity are needed to get a good representation of a volume.
 GLVisualize is able to render iso-surfaces, maximum intensity projections and an absorption based visualization form. 
 On top of this, the particle systems can be used to give further insights into the volume by rendering particles for each voxel. This is especially helpful for sparse volumes.
@@ -592,7 +592,7 @@ It just defines some simple text field, a search field, and a visualize and edit
 The texts gets evaluated as Julia code as soon as it changes. Like this, the text field acts like a very simple \ac{REPL}.
 Via the search field, you can execute simple Julia statements and the results will be displayed in the visualize window, while all parameters can be edited via the edit window.
 This means, if you type in a simple variable, the variable will be visualized. But you can also search and transform a variable via simple Julia terms.
-In figure \ref{app:screenshot} a screens shot of Romeo can be seen.
+In figure \cref{screenshot} a screens shot of Romeo can be seen.
 On the left is a window for editing scripts. The middle is used to visualize bound variables, in this case the variable \textit{barplot} is visualized.
 On the bottom of the middle, the variables can be selected via a text field. The text field allows to execute code, so one can do things like filtering an array which then will display the filtered array.
 On the right all variables of the visualization can be edited interactively.

@@ -50,7 +50,7 @@ IJulia is the Julia language back-end for IPython.
 IPython is a software stack, which was created to allow for interactive computing in Python.
 It offers an interactive shell to execute python scripts, \ac{GUI} toolkits, tab completion and rich media visualizations.
 It comes with a web-based notebook, which enables you to write formatted documentation together with data, inlined plots and executable program snippets. You can also formulate mathematical formulas in latex, which will get rendered and inlined nicely into an IJulia Notebook. By implementing a language backend for Julia, all this functionality is accessible from Julia.
-See Figure \ref{fig:ijulianotebook} for an example notebook.
+See Figure \cref{ijulianotebook} for an example notebook.
 
 IJulia has some similar goals compared to Romeo, but it has a different focus.
 The notebook is completely web based, concentrates on 2D visualizations, and interactivity is mostly limited to the programming and not the graphics.
@@ -88,7 +88,7 @@ Finally, what might be the main advantage of Romeo, GLVisualize and Julia is tha
 Mayavi\cite{DBLP:journals/corr/abs-1010-4891} is probably one of the biggest open source libraries for interactive 3D visualizations in Python.
 It is written almost completely in Python, but relies on \ac{VTK} for rendering.
 \ac{VTK} is one of the most advanced scientific visualization library, with a huge amount of visualization types. 
-In figure \ref{fig:vtkgallery} one can see some of the visualization taken from the \ac{VTK} gallery\cite{VTKGallery}.
+In figure \cref{vtkgallery} one can see some of the visualization taken from the \ac{VTK} gallery\cite{VTKGallery}.
 
 Mayavi shares some of its goals with Romeo, namely\cite{MayaviGoals}
 \begin{itemize}
@@ -99,7 +99,7 @@ Mayavi shares some of its goals with Romeo, namely\cite{MayaviGoals}
 
 Obviously, the Python part is not a shared goal, but creating an interactive 3D visualization library deeply embedded into a language is. The scripting part is very similar to the goals of Romeo.
 Mayavi together with VTK is a very big project and in this sense not really comparable to Romeo.
-It amounts to a total of 3,642,105 lines of code written in 29 languages. The statistics can be found in table \ref{table:ParaviewStatistic} and \ref{table:VTKStatistic}.
+It amounts to a total of 3,642,105 lines of code written in 29 languages. The statistics can be found in table \cref{ParaviewStatistic} and \cref{VTKStatistic}.
 The biggest difference is, that Romeo is implemented in a scientific programming language, while Mayavi's core uses VTK which is mainly implemented in C++.
 This has two big implications.
 Firstly, if the language does not have native C++ compatible data types and an overhead less C++ interface, which is the case for some python distributions, shipping a large stream of data to VTK becomes slow.
