@@ -23,9 +23,9 @@ The code length is an ambiguous measure for conciseness, but if the code is simi
 From this figure we can conclude, that Julia at least comes close to its promises. This is one of the reasons why it has been chosen as the programming language for this project.
 
 There are a lot of libraries out there which can be used as a basis for implementing a 3D visualization library.
-If you start to take the previous demands into account, the options shrink down considerably.
+If the previous demands are taken into account, the options shrink down considerably.
 The visualization library should be implemented in one high-level language, which can be used for scientific computing and has state of the art speed. 
-At this point, there are close to zero libraries left. As you can see in Figure \ref{fig:juliabench}, Matlab, Python, and R disqualify, as they are too slow. JavaScript, Java, Go, and Lua are missing a scientific background and the others are too low level for the described goals.
+At this point, there are close to zero libraries left. As pointed out in Figure \ref{fig:juliabench}, Matlab, Python, and R disqualify, as they are too slow. JavaScript, Java, Go, and Lua are missing a scientific background and the others are too low level for the described goals.
 This leaves only Julia, but in Julia there were no 3D libraries available, which means that one has to start from scratch.
 There are only a couple of GPU accelerated low-level libraries available, namely Khronos's \ac{OpenGL}, Microsoft's DirectX, Apple's Metal and AMD's Mantel, which are offering essentially the same functionality. 
 Only \ac{OpenGL} is truly cross-platform, which is why \ac{OpenGL} has been chosen.
@@ -111,7 +111,7 @@ Composite types, which are comparable to C's structs and can be mutable or immut
 While the first three are all concrete types, abstract types cannot be instantiated but are used to build a type hierarchy.
 Every concrete type can only inherit from one abstract type, while abstract types can also inherit from abstract types.
 Bit types are just immutable, stack allocated memory chunks, usable for implementing numbers.
-You can build type hierarchies like this:
+One can build type hierarchies like this:
 \begin{lstlisting}
 abstract Number
 abstract FloatingPoint{Size} <: Number # inherit from Number
@@ -274,7 +274,7 @@ The yellow boxes describe stages which are not directly accessible. They are par
 So in order to have a working OpenGL rendering pipeline at least a vertex shader and a fragment shader needs to be written.
 All shaders are compiled and linked into a program object, which can be executed on the \ac{GPU}.
 Shaders are written in \ac{GLSL}, which is a C dialect specialized for vector operations.
-You feed shaders with data via buffers, textures and uniforms. Buffers are 1D arrays, textures 1D/2D/3D arrays with both having their own memory, while uniforms live in the program object.
+Data gets loaded into the shaders via buffers, textures and uniforms. Buffers are 1D arrays, textures 1D/2D/3D arrays with both having their own memory, while uniforms live in the program object.
 
 The different shaders are usually used to apply geometric and perspective transformations and calculating the light.
 In newer APIs general compute operations are available, making it possible to create more flexible shader stages.
