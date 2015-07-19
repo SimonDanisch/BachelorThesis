@@ -443,10 +443,10 @@ This makes it simple to implement windows that react to changing the size of the
 
 The event system was challenging to integrate for several reasons.
 First of all Reactive is a functional event system, while \ac{OpenGL} relies heavily on global states, which are two perpendicular concepts.
-Also, it does not allow to rearrange the event tree. 
-In other words, one cannot create sub trees in advance and then fuse them together at run time.
-This has led to the design choice, that the signals are sampled from a render loop.
-This is sub-optimal, as sampling artifacts can occur, and frames are rendered even if the scene does not change.
+Also, Reactive does not allow rearranging the event tree. 
+One cannot create sub trees in advance and then fuse them together at run time.
+This led to the design choice, that signals are sampled from a render loop.
+This is sub-optimal approach, as sampling artifacts can occur, and frames are rendered even if the scene does not change.
 In the future it will be desirable to work around this and bring the elegant functional approach from Reactive to OpenGL.
 
 
@@ -460,10 +460,10 @@ In the future it will be desirable to work around this and bring the elegant fun
     \label{fig:glvisualize}
 \end{minipage}
 
-GLVisualize implements the main functionality of this library.
+GLVisualize implements the visulization functionality.
 Its structure is quite simple. 
 It relies as much as it can on common Julia data types and creates specialized visualizations for them via dispatch.
-So instead of offering differently named functions for different visualizations, there is just one function with lots of methods for different types.
+So instead of offering differently named functions for different visualizations, there is just one function with lots of methods for different types, which is made possible via multiple-dispatch.
 This has two advantages.
 First, it makes it very easy to use for visual debugging, as any value can be displayed immediately without any user interaction.
 Secondly, the user does not have to remember or lookup the function name, as long as there is a default visualization for the type he is working with.
@@ -493,7 +493,7 @@ With this simple interface, the following data can be visualized:
 
 All of these can be integrated into the same scene and it is possible to change their parameters interactively by passing signals.
 These interactions can be purely programmatically, or via the widgets from the edit function.
-Most of the visualize functions that take Julia objects transform them into GPU objects, which will then get transferred to the actual visualize function. This function takes GPU objects as its arguments, making it easy to visualize objects which already exist on the GPU, or which are shared between visualizations.
+The visualize methods that take Julia objects are transforming them into GPU objects, which will then get transferred to the actual visualize function. This function takes GPU objects as its arguments, making it easy to visualize objects which already exist on the GPU, or which are shared between visualizations.
 
 Up to now, there is an edit function available for strings, colors, numbers, vectors and matrices.
 
@@ -524,10 +524,11 @@ This additional information can be stored in uniform buffers, uniform arrays or 
     \label{fig:UTF8}
 \end{minipage}
 
-Vector graphics are difficult to render, as they are not a well fit for the \ac{GPU}.
+Vector graphics are difficult to render, as they are not a good fit for the \ac{GPU}.
 Long stretched, curved and thin lines introduce several problems for the GPU\cite{Liland565821}.
 Another problem is that splines used in vector graphics are usually supplied as Bézier curves, which are very demanding to rasterize.
-Besides from that, anti-aliasing of thin lines introduces some problems as well. With post processing anti-aliasing techniques, lines which are thinner than one pixel will introduce artifacts, as OpenGL primitives smaller than a pixel will get discarded by the \ac{OpenGL} pipeline. So additional care needs to be taken in order to assure, that primitives are always thicker than one pixel, or multi-sampling techniques have to be used.
+Besides from that, anti-aliasing of thin lines introduces problems. 
+With post processing anti-aliasing techniques, lines which are thinner than one pixel will introduce artifacts, as OpenGL primitives smaller than a pixel will get discarded by the \ac{OpenGL} pipeline. So additional care needs to be taken in order to assure, that primitives are always thicker than one pixel, or multi-sampling techniques have to be used.
 This is only a very short summary of the problems, which is only given to illustrate that this is not a problem that can be solved in the scope of this thesis. 
 Instead, FreeType\cite{FreeType} is used for rendering fonts. As FreeType is relatively slow, these renderings get cached in a texture atlas from which they can get queried and rendered to the screen in large numbers.
 This results in high quality and fast renderings. This comes at the cost of higher space requirements and resolution dependence.
@@ -546,7 +547,8 @@ In the future, distance fields can be used to reduce the resolution dependence\c
 Volumes in 3D computer graphics are usually represented as voxels, which can be understood as 3D pixels. 
 They represent values on a 3D grid. The name stems from the marriage of volume and pixel.
 There are sparse and dense storage options for voxels and different information can be represented, like speed, rotation, color, intensities and so forth.
-Volume renderings are no trivial task. Not only from a computational point of view, but it is also difficult to make a visualization which shows the inside of a volume without hiding the surface. This is illustrated in figure \cref{volumes}.
+Volume renderings is not a trivial task. 
+Not only from a computational point of view, but it is also difficult to make a visualization which shows the inside of a volume without hiding the surface. This is illustrated in figure \cref{volumes}.
 This is why different forms of visualizations and interactivity are needed to get a good representation of a volume.
 GLVisualize is able to render iso-surfaces, maximum intensity projections and an absorption based visualization form. 
 On top of this, the particle systems can be used to give further insights into the volume by rendering particles for each voxel. This is especially helpful for sparse volumes.
@@ -567,8 +569,8 @@ Ray casting on the other hands allows for a wide range of visualization forms an
  
 
 \subsection{Scene Graph}
-The scene graph is not a specialized data structure, but rather a list of objects, which can be directly rendered with OpenGL. Functionality from Reactive, GLAbstraction, GLVisualize and GLWindow are involved in this. GLvisualize creates a renderable object with GLAbstraction, which will get pushed into a render queue in the screen from GLWindow. Everything that moves is handled via signals from Reactive.
-Asynchronously updating the signals and iterating over the render object list is achieved with Julia's simple asynchronous API. It is not truly multi-threaded, but rather creates a producer-consumer structure. It can be multithreaded, but this is more difficult as \ac{OpenGL} is not thread safe.
+The scene graph is not a specialized data structure, but rather a list of objects, which can be directly rendered with OpenGL. Functionality from Reactive, GLAbstraction, GLVisualize and GLWindow are involved in this. GLVisualize creates a renderable object with GLAbstraction, which will get pushed into a render queue in the screen from GLWindow. Everything that moves is handled via signals from Reactive.
+Asynchronously updating the signals and iterating over the render object list is achieved with Julia's simple asynchronous API. It is not truly multi-threaded, but rather creates a producer-consumer structure. It could be multithreaded, but this is more difficult to implement as \ac{OpenGL} is not thread safe.
 This is an extremely simple form of a scene graph, which does not allow to perform any optimizations.
 Optimizations usually include sorting in order to reduce OpenGL state changes and culling of invisible objects.
 As GLVisualize produces OpenGL code which relies on very few calls to OpenGL, the first optimization is currently not as important.
@@ -581,14 +583,14 @@ As this is a more involved process, which would preferably be done completely on
 It forms the basis for any mouse interaction with objects displayed on the screen.
 The two most usual approaches are ray picking and color picking.
 For the ray picking approach a ray is send from the 2D position of the camera plane into the 3D scene and is tested for intersection with every object in the scene. In contrast, color picking works with an extra render target, which stores an object id for every pixel, which gets written together with the color pass inside the fragment shader.
-Color picking has been chosen for this thesis, as it is far easier to implement. Ray picking must be implemented on the GPU, best with some data structures optimized to do fast ray intersections. Otherwise, it will be very slow. If done on the CPU, the 3D objects need to be kept in video memory and CPU memory, further introducing complexity and bottlenecks.
+Color picking has been chosen for this thesis, as it is far easier to implement. Ray picking must be implemented on the GPU, best with some data structures optimized to do fast ray intersections. Otherwise it will be very slow. If done on the CPU, the 3D objects need to be kept in video memory and CPU memory, further introducing complexity and bottlenecks.
 
 For color picking, two frame-buffer render targets need to be created. 
 One for the color channel and one to represent the object id plus an additional number to store contextual information. The additional number is usually used for the instance index, which can be used to e.g. infer what text glyph is selected.
 When rendering, the fragment shader does not only write the color into the render target, but if the color is opaque also the current object id.
 This way transparency aware 3D picking can be achieved without an extra processing step. 
 The advantage of this methods is that one does not need an extra pass over the geometry. The disadvantage is higher space requirements and that OpenGL's native anti-aliasing does not work well together with the additional render target. Also, the OpenGL pipeline has to be flushed in order to read from the frame-buffer.
-The anti-aliasing problem can be solved by implementing an extra anti-aliasing post processing step. A very simple FXAA algorithm has been implemented, which does not give perfect results but is fast and was easy to implement. The algorithm was taken from Matt DesLauriers\cite{FXAA} and was adjusted to fit into GLVisualiz's pipeline.
+The anti-aliasing problem can be solved by implementing an extra anti-aliasing post processing step. A very simple FXAA algorithm has been implemented, which does not give perfect results but is fast and was easy to implement. The algorithm was taken from Matt DesLauriers\cite{FXAA} and was adjusted to fit into GLVisualize's pipeline.
 
 
 \subsection{Romeo}
