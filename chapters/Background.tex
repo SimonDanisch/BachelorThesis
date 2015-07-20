@@ -8,11 +8,10 @@ In this chapter, a short overview over the current state of the art for visualiz
 
 Bringing Julia's ease of use and speed to a dynamic visualization library is one of the main goals.
 So Julia plays a crucial role in this thesis. 
-As the main technology used, it follows a short introduction to the Julia programming language.
 
 Julia was published first in 2012 which makes it a very new language. 
 As of July 2015 it is at version 0.3.10 and 0.4 is in development.
-Following semantic verioning, this means Julia is still in an early release phase with the core features and names anticipated to change\cite{semver}.
+Following semantic versioning, this means Julia is still in an early release phase with the core features and names anticipated to change\cite{semver}.
 Julia is a multi-paradigm language for scientific computing and uses the compiler infrastructure \ac{LLVM} to generate fast assembly code.
 
 Some of its most important features are multiple dispatch, a dynamic type system, macros, good performance and an interface to C/C++, R, Java and Python.
@@ -23,21 +22,21 @@ Julia uses a garbage collector, taking the task of memory management away from t
 There are quite a few things Julia promises to the developer which includes the following items\cite{WhyJulia}:
 
 \begin{itemize}
-	\item C-like performance
-	\item native C interface
-	\item macros similar to Lisp
-	\item mathematical notations like Matlab
-	\item as good at general purpose programming as Python
-	\item easy for statistics as R.
+    \item C-like performance
+    \item native C interface
+    \item macros similar to Lisp
+    \item mathematical notations like Matlab
+    \item as good at general purpose programming as Python
+    \item easy for statistics as R.
 \end{itemize}
 
-Another interesting feature of Julia is, that all user-defined types are as fast and compact as built in types.
+Another interesting feature of Julia is, that all user-defined types are as fast and compact as built-in types.
 This allows Julia to implement all arithmetic types in Julia itself, allowing anyone to extend and rewrite them without the need to modify the compiler.
 Julia claims to take an approach at scientific computing which is more modern than other programming languages.
 They justify this by pointing out the performance characteristics of Julia and the possibilities that come from this\cite{2013arXiv1312.1431L}\cite{2012arXiv1209.5145B}. 
-It allows to write even the performance critical libraries in Julia. 
-This means Julia does not need to call out to C for perfromance and because of this most of the standard library is implemented in Julia.
-In contrast, Matlab, Python, and R need to implement any performance-critical code in another language, which has led to a programming pattern which is best known by the name of vectorization. This pattern has evolved, as the vector operations that are built into the language are much faster than vector operation written in the language itself.
+It allows to write even performance critical libraries in Julia. 
+This means Julia does not need to call out to C for performance and because of this most of the standard library is implemented in Julia.
+In contrast, Matlab, Python, and R need to implement any performance-critical code in another language, which has led to a programming pattern which is best known by the name of vectorization\cite{2012arXiv1209.5145B}. This pattern has evolved, as the vector operations that are built into the language are much faster than vector operation written in the language itself.
 This means, if one needs performance, the code needs to be rewritten to only use functions which are implemented in another, faster language.
 A deeper analysis of this problem can be found in the first Julia paper\cite{2012arXiv1209.5145B}.
 
@@ -47,16 +46,16 @@ As part of this thesis, it will be investigated if Julia's claims\cite{WhyJulia}
 
 
 \subsubsection{IJulia}
-IJulia is the Julia language back-end for IPython.
+IJulia\cite{IJulia} is the Julia language back-end for IPython.
 IPython is a software stack, which was created to allow for interactive computing in Python.
 It offers an interactive shell to execute python scripts, \ac{GUI} toolkits, tab completion and rich media visualizations.
-It comes with a web-based notebook, which allows to write formatted documentation together with data, inlined plots and executable program snippets. 
+It comes with a web-based notebook, which allows to write formatted documentation together with data, inlined plots, and executable program snippets. 
 Formulas can be written in latex and they will get rendered and inlined nicely into an IJulia Notebook. By implementing a language backend for Julia, all this functionality is accessible from Julia.
-See Figure \ref{fig:ijulianotebook} for an example notebook.
+See Figure \ref{fig:ijulianotebook} for an example notebook. Figure \ref{fig:ipythonnotebookflow} gives an idea of the workflow in IPython.
 
 IJulia has some similar goals compared to Romeo, but it has a different focus.
 The notebook is completely web based, concentrates on 2D visualizations, and interactivity is mostly limited to the programming and not the graphics.
-3D graphics are possible via Three.js, which is a powerful 3D visualization library based on \ac{WebGL}.
+3D graphics are possible via Three.js, which is a powerful 3D visualization library based on the \ac{WebGL}.
 The current integration is just prototypical and limited to simple 3D meshes up to now\cite{Meshes}\cite{Compose3D}.
 
 
@@ -88,15 +87,15 @@ Finally, what might be the main advantage of Romeo, GLVisualize and Julia is tha
 \end{minipage}
 
 Mayavi\cite{DBLP:journals/corr/abs-1010-4891} is probably one of the biggest open source libraries for interactive 3D visualizations in Python.
-It is written almost completely in Python, but relies on \ac{VTK} for rendering.
+It is written almost completely in Python but relies on \ac{VTK} for rendering.
 \ac{VTK} is one of the most advanced scientific visualization library, with a huge amount of visualization types. 
 In Figure \ref{fig:vtkgallery} one can see some of the visualization taken from the \ac{VTK} gallery\cite{VTKGallery}.
 
 Mayavi shares some of its goals with Romeo, namely\cite{MayaviGoals}
 \begin{itemize}
-	\item An (optional) rich user interface with dialogs to interact with all data and objects in the visualization.
-	\item A simple and clean scripting interface in Python, including one-liners, or an object-oriented programming interface. Mayavi integrates seamlessly with Numpy and Scipy for 3D plotting and can even be used in IPython interactively, similarly to Matplotlib.
-	\item The power of the VTK toolkit, harnessed through these interfaces, without forcing you to learn it.
+    \item An (optional) rich user interface with dialogs to interact with all data and objects in the visualization.
+    \item A simple and clean scripting interface in Python, including one-liners, or an object-oriented programming interface. Mayavi integrates seamlessly with Numpy and Scipy for 3D plotting and can even be used in IPython interactively, similarly to Matplotlib.
+    \item The power of the VTK toolkit, harnessed through these interfaces, without forcing you to learn it.
 \end{itemize}
 
 Obviously, the Python part is not a shared goal, but creating an interactive 3D visualization library deeply embedded into a language is. The scripting part is very similar to the goals of Romeo.
@@ -116,11 +115,11 @@ Vispy is yet another interactive 3D visualization library. It is from the goals 
 These include\cite{VispyGoals}:
 
 \begin{itemize}
-	\item High-quality interactive scientific plots with millions of points.
-	\item Direct visualization of real-time data.
-	\item Fast interactive visualization of 3D models (meshes, volume rendering).
-	\item OpenGL visualization demos.
-	\item Scientific GUIs with fast, scalable visualization widgets (Qt or IPython notebook with \ac{WebGL}).
+    \item High-quality interactive scientific plots with millions of points.
+    \item Direct visualization of real-time data.
+    \item Fast interactive visualization of 3D models (meshes, volume rendering).
+    \item OpenGL visualization demos.
+    \item Scientific GUIs with fast, scalable visualization widgets (Qt or IPython notebook with \ac{WebGL}).
 \end{itemize}
 
 It is a fairly new library, promising to use modern OpenGL and being able to achieve state of the art performance.

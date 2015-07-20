@@ -1,14 +1,15 @@
 \section{Conclusion}
 
-In this work, a fast 3D visualization library for scientific computing has been presented. 
-The library's focus is not only on speed but also usability and reusability. 
+In this work, a fast 3D visualization library for scientific computing has been presented.
+Building upon this, Romeo was implemented, a scripting environment specialized on interactive visualizations. 
+The focus for all packages is not only on speed but also usability and reusability. 
 This is why some drastic design choices were made.
 One of the most important decision was to write the library in Julia. 
 This is a risky decision as Julia is a very young language, which is still in the alpha release phase. 
 Because of this, there are not as many IDE's readily available, the language is still in flux, debugging is harder and the packages are not that mature and stable as in older languages.
-Beside these problems, Julia turned out to be surprisingly stable and well suited for the task.
+Besides these problems, Julia turned out to be surprisingly stable and well suited for the task.
 Using Julia brought the huge advantage of writing in a high-level language without sacrificing speed. 
-That the advantages of Julia play out can be seen in the analysis chapter. It turns out that the developed packages offer state of the art speed, while being easy to use and extendable. 
+That the advantages of Julia play out can be seen in the analysis chapter. It turns out that the developed packages offer state of the art speed while being easy to use and extendable. 
 This is mostly thanks to Julia and a modular design, which made it possible to write the whole visualization library with very little code, making it easy to overlook and reducing complexity. 
 A simple interface for creating animated and interactive visualizations has been implemented by relying on signals for all data involved in the visualization.
 It makes it very easy to animate every parameter of the visualization while keeping a concise code base.
@@ -34,5 +35,5 @@ This becomes possible, as the Khronos Group recently released \ac{SPIR-V}, an in
 This means, that all the code that is currently written in \ac{GLSL} could be rewritten in Julia. 
 On top of that, some functionality that is currently written in Julia and runs on \ac{CPU} could in the future be run on the \ac{GPU}. This includes functionality which would profit from highly parallel execution, like ray picking, calculating normals and culling objects.
 This would further unify the platform, improve speed and will lower the complexity of the library. 
-Such a unique feature is currently not implemented in any other language and could be a game changer for high performance visualization libraries.
-With possibilities like these, one can look forward to a bright future for high performance graphics in Julia.
+Such a unique feature is currently not implemented in any other language and could be a game changer for high-performance visualization libraries.
+With possibilities like these, one can look forward to a bright future for high-performance graphics in Julia.

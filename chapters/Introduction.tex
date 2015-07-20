@@ -1,6 +1,6 @@
 \section{Introduction}
 This Bachelor Thesis is about Romeo, an interactive scripting environment for scientific computing.
-Other libraries have been developped to implement Romeo in a modular way, fostering reusability.
+Other libraries have been developed to implement Romeo in a modular way, fostering reusability.
 The most important library is GLVisulize, which is a generic 3D visualization library for dynamic data. 
 The ultimate goal is to make scientific computing more accessible to the user. 
 
@@ -10,9 +10,9 @@ The programming language Julia was chosen for implementing all libraries, as it 
 GLVisualize offers a default visualization for every data type. 
 It also offers \ac{GUI} elements and editable text fields, which forms the basis for editing scripts and visualizations in Romeo. 
 In this way, Romeo offers a primitive form of visual debugging. 
-Due to the generic nature of GLVisualize, these interactive features can be used in other programs independant from Romeo.
+Due to the generic nature of GLVisualize, these interactive features can be used in other programs independent from Romeo.
 
-An introduction to the general field of research and its challenges and problems relevant to this thesis will be extracted.
+An introduction to the general field of research and its challenges and problems relevant to this thesis will be given.
 Finally, this chapter will conclude with a solution to the previously found problems, how to measure the success and give an outlook on the structure of the entire Bachelor Thesis.
 
 
@@ -22,22 +22,22 @@ Scientific computing is computing that evolves around all kind of scientific res
 It is a very broad field involving a lot of different challenges. 
 In some areas such as particle physics, most problems are computationally intensive and can only be solved with the help of supercomputers.
 In other areas, like robotics, it is important to be efficient because the algorithms are running on embedded systems with limited resources. 
-In a other areas, speed is not that important, but it may be that the algorithm itself is very difficult to comprehend. 
+In other areas, speed is not that important, but it may be that the algorithm itself is very difficult to comprehend. 
 The more comprehensible an algorithm can be written in a programming language, the easier it will be to implement the algorithm without errors.
 In any case, programming itself is secondary to the researcher.
 It can be expected that most researcher only have rudimentary programming skills. 
-Even if they are experienced programmers, it is often inefficient to implement complex algorithms, while also dealing with a lot of programming problems.
+Even if they are experienced programmers, it is often inefficient to implement complex algorithms while also dealing with a lot of programming problems.
 These problems especially arise, when dealing with low-level programming in order to reach optimal speed.
 
 So things like manual memory management and difficult design patterns with a lot of unnecessary code should be avoided in scientific computing.
 This has led to the rise of programming languages and tools specifically tailored to scientific computing.
 The most prominent examples include Mathematica, R, and Matlab. 
-Python could be in this list as well, but the scientific computing part is only realized by third party libraries, while Python itself is a multi-purpose language.
+Python could be in this list as well, but the scientific computing part is only realized by third party libraries while Python itself is a multi-purpose language.
 The others all aim to provide a simple syntax for linear algebra and statistical code while taking away difficult tasks like memory management and multithreading. 
 They come with a rich standard library so most research can be done without loading any additional module, which makes them great tools for rapid prototyping.
-Currently, these languages suffers from poor performance introduced by the high level of abstraction.
+Currently, these languages suffer from poor performance introduced by the high level of abstraction.
 As a consequence, a lot of the performance critical parts are written in another language like C/C++ or Fortran.
-This is referred to as the \textbf{The Two Language Problem}\cite{ArrayMultiJeff}.
+This is referred to as the \textbf{Two Language Problem}\cite{ArrayMultiJeff}.
 
 This leads us straight to the field of research and the problems that are addressed in this thesis.
 
@@ -67,20 +67,20 @@ These steps range from introducing graphical user interfaces, novel input device
 All these advances have made computers usable for people who have no education in computer science.
 Brat Victor writes excellent essays about making programming easier and more understandable to the novel user and is one of the most influential researchers in this field.
 He demonstrates, how visualizations, interaction and well chosen abstraction can make programming easier\cite{BretVictorLP}\cite{BretVictorLA}.
-The field of scientific computing would profit greatly from integrating Bret Victors ideas due to the complexity and data driven nature of the tasks.
+The field of scientific computing would benefit greatly from integrating Bret Victors ideas.
 
 Scientific computing is usually about implementing mathematical equations, complex algorithms and manipulating and analyzing data.
 Most research is done in some specialized, high-level scientific computing language\cite{DBLP:journals/corr/abs-1209-5145}.
-Barries in this field make it hard for novel users to have a pleasant start.
+Barriers in this field make it hard for novel users to have a pleasant start.
 A few barriers are for example difficult installation processes of specialized software, working on datasets without visualizations and interaction and cumbersome \ac{API}s.
-This calls for a visualization library offering interaction and well designed \ac{API}s.
+This calls for a visualization library offering the interaction and well-designed \ac{API}s.
 Most state of the art visualization libraries use C++ at their performance critical core, are closed source or they are implemented in a slow language, introducing unavoidable performance bottlenecks.
 
 Using C++ introduces complexity and performance bottlenecks when interfacing with other languages. This is especially true for languages that produce assembly which is not binary compatible to C++. 
 The next problem occurs, when the library does not offer the needed functionality and the programmer has to step in and extend the library. 
 If it is closed source or one has to switch the language for that, this will either be not possible or introduce additional work.
 It is nice to have a library in which one can get results very quickly even though it does not offer high performance. 
-But it is very frustrating when one needs to switch to another library for more serious projects, as previously learned concepts and work has to be discarded.
+But it is very frustrating when one needs to switch to another library for more serious projects, as previously learned concepts and work have to be discarded.
 So it is desirable to have a library which scales well from small projects to big projects.
 
 Finally, one often does not have GUI elements. 
@@ -107,23 +107,23 @@ This deeper understanding is crucial for identifying problems in the underlying 
 Making problems more understandable opens the gates of scientific computing to novel users.
 
 Also, debugging problems can be easier with a good visualization. 
-If one writes an algorithm that calculate normals of faces on a mesh, the errors in the math becomes obvious when visualizing the normals. Without a proper visualization, the output of the algorithm is really hard to comprehend, since its just a huge array of numbers.
+If one writes an algorithm that calculate normals of faces on a mesh, the errors in the math becomes obvious when visualizing the normals. Without a proper visualization, the output of the algorithm is really hard to comprehend since it is just a huge array of numbers.
 Performance bottlenecks in a call-graph can be seen easily if the graph is color-coded for the execution times of a call. 
 Making these tasks enjoyable can help to get an easy start in scientific computing.
 
 In summary, the software in this thesis focuses on research which involves writing short scripts while playing around with some parameters and visualizing the results via built-in, or user defined, visualization routines.
 An example would be a materials researcher, who is investigating different 3D shapes and materials and their reaction to pressure.
-The researcher would need to read in the 3D object they want to analyze, have an easy way to tweak the material parameters and it would be preferable to get instant feedback on how the pressure waves propagate through the object. Also while doing all this, they may want to modify the script that calculates the pressure.
+The researcher would need to read in the 3D object they want to analyze, have an easy way to tweak the material parameters and it would be preferable to get instant feedback on how the pressure waves propagate through the object. Also, while doing all this, they may want to modify the script that calculates the pressure.
 There are quite a few libraries out there offering this. 
 The unique benefits of GLVisualize will be discussed in the second chapter.
 
 
 \subsection{Contribution}
 
-The main contribution of this thesis to field of scientific computing is writing GLVisualize in Julia, which offers the following advantages.
+The main contribution of this thesis to the field of scientific computing is writing GLVisualize in Julia, which offers the following advantages.
 
 Julia is a high-level language and effort has been put into creating a concise architecture. 
-This allows for short development cycles and easyly extendable libraries.
+This allows for short development cycles and easily extendable libraries.
 
 Romeo targets researchers that want to write everything in one language.
 As Julia is fast and the library is also written in Julia, this will enable researchers to stay in the same language for their project. 
@@ -133,7 +133,7 @@ Also, the researcher can extend the library in the same language they are alread
 In the case of Julia and Romeo, this is especially easy, as every project involved is open source and directly accessible.
 This allows for the flexibility and transparency which is needed for big projects.
 
-Another feature that sets GLVisualize appart from other libraries is, that is build for animations from the beginning.
+Another feature that sets GLVisualize apart from other libraries is, that is build for animations from the beginning.
 
 On top of that, the library makes it simple to interact with complex algorithms via widgets and forms a basis for visual debugging. 
 This comes with an ease of use, which would be hard to achieve if the library was not that deeply embedded in Julia.
@@ -145,3 +145,5 @@ After this, the requirements for Romeo will be laid out and how to measure if th
 Then the technologies used will be explained, which builds the basis for discussing the implementation.
 In the chapter \textbf{Results and Discussion}, one will find if the requirements were met and how Romeo compares to similar software.
 This chapter leads straight to the conclusion which will summarize this thesis.
+
+

@@ -1,12 +1,12 @@
 \section{Results and Discussion}
 
 In this chapter, it will be discussed if the goals of the thesis have been reached.
-For that purpose the methods presented in the Requirement chapter will be used. 
-We will start by analysing the performance. Afterwards, the extensibility of the software will be discussed.
+For that purpose, the methods presented in the Requirement chapter will be used. 
+We will start by analyzing the performance. Afterward, the extensibility of the software will be discussed.
 The chapter finishes with a short analysis of the usability of the introduced \ac{API}s.
 
 \subsection{Performance Analysis}
-In order to analyze how close this thesis comes to achieve the desired performance we need to look at some benchmarks.
+In order to analyze how close this thesis comes to achieve the desired performance, we need to look at some benchmarks.
 If not stated otherwise, benchmarks were written for this thesis and executed on an Intel Core i5-4200U with an HD 4400 graphic and 8GB of RAM.
 Julia 0.4 has been used, C++ code has been compiled with Visual Studio Express 2013 and for Python the Anaconda distribution with Python 2.7 was used.
 Benchmarks were run on an idle computer with as little background processes running as possible.
@@ -90,10 +90,10 @@ Additionally, without extensive knowledge of the library, it is difficult to for
 Vispy shows, why it is difficult to rely on measurements like the frame rate. 
 When measuring the framerate, it will show very low frame rates, as it only creates a new frame whenever the camera changes.
 Romeo on the other hand, has a fixed render loop, which renders as many frames as possible, leading to an entirely different amount of rendered frames per second. 
-This is why it was decided, to use the threshold at which a similar 3D scene is still conceived as enjoyable and interactive. Usually the minimal amount of frames per second to perceive movements as smooth is around 25.
+This is why it was decided, to use the threshold at which a similar 3D scene is still conceived as enjoyable and interactive. Usually, the minimal amount of frames per second to perceive movements as smooth is around 25.
 So the benchmark was executed in the way that the number regulating the complexity of the 3D scene was increased until one could not move the camera without stutters anymore. The last recorded pleasant threshold is then the result of the Benchmark.
 
-The first benchmark is an animated and a still 3D surface plot. The libraries offering this functionality where Vispy, Mayavi and Matlab.
+The first benchmark is an animated and a still 3D surface plot. The libraries offering this functionality where Vispy, Mayavi, and Matlab.
 
 \begin{table}[htbp]
     \centering
@@ -114,7 +114,7 @@ The first benchmark is an animated and a still 3D surface plot. The libraries of
     \captionof{table}[3D Benchmark]{3D surface created from a NxN matrix. Unit is the dimension of the Matrix (N).}
     \label{table:relativespeedoglw}
 \end{table}
-Vispy had some issues, as the camera was never really smooth for the surface example. Also the normals were missing and there was no option to colorize the surface depending on the height.
+Vispy had some issues, as the camera was never really smooth for the surface example. Also, the normals were missing and there was no option to colorize the surface depending on the height.
 It was decided to use the threshold of going from a little stutter to unpleasant stutters, making Vispy not completely fail this benchmark.
 For Vispy, it was found that the normals were calculated on the CPU resulting in a major slow down\cite{VispyGithub}. The same can be expected from Mayavi, but Mayavi seems to be faster at calculating the normals.
 There is not much information available on how Matlab renders their visualization, as it is closed source.
@@ -157,13 +157,13 @@ ZMQ\cite{ZMQ} is a messaging system using different sockets for communication li
 While it is very fast at its task of sending messages, it cannot compete with the native performance of staying inside one language.
 This is not very important as long as there is not a lot of communication between Julia and the IPython kernel. This changes dramatically for animations, where big memory chunks have to be streamed to the rendering engine of the browser. It can be expected, that this will always be a weakness of IJulia.
 On the other hand, \ac{GPU} accelerated rendering in a web browser is also limited.
-It relies on \ac{WebGL}, which offers only a subset of OpenGL. While the execution speed of OpenGL can be expected to be similar, there are a lot of new techniques missing, which can speed up rendering. Also, interoperability with \ac{OpenCL} and \ac{CUDA} backends ranges from difficult to impossible. 
-This makes it impossible to further accelerate massivively parallel tasks.
+It relies on \ac{WebGL}, which offers only a subset of OpenGL. While the execution speed of OpenGL can be expected to be similar, there are a lot of new techniques missing, which could speed up rendering. Also, interoperability with \ac{OpenCL} and \ac{CUDA} backends ranges from difficult to impossible. 
+This makes it impossible to further accelerate massively parallel tasks.
 
 A benchmark was created to get a sense of what the current state of 3D rendering in IJulia is.
 It is between Romeo and Compose3D\cite{Compose3D}, which was the only library found to be able to display 3D models created with Julia directly inside the IJulia notebook.
 This benchmark is not entirely fair, as Compose3D is just a very rough prototype so far. 
-But there seem to be no other library in which one can easily create and display interactive 3D graphics in the IJulia or IPython notebook. 
+But there seems to be no other library in which one can easily create and display interactive 3D graphics in the IJulia or IPython notebook. 
 This benchmark creates a Sierpinski gasket and Compose3D displays it in the IJulia notebook while Romeo displays it natively in a window.
 
 \begin{minipage}{\linewidth}
@@ -197,14 +197,14 @@ The modular design of Romeo has proven to be effective and the goal of reusabili
 Most of the created modules are used independently by different people.
 GLVisualize is used at least for two other packages besides Romeo. 
 One is GLPlot\cite{GLPlot}, a scientific plotting package for Julia and Osmosis\cite{Osmosis}, which is a chat client using GLVisualize for rich media display.
-See Figure \ref{app:osmosis} to get an idea of how Osmosis looks like.
+See Figure \ref{app:osmosis}, to get an idea of how Osmosis looks like.
 
 GLVisualize is also used by a 3D printing startup\cite{AddSub} to do animated renderings of distance fields.
 They use it for stereolithographic 3D printing. 
 The distance field renderings get projected into an ultraviolet light curable resin, hardening only specific parts of the polymer.
 
 ModernGL and GLAbstraction are also used by other projects as can be seen in the Github usage statistics.
-This indicates, that the abstraction and modularity is well designed, so that all the modules can be used alone.
+This indicates, that the abstraction and modularity are well designed so that all the modules can be used alone.
 
 GLWindow makes an exception, as it has been used only indirectly through the other packages. 
 This can mean three things.
@@ -217,15 +217,15 @@ This hinders people from contributing and using the packages. This definitely ne
 
 The implementation in just one language has been achieved by choice. 
 There are only a few exceptions, like the kernel code for OpenGL shaders, which currently cannot be written in Julia.
-But thanks to all involved packages being mainly written in Julia, it is possible to dive into the code base and extend it where needed without switching the language and difficult compiling processes.
-This together with the speed is one of the main achievements compared to other libraries offering similar functionality, like IJulia, Mayavi and Matlab.
+But thanks to all involved packages being mainly written in Julia, it is possible to dive into the code base and extend it where needed without switching the language and difficult compile processes.
+This together with the speed is one of the main achievements compared to other libraries offering similar functionality, like IJulia, Mayavi, and Matlab.
 To further proof this point I will analyze the mentioned software in more detail.
 
 The language usage statistics and infrastructure supplied in order to extend the software will be the main focus of the analysis.
 One needs to note, that the usage statistic of languages is just a weak indicator for the extendibility of a software.
 Using different languages for a project can make sense if the project has different domains where domain specific languages give an advantage. 
 As this means that one needs to be fluent in all used languages, this still introduces complexity, but it is at least justified complexity.
-Together with the total number of lines of code these statitistics can give a sense for the complexity of the software, which directly influences the ease at which the library can be extended and rewritten.
+Together with the total number of lines of code these statistics can give a sense for the complexity of the software, which directly influences the ease at which the library can be extended and rewritten.
 This is a crucial feature for a 3D visualization library, as it makes it easier to stay state of the art in a field that changes in a rapid pace.
 
 \subsubsection{Romeo and GLVisualize}
@@ -242,17 +242,17 @@ This is a crucial feature for a 3D visualization library, as it makes it easier 
         SUM: & 132  &  1504  &     395    &   6641\\
         \hline
     \end{tabular}
-    \captionof{table}[GLVisualize Stack]{Repositories written for this thesis, including GLVisualize, GLAbstraction and GLWindow}
+    \captionof{table}[GLVisualize Stack]{Repositories written for this thesis, including GLVisualize, GLAbstraction, and GLWindow}
     \label{table:romeo_loc}
 \end{table}
 
-In GLVisualize every customization can be done from within Julia.
-Everything like native \ac{OpenGL} context handles and \ac{OpenGL} memory objects are directly accessible.
+In GLVisualize, every customization can be done from within Julia.
+Everything like native \ac{OpenGL} context handles and \ac{OpenGL} memory objects is directly accessible.
 One can implement even advanced features like \ac{OpenCL} context sharing with GLVisualize\cite{OCLInterop}.
 This enables the users to do e.g. physics simulations in \ac{OpenCL} on the \ac{GPU} and visualize the data directly without going through the \ac{CPU} which would introduce severe bottlenecks.
 This is made especially easy, as all visualization functions are defined on the \ac{GPU} memory objects. 
 So if one already has a \ac{GPU} array from some other function, it can be directly visualized without additional memory transfers.
-But even in the worst case, if the whole architecture is not well fitted for the task, reimplementing large parts would not be difficult as there are only 6641 lines of code which are mostly written in Julia as can be seen table \ref{table:romeo_loc}.
+But even in the worst case, if the whole architecture is not well fitted for the task, reimplementing large parts would not be difficult as there are only 6641 lines of code which are mostly written in Julia as can be seen in table \ref{table:romeo_loc}.
 If it comes even worse and the language itself has to be modified for more advanced features, this will pose no problem as Julia is open source.
 This allows to implement even advanced features like running Julia code directly on the \ac{GPU}\cite{OpenCL}\cite{{JuliaCuda}, which may be possible in the next years.
 
@@ -271,7 +271,7 @@ This allows to implement even advanced features like running Julia code directly
         D3:         & JavaScript 95.6\% CSS 4.3\%\\
         \hline
     \end{tabular}
-    \captionof{table}[IJulia Stack]]{Technologies used in IJulia. Statistics taken from Github}
+    \captionof{table}[IJulia Stack]]{Technologies used in IJulia. Statistics are taken from Github}
     \label{table:ijuliastack}
 \end{table}
 
@@ -279,15 +279,15 @@ IJulia is written in Julia and relies on ZMQ and IPython.
 ZMQ is written in C++ to make it as fast as possible.
 IPython uses multiple JavaScript rendering backends like Three.js and D3.
 The graphical notebooks are running inside a browser, which adds another complex technology stack.
-One the plus side, most technologies used are open source, which in theory would allow for customizations of the entire stack.
+One the plus side, most technologies used are open source, which, in theory, would allow for customizations of the entire stack.
 
 IPython is written in Python, so using IPython from Julia forces the implementation to already use two similar languages.
-JavaScript, CSS and HTML are only needed to layout graphics inside the browser. CSS and HTML can be seen as a domain specific languages for creating \ac{GUI}s, so while introducing yet another language, they bring the value of easy \ac{GUI} creation.
+JavaScript, CSS, and HTML are only needed to layout graphics inside the browser. CSS and HTML can be seen as a domain-specific languages for creating \ac{GUI}s, so while introducing yet another language, they bring the value of easy \ac{GUI} creation.
 C++ offers similar functionality to JavaScript and Python, so it can be assumed it was used for speed and interoperability with other C++ libraries.
 So IJulia builds upon a very heterogeneous technology stack, making it difficult to add advanced features.
 From inside Julia, there are no handles to the actual rendering process. These are written mainly in JavaScript and Python.
 Further rendering extensions which do not rely on combining functions from other libraries are only available by emitting HTML and Javascript code from Julia which then get executed in the browser.
-While modern Browsers seem to offer context sharing between \ac{WebGL} and \ac{WebCL} (the counter parts for \ac{OpenGL} and \ac{OpenCL}), it must be done from within JavaScript.
+While modern Browsers seem to offer context sharing between \ac{WebGL} and the \ac{WebCL} (the counterparts for \ac{OpenGL} and \ac{OpenCL}), it must be done from within JavaScript.
 
 All in all, from within Julia there are little options to implement completely new, advanced rendering features.
 
@@ -325,43 +325,43 @@ Matlab is closed source, which makes the core of Matlab impossible to extend by 
 To extend functionality which needs to modify the language or the core library one will have to ask Mathworks to do that.
 This is why Matlab relies on a plug-in architecture which enables developers to write closed or open source plug-ins for Matlab. 
 Simple packages can be written in Matlab itself and imported into a project.
-This is not an option for performance critical plug-ins though, as the pure Matlab language is too slow.
+This is not an option for performance critical plug-ins, though, as the pure Matlab language is too slow.
 So something like a 3D visualization library should not be written in pure Matlab code.
-For that a mex plug-in is best fitted, which is Matlab's way of letting one write C/C++ plug-ins.
+For that, a mex plug-in is best fitted, which is Matlab's way of letting one write C/C++ plug-ins.
 It is a very simple process of including a Matlab header file into the C/C++ source, which can then be compiled with Matlab.
 The header file holds types, which can be used to make the C/C++ functions work with Matlab's native types.
 It also holds the \textit{mexFunction} macro, which needs to be used in order to make the function callable from Matlab.
 So it seems to be fairly easy to integrate C/C++ code, but it also defies the purpose of writing in a scientific programming language.
 Also, Matlab's visualization core itself is not extendable. 
-This means that for advanced task, one needs to start from scratch, or call out to some third party library.
+This means that for an advanced task, one needs to start from scratch or call out to some third party library.
 
 
 \subsection{Usability Analysis}
 Doing a broad user survey was out of scope for this thesis.
 This is why the usability study was done analytically.
 There are different aspects which can be analyzed. For example, how many function names need to be remembered, how easy they are memorized, if they expose the wanted functionality and how difficult it is to look up unknown functionality.
-The main user facing \ac{API}, namely GLVisualize’s will be analyzed for this thesis. 
+The main user-facing \ac{API}, namely GLVisualize’s will be analyzed for this thesis. 
 The named aspects will be analyzed together with feedback from Github.
 
 \subsubsection{GLVisualize}
 
 GLVisulize has a very simple API, as it offers only four functions: \textit{renderloop}, \textit{visualize}, \textit{visualize\_defaults} and \textit{edit}.
-There are also the functions bounce and loop, which offers a simplification for creating periodic signals.
+There are also the functions bounce and loop, which offer a simplification for creating periodic signals.
 These functions might get moved into Reactive, though.
 So for GLVisualize, only very few function names have to be remembered.
-The question is, if this simple interface still allows people to create the visualization they want.
+The question is if this simple interface still allows people to create the visualization they want.
 At closer inspection one can see, that visualize is overloaded for 67 Julia types, with each of these methods having a set of keyword arguments which enable further customization.
-These can introduce drastic changes. The particle visualization for example can take any mesh as a primitive. This allows a level of customization, which was not possible in the other examined packages.
-Also, most of the functions take either a data type, or a signal of that data type.
+These can introduce drastic changes. The particle visualization, for example, can take any mesh as a primitive. This allows a level of customization, which was not possible in the other examined packages.
+Also, most of the functions take either a data type or a signal of that data type.
 This makes it very intuitive to animate your data. 
 In contrast, in order to setup the animation for the other packages, it took quite some time to find out how to update values of an existing visualization. This is acceptable, as it might take some time to find out that Romeo uses signals and how to work with signals.
 But when this is found out, Romeo functions in the same, consistent way. 
 Signals add a fourth dimension to any parameter or data one would like to visualize, making the usage principle consistent across the different visualizations.
 
-For the other packages though, one needs to find out the names of the data for every visualization type in order to access and update them. Some attributes cannot be animated, making the API even less consistent.
+For the other packages, though, one needs to find out the names of the data for every visualization type in order to access and update them. Some attributes cannot be animated, making the API even less consistent.
 
 So for Romeo one can achieve anything by bringing the data into the right format.
-Problems arise, if this cannot be done easily or the format is not intuitive for the programmer.
+Problems arise if this cannot be done easily or the format is not intuitive for the programmer.
 To be fair, this problem exists for every kind of visualization API.
 In the end the only difference is, how easy it was to do the data transformations. 
 Let us examine an example, where GLVisualize often will not allow to directly call visualize on the data.
