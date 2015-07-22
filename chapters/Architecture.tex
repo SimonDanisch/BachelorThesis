@@ -8,7 +8,7 @@ Certain design choices had to be made to guarantee this. As speed is the most co
 \begin{minipage}{\linewidth}
     \centering
     \includegraphics[width=0.9\linewidth]{graphics/julia_bench.pdf}
-    \captionof{figure}[Volume Visualization]{Languages speed relative to C (averaged benchmark results), plotted against the length of the needed code (Source in Appendix).}
+    \captionof{figure}[Volume Visualization]{Languages speed relative to C (averaged benchmark results), plotted against the length of the needed code. The source can be found on Github\cite{Benchmarks}\cite{JuliaBench}.}
     \label{fig:juliabench}
 \end{minipage}
 
@@ -76,7 +76,7 @@ This guarantees reusability for others, who want to work with the low-level libr
 The developed library is called ModernGL\cite{ModernGL}.
 
 Over this sits an abstraction layer needed to simplify the work with \ac{OpenGL}, namely GLAbstraction\cite{GLAbstraction}.
-Base on this abstraction, GLVisualize\cite{GLVisualize} was implemented, which renders the \ac{OpenGL} accelerated visualizations.
+Based on this abstraction, GLVisualize\cite{GLVisualize} was implemented, which renders the \ac{OpenGL} accelerated visualizations.
 
 \ac{API}s for visualization libraries are very difficult to realize, as there are endless ways of visualizing the same data.
 The design choice here was to use Julia's rich type system to better describe the data. 
@@ -162,10 +162,10 @@ In addition, the general compiler structure of Julia will be analyzed to find in
     \centering
     \includegraphics[width=0.9\linewidth]{graphics/juliabench.pdf}
     \captionof{figure}[Julia Performance]{Julia's performance compared to other languages, taken from Julia's micro bench suite \cite{JuliaBench}. Smaller is better, C performance = 1.0.}
-    \label{fig:juliabench}
+    \label{fig:juliabench2}
 \end{minipage}
 
-In the first benchmark from Figure \ref{fig:juliabench}, we can see that Julia stays well within the range of C speed. 
+In the first benchmark from Figure \ref{fig:juliabench2}, we can see that Julia stays well within the range of C speed. 
 Actually, it even comes second to C speed with no other language being that close.
 This is a very promising first look at Julia, but it should be noted, that these benchmarks are written by the Julia core team and the performance of a language is a moving target.
 So it is not guaranteed, that there is no bias favoring Julia in these benchmarks.
@@ -278,10 +278,10 @@ Data gets loaded into the shaders via buffers, textures, and uniforms. Buffers a
 
 The different shaders are usually used to apply geometric and perspective transformations and calculating the light.
 In newer APIs general compute operations are available, making it possible to create more flexible shader stages.
-Displaying objects can only be achieved by rasterizing pixels to the frame buffer via the fragment shader.
-The frame buffer can be sent directly to the monitor.
-Frame buffers can contain multiple render targets, which are the buffers the fragment shader can write to.
-The write operation is heavily restricted. The fragment shader can only write to the location calculated by the vertex shader and simultaneously reads from the frame-buffer are not possible. 
+Displaying objects can only be achieved by rasterizing pixels to the framebuffer via the fragment shader.
+The framebuffer can be sent directly to the monitor.
+Framebuffers can contain multiple render targets, which are the buffers the fragment shader can write to.
+The write operation is heavily restricted. The fragment shader can only write to the location calculated by the vertex shader and simultaneously reads from the framebuffer are not possible. 
 This restriction exists to allow for the massive parallel execution model that OpenGL uses to speed up rendering times.
 
 The usual set of render targets includes a depth channel, stencil buffer and, of course, the color buffer.
@@ -378,7 +378,7 @@ ModernGL implements the \ac{OpenGL} function loading and exposes all the functio
 \subsection{ModernGL}
 \ac{OpenGL} is implemented by the video card vendor and is shipped via the video driver, which comes in the form of a C library.
 The challenge is to load the function pointers system and vendor independent. 
-Also, one further complication is, that depending on the platform, function pointers are only available after an \ac{OpenGL} context was created and may only be valid for this context. \cite{wgl}
+Also, one further complication is, that depending on the platform, function pointers are only available after an \ac{OpenGL} context was created and may only be valid for this context\cite{wgl}.
 This problem is solved by initializing a function pointer cache with null and as soon as the function is called the first time the real pointer gets loaded.
 
 The OpenGL function loader of ModernGL has undergone some changes over time.
@@ -391,11 +391,11 @@ Generated functions only work with the newest Julia build, which is why aaalexan
 
 
 \subsection{GLAbstraction}
-GLAbstraction is the abstraction layer over ModernGL.
+GLAbstraction\cite{GLAbstraction} is the abstraction layer over ModernGL.
 It wraps \ac{OpenGL} primitives like Buffers and Textures in Julia objects and hooks them up to Julia's garbage collector. 
 It also makes it easy to create them from Julia data types like arrays and images.
 Additionally, it implements convenience functions to load shader code and to provide the shader with the correct data types.
-Besides supplying an abstraction layer over \ac{OpenGL}, it also offers the linear algebra needed for the various 3D transformation and camera code.
+Besides supplying an abstraction layer over \ac{OpenGL}, it also offers the linear algebra needed for the various 3D transformations and camera code.
 Building upon that, it defines a signal based perspective and orthographic camera.
 
 Signals are an important part of the infrastructure not only for the camera but for everything that changes.
@@ -422,7 +422,7 @@ result = glGetShaderiv(shaderID, GL_COMPILE_STATUS)
 \end{lstlisting}
 
 Similarly, OpenGL does not overload functions, which means that a function that does the same for different types has a base name combined with different suffixes to indicate the type.
-The function with the most methods is \textit{glUniform}, which has around 34 functions for all the different uniform types. 
+The function with the most methods is \textit{glUniform}, which has around 34 methods for all the different uniform types. 
 It is used to set the value of an \ac{OpenGL} program uniform.
 With GLAbstraction, \textit{glUniform} has been overloaded for all different types, including arrays and signals. So one can simply call \textit{glUniform} on the type without the need of looking up the correct suffix.
 This has been achieved with a combination of overloading and generated functions.
@@ -432,7 +432,7 @@ A lot more of these simplifications have been done in order to leverage the usag
 This guarantees that the code in GLVisualize is very short and concise, making it easy to extend and maintain.
 
 \subsection{GLWindow}
-GLWindow is a lightweight wrapper around GLFW.
+GLWindow\cite{GLWindow} is a lightweight wrapper around GLFW.
 It mainly offers a screen type, which contains signals for all the different GLFW events. 
 It also offers a hierarchical structure for nesting screens.
 All the screen areas are signals, which makes it easy to change the screen area. 
@@ -460,7 +460,7 @@ In the future, it will be desirable to work around this and bring the elegant fu
     \label{fig:glvisualize}
 \end{minipage}
 
-GLVisualize implements the visualization functionality.
+GLVisualize\cite{GLVisualize} implements the visualization functionality.
 Its structure is quite simple. 
 It relies as much as it can on common Julia data types and creates specialized visualizations for them via dispatch.
 So instead of offering differently named functions for different visualizations, there is just one function with lots of methods for different types, which is made possible via multiple dispatch.
@@ -493,7 +493,7 @@ With this simple interface, the following data can be visualized:
 
 All of these can be integrated into the same scene and it is possible to change their parameters interactively by passing signals.
 These interactions can be purely programmatically, or via the widgets from the edit function.
-The visualize methods that take Julia objects are transforming them into GPU objects, which will then get transferred to the actual visualize function. This function takes GPU objects as its arguments, making it easy to visualize objects which already exist on the GPU, or which are shared between visualizations.
+The visualize methods that take Julia objects are transforming them into GPU objects, which will then get transferred to the actual visualize method. This method takes GPU objects as its arguments, making it easy to visualize objects which already exist on the GPU, or which are shared between visualizations.
 
 Up to now, there is an edit function available for strings, colors, numbers, vectors and matrices.
 
@@ -585,17 +585,17 @@ The two most usual approaches are ray picking and color picking.
 For the ray picking approach, a ray is sent from the 2D position of the camera plane into the 3D scene and is tested for intersection with every object in the scene. In contrast, color picking works with an extra render target, which stores an object id for every pixel, which gets written together with the color pass inside the fragment shader.
 Color picking has been chosen for this thesis, as it is far easier to implement. Ray picking must be implemented on the GPU, best with some data structures optimized to do fast ray intersections. Otherwise, it will be very slow. If done on the CPU, the 3D objects need to be kept in video memory and CPU memory, further introducing complexity and bottlenecks.
 
-For color picking, two frame-buffer render targets need to be created. 
+For color picking, two framebuffer render targets need to be created. 
 One for the color channel and one to represent the object id plus an additional number to store contextual information. The additional number is usually used for the instance index, which can be used to e.g. infer what text glyph is selected.
 When rendering, the fragment shader does not only write the color into the render target but if the color is opaque also the current object id.
 This way transparency aware 3D picking can be achieved without an extra processing step. 
-The advantage of this methods is that one does not need an extra pass over the geometry. The disadvantage is higher space requirements and that OpenGL's native anti-aliasing does not work well together with the additional render target. Also, the OpenGL pipeline has to be flushed in order to read from the frame-buffer.
+The advantage of this methods is that one does not need an extra pass over the geometry. The disadvantage is higher space requirements and that OpenGL's native anti-aliasing does not work well together with the additional render target. Also, the OpenGL pipeline has to be flushed in order to read from the framebuffer.
 The anti-aliasing problem can be solved by implementing an extra anti-aliasing post processing step. A very simple FXAA algorithm has been implemented, which does not give perfect results but is fast and was easy to implement. The algorithm was taken from Matt DesLauriers\cite{FXAA} and was adjusted to fit into GLVisualize's pipeline.
 
 
 \subsection{Romeo}
 
-So far Romeo just consists of one file with 500 lines of code. 
+So far Romeo\cite{Romeo} just consists of one file with 500 lines of code. 
 It just defines some simple text field, a search field, and a visualize and edit window.
 The text gets evaluated as Julia code as soon as it changes. Like this, the text field acts like a very simple \ac{REPL}.
 Via the search field, one can execute simple Julia statements and the results will be displayed in the visualize window while all parameters can be edited via the edit window.

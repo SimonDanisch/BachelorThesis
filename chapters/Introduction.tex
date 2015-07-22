@@ -4,7 +4,7 @@ Other libraries have been developed to implement Romeo in a modular way, fosteri
 The most important library is GLVisulize, which is a generic 3D visualization library for dynamic data. 
 The ultimate goal is to make scientific computing more accessible to the user. 
 
-For this, the focus has been put on usability, applied to all the different interfaces, ranging from \ac{API}s to graphical user interfaces. 
+For this, the focus has been put on usability, applied to all the different interfaces, ranging from \ac{APIs} to graphical user interfaces. 
 The programming language Julia was chosen for implementing all libraries, as it offers a unique combination of speed, high-level programming style and a lot of functionality for scientific computing.
 
 GLVisualize offers a default visualization for every data type. 
@@ -13,12 +13,12 @@ In this way, Romeo offers a primitive form of visual debugging.
 Due to the generic nature of GLVisualize, these interactive features can be used in other programs independent from Romeo.
 
 An introduction to the general field of research and its challenges and problems relevant to this thesis will be given.
-Finally, this chapter will conclude with a solution to the previously found problems, how to measure the success and give an outlook on the structure of the entire Bachelor Thesis.
+This chapter will conclude with a solution to the previously found problems, how to measure the success and give an outlook on the structure of the entire Bachelor Thesis.
 
 
 \subsection{Scientific Computing}
 
-Scientific computing is computing that evolves around all kind of scientific research.
+Scientific computing is programming needed for scientific research.
 It is a very broad field involving a lot of different challenges. 
 In some areas such as particle physics, most problems are computationally intensive and can only be solved with the help of supercomputers.
 In other areas, like robotics, it is important to be efficient because the algorithms are running on embedded systems with limited resources. 
@@ -30,7 +30,7 @@ Even if they are experienced programmers, it is often inefficient to implement c
 These problems especially arise, when dealing with low-level programming in order to reach optimal speed.
 
 So things like manual memory management and difficult design patterns with a lot of unnecessary code should be avoided in scientific computing.
-This has led to the rise of programming languages and tools specifically tailored to scientific computing.
+This has led to the rise of high-level programming languages and tools specifically tailored to scientific computing\cite{DBLP:journals/corr/abs-1209-5145}.
 The most prominent examples include Mathematica, R, and Matlab. 
 Python could be in this list as well, but the scientific computing part is only realized by third party libraries while Python itself is a multi-purpose language.
 The others all aim to provide a simple syntax for linear algebra and statistical code while taking away difficult tasks like memory management and multithreading. 
@@ -58,7 +58,7 @@ These two demands are opposing concepts.
 The first is about bringing tasks into a form which is best understandable to humans, and the other is about transforming a task to make it perform well on a specific computer architecture.
 These two tasks could not be more different. 
 For humans, data and algorithms become understandable if they are high-level and represented visually, auditorial or tactile together with immediate feedback. 
-It is the task of making problems accessible to a human, who have evolved capabilities in order to survive and find food and not to create complex algorithms.
+It is the task of making problems accessible to a human, who has evolved capabilities in order to survive and find food and not to create complex algorithms.
 Computers, on the other hand, love to have their registers filled optimally, move memory to smaller and faster caches and dislike random access to memory. That is all it cares about, whether a human understands this or not.
 
 To close this gap, compilers have been created. They are translators between human understandable languages to machine instructions.

@@ -33,12 +33,12 @@ There are quite a few things Julia promises to the developer which includes the 
 Another interesting feature of Julia is, that all user-defined types are as fast and compact as built-in types.
 This allows Julia to implement all arithmetic types in Julia itself, allowing anyone to extend and rewrite them without the need to modify the compiler.
 Julia claims to take an approach at scientific computing which is more modern than other programming languages.
-They justify this by pointing out the performance characteristics of Julia and the possibilities that come from this\cite{2013arXiv1312.1431L}\cite{2012arXiv1209.5145B}. 
+They justify this by pointing out the performance characteristics of Julia and the possibilities that come from this\cite{2013arXiv1312.1431L}\cite{DBLP:journals/corr/abs-1209-5145}. 
 It allows to write even performance critical libraries in Julia. 
 This means Julia does not need to call out to C for performance and because of this most of the standard library is implemented in Julia.
-In contrast, Matlab, Python, and R need to implement any performance-critical code in another language, which has led to a programming pattern which is best known by the name of vectorization\cite{2012arXiv1209.5145B}. This pattern has evolved, as the vector operations that are built into the language are much faster than vector operation written in the language itself.
+In contrast, Matlab, Python, and R need to implement any performance-critical code in another language, which has led to a programming pattern which is best known by the name of vectorization\cite{DBLP:journals/corr/abs-1209-5145}. This pattern has evolved, as the vector operations that are built into the language are much faster than vector operation written in the language itself.
 This means, if one needs performance, the code needs to be rewritten to only use functions which are implemented in another, faster language.
-A deeper analysis of this problem can be found in the first Julia paper\cite{2012arXiv1209.5145B}.
+A deeper analysis of this problem can be found in the first Julia paper\cite{DBLP:journals/corr/abs-1209-5145}.
 
 All in all, this makes Julia a very desirable scientific computing language, which promises to be also great for a visualization library.
 As part of this thesis, it will be investigated if Julia's claims\cite{WhyJulia} have been achieved.

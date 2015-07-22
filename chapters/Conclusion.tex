@@ -31,9 +31,9 @@ As already mentioned, there is a lot to do in order to make all packages more pl
 The scene graph is very simple, there is no real multithreading support, the anti-aliasing is sub-optimal, a lot of important features are missing and the OpenGL version used is just mildly modern, compared to the features released recently. 
 Staying state of the art will be a big challenge, especially while keeping downward compatibility for platforms that do not support the newest feature set.
 One of the most exciting possibilities though is to make parts of Julia compile to the GPU directly. 
-This becomes possible, as the Khronos Group recently released \ac{SPIR-V}, an intermediate representation which \ac{OpenGL} and \ac{OpenCL} can compile to in the future. The Khronos Group plans to release a converter from \ac{LLVM} \ac{IR} to \ac{SPIR-V}, which would make it possible to program \ac{OpenGL} and \ac{OpenCL} alike functionality in any \ac{LLVM} based language\cite{SpirV}.
+This becomes possible, as the Khronos Group recently released the \ac{SPIR-V}, an intermediate representation which \ac{OpenGL} and \ac{OpenCL} can compile to in the future. The Khronos Group plans to release a converter from \ac{LLVM} \ac{IR} to \ac{SPIR-V}, which would make it possible to program \ac{OpenGL} and \ac{OpenCL} alike functionality in any \ac{LLVM} based language\cite{SpirV}.
 This means, that all the code that is currently written in \ac{GLSL} could be rewritten in Julia. 
-On top of that, some functionality that is currently written in Julia and runs on \ac{CPU} could in the future be run on the \ac{GPU}. This includes functionality which would profit from highly parallel execution, like ray picking, calculating normals and culling objects.
+On top of that, some functionality that is currently written in Julia and runs on the \ac{CPU} could run on the \ac{GPU} in the future. This includes functionality which would profit from highly parallel execution, like ray picking, calculating normals and culling objects.
 This would further unify the platform, improve speed and will lower the complexity of the library. 
 Such a unique feature is currently not implemented in any other language and could be a game changer for high-performance visualization libraries.
 With possibilities like these, one can look forward to a bright future for high-performance graphics in Julia.

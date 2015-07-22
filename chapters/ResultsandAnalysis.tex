@@ -111,7 +111,7 @@ The first benchmark is an animated and a still 3D surface plot. The libraries of
         Speed up Mayavi  & 1.26x         & 16x   \\
         Speed up Matlab  & 1.26x         & 1.7x  \\
     \end{tabular}
-    \captionof{table}[3D Benchmark]{3D surface created from a NxN matrix. Unit is the dimension of the Matrix (N).}
+    \captionof{table}[Surface Benchmark Result]{3D surface created from a NxN matrix. Unit is the dimension of the Matrix (N) for which rendering speed was still acceptable.}
     \label{table:relativespeedoglw}
 \end{table}
 Vispy had some issues, as the camera was never really smooth for the surface example. Also, the normals were missing and there was no option to colorize the surface depending on the height.
@@ -140,7 +140,7 @@ The next benchmark is only between Romeo and Mayavi, as the other libraries did 
         \hline
         Speed up         & 11x             & 16x \\
     \end{tabular}
-    \captionof{table}[3D Benchmark]{Maximum number of particles that could be displayed without stutter.}
+    \captionof{table}[Particle Benchmark Result]{Maximum number of particles that could be displayed without stutter.}
     \label{table:relativespeedoglw}
 \end{table}
 
@@ -184,7 +184,7 @@ This benchmark creates a Sierpinski gasket and Compose3D displays it in the IJul
         \hline
         Speed up         & 125x          \\
     \end{tabular}
-    \captionof{table}[3D Benchmark]{Maximum number of pyramids that could be displayed without stutter.}
+    \captionof{table}[Sierpinski Benchmark Result]{Maximum number of pyramids that could be displayed without stutter.}
     \label{table:relativespeedoglw}
 \end{table}
 
@@ -219,7 +219,7 @@ The implementation in just one language has been achieved by choice.
 There are only a few exceptions, like the kernel code for OpenGL shaders, which currently cannot be written in Julia.
 But thanks to all involved packages being mainly written in Julia, it is possible to dive into the code base and extend it where needed without switching the language and difficult compile processes.
 This together with the speed is one of the main achievements compared to other libraries offering similar functionality, like IJulia, Mayavi, and Matlab.
-To further proof this point I will analyze the mentioned software in more detail.
+To further proof this point the mentioned software will be analyzed in more detail.
 
 The language usage statistics and infrastructure supplied in order to extend the software will be the main focus of the analysis.
 One needs to note, that the usage statistic of languages is just a weak indicator for the extendibility of a software.
@@ -315,7 +315,7 @@ All in all, from within Julia there are little options to implement completely n
 
 Mayavi itself is mostly written in Python, which amounts to an impressive 49,894 lines of code. This is quite a lot, considering that this does not include rendering code, which is done in VTK.
 As can be seen in Table \ref{table:VTKStatistic}, VTK amounts to a total of 2,812,005 lines of code written in approximately 27 languages. 
-So the main problem for extending VTK and Mayavi's core will be its complexity. If one willing to switch to C++, VTK will allow to implement any advanced feature. From inside Mayavi and Python, one will have problems with accessing the underlying rendering core of VTK and one will also run into performance problems with Python.
+So the main problem for extending VTK and Mayavi's core will be its complexity. If one is willing to switch to C++, VTK will allow to implement any advanced feature. From inside Mayavi and Python, one will have problems with accessing the underlying rendering core of VTK and one will also run into performance problems with Python.
 But if performance is not a problem, one can extend Mayavi by writing filters and new sources\cite{MayaviExtension}.
 
 
@@ -346,7 +346,7 @@ The named aspects will be analyzed together with feedback from Github.
 \subsubsection{GLVisualize}
 
 GLVisulize has a very simple API, as it offers only four functions: \textit{renderloop}, \textit{visualize}, \textit{visualize\_defaults} and \textit{edit}.
-There are also the functions bounce and loop, which offer a simplification for creating periodic signals.
+There are also the functions \textit{bounce} and \textit{loop}, which offer a simplification for creating periodic signals.
 These functions might get moved into Reactive, though.
 So for GLVisualize, only very few function names have to be remembered.
 The question is if this simple interface still allows people to create the visualization they want.
@@ -363,7 +363,7 @@ For the other packages, though, one needs to find out the names of the data for 
 So for Romeo one can achieve anything by bringing the data into the right format.
 Problems arise if this cannot be done easily or the format is not intuitive for the programmer.
 To be fair, this problem exists for every kind of visualization API.
-In the end the only difference is, how easy it was to do the data transformations. 
+In the end the only difference is, how easy it is to do the data transformations. 
 Let us examine an example, where GLVisualize often will not allow to directly call visualize on the data.
 There is only a method for visualizing a Mesh, but not for a vertex list plus a face list. 
 If one works with mesh data, one will often handle the face and vertex list in isolation.
